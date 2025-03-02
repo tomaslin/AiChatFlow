@@ -53,14 +53,40 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Minimized state */
 #ai-chat-flow-editor.minimized {
-    width: 60px !important;
-    height: 60px !important;
-    top: 70px;
+    width: 300px !important;
+    height: 30vh !important;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
     border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    border: none;
+}
+#ai-chat-flow-editor.minimized .tab-container {
+    display: none !important;
+}
+#ai-chat-flow-editor.minimized .editor-top-bar {
+    background: transparent !important;
+    justify-content: flex-end;
+    width: auto;
+    padding: 8px;
+}
+#ai-chat-flow-editor.minimized .toolbar {
+    display: flex;
+    justify-content: flex-end;
+    width: auto;
+}
+
+#ai-chat-flow-editor.minimized .file-list-container{
+    height: 100% !important;
+    display: block !important;
+}
+
+
+#ai-chat-flow-editor .file-list-container .more{
+    height: calc(40vh-50px) !important;
+    display: block !important;
 }
 
 /* Header and file list styles */

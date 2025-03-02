@@ -26,7 +26,7 @@ async function createEditorUI() {
     editorContainer.id = 'ai-chat-flow-editor';
     // Editor width is now controlled by CSS
     const icons = {
-        "minimize": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z\"/></svg>",
+        "file": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z\"/></svg>",
         "new_file": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"M8 1v6h6v2H8v6H6V9H0V7h6V1h2z\"/></svg>",
         "import_file": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"M14 6l-1.4 1.4L8 2.8V13H6V2.8L1.4 7.4 0 6l7-7 7 7z\"/></svg>",
         "download_all": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"M8 12l-4-4h2.5V2h3v6H12L8 12zm-6 2h12v2H2v-2z\"/></svg>",
@@ -37,32 +37,36 @@ async function createEditorUI() {
         "transcribe_chat": `<svg width="24" height="24" viewBox="0 0 16 16"><path fill="currentColor" d="M15 8l-3-3v2h-5v2h5v2l3-3zM8 2H2v12h6v-3h-2v1H4v-8h2v1h2V2z"/></svg>`
     };
     editorContainer.innerHTML = `<div class="editor-header"><div class="editor-top-bar"><div class="toolbar"><button id="transcribe-chat-btn" class="toolbar-btn" title="Transcribe From Chat">${icons.transcribe_chat}</button><button id="new-file-btn" class="toolbar-btn" title="New File">${icons.new_file}</button><button id="import-file-btn" class="toolbar-btn" title="Import File">${icons.import_file}</button><button id="download-all-btn" class="toolbar-btn" title="Download All">${icons.download_all}</button></div><div style="flex: 1"></div><button class="ai-chat-flow-minimize-btn" title="Minimize">${icons.chat}</button></div><input type="file" id="file-input" multiple style="display: none"><div class="file-list-container"><div class="file-list"></div></div></div><div class="tab-container"><div class="tab-list"></div><div class="editor-content"><div class="welcome-message"><p>No file selected. Please create a new one or select an existing one.</p></div></div></div>`;
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = chrome.runtime.getURL('content.css');
-    document.head.appendChild(link);
     document.body.appendChild(editorContainer);
     const minimizeBtn = editorContainer.querySelector('.ai-chat-flow-minimize-btn');
     if (minimizeBtn) {
         minimizeBtn.addEventListener('click', async (e) => {
+
+        if (editorContainer.classList.contains('minimized')) {
+                editorContainer.classList.remove('minimized');
+                // Change button icon back to chat when expanded
+                if (minimizeBtn) {
+                    minimizeBtn.innerHTML = icons.chat;
+                    minimizeBtn.title = "Minimize";
+                }
+                await setMinimizedState(false);
+                if (typeof aiProvider !== 'undefined' && aiProvider && !isIPhone) {
+                    aiProvider.slideContent(false);
+                }
+            
+        } else {
+
             e.stopPropagation();
             editorContainer.classList.add('minimized');
+            minimizeBtn.innerHTML = icons.file;
+            minimizeBtn.title = "Expand";
             await setMinimizedState(true);
             if (typeof aiProvider !== 'undefined' && aiProvider && !isIPhone) {
                 aiProvider.slideContent(true);
             }
-        });
+        }});
     }
-    editorContainer.addEventListener('click', async (e) => {
-        if (editorContainer.classList.contains('minimized') && e.target !== closeBtn) {
-            editorContainer.classList.remove('minimized');
-            minimizeIcon.classList.remove('visible');
-            await setMinimizedState(false);
-            if (typeof aiProvider !== 'undefined' && aiProvider && !isIPhone) {
-                aiProvider.slideContent(false);
-            }
-        }
-    });
+    
     const fileManager = new FileManager();
 
     // Initialize file count toggle
