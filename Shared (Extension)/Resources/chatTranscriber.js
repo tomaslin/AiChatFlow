@@ -12,7 +12,6 @@ class ChatTranscriber {
             title: 'Transcribe from Chat',
             buttonText: 'Import Selected',
             showModeSelector: true,
-            allowNewItem: true,
             hasCurrent: this.hasCurrent,
             validateNewName: async (name) => {
                 if (!name || !name.trim()) return false;
