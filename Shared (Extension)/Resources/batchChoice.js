@@ -12,7 +12,10 @@ class BatchChoice {
             truncateLength: options.truncateLength || { title: 140, description: 260 },
             selectAllByDefault: options.selectAllByDefault || false,
             showModeSelector: options.showModeSelector || false,
-            modes: options.modes || []
+            modes: options.modes || [],
+            validateNewName: options.validateNewName || (() => true),
+            allowNewItem: options.allowNewItem !== false,
+            hasCurrent: options.hasCurrent || false
         }
         
         // Load saved preferences if type is specified
@@ -36,18 +39,25 @@ class BatchChoice {
                         mode.default = (mode.value === prefs.selectedMode);
                     });
                 }
+                if (prefs.useNewItem !== undefined) {
+                    this.useNewItem = prefs.useNewItem;
+                }
             }
             resolve();
         });
     }
     
-    savePreferences(selectAll, selectedMode) {
+    savePreferences(selectAll, selectedMode, useNewItem) {
         if (this.type !== 'runner' && this.type !== 'importer') return;
         
         const prefs = { selectAll };
         
         if (selectedMode && this.options.showModeSelector) {
             prefs.selectedMode = selectedMode;
+        }
+
+        if (useNewItem !== undefined) {
+            prefs.useNewItem = useNewItem;
         }
         
         if (this.type === 'runner') {
@@ -84,9 +94,29 @@ class BatchChoice {
                         </select>
                     </div>
                     ` : ''}
+                      ${this.options.allowNewItem ? `
+                    <div class="target-selector">
+                        <div class="radio-group">
+                            ${this.options.hasCurrent ? `
+                            <label class="radio-container">
+                                <input type="radio" name="target-type" value="current" ${!this.useNewItem ? 'checked' : ''}>
+                                <span>Use Current</span>
+                            </label>
+                            ` : ''}
+                            <label class="radio-container">
+                                <input type="radio" name="target-type" value="new" ${!this.options.hasCurrent || this.useNewItem ? 'checked' : ''}>
+                                <span>Create New</span>
+                            </label>
+                        </div>
+                        <div class="new-name-container simple-input-container" style="display: ${this.useNewItem ? 'block' : 'none'}">
+                            <input type="text" class="new-name-input simple-input" placeholder="Enter name...">
+                            <div class="name-validation-message"></div>
+                        </div>
+                    </div>
+                    ` : ''}
                 </div>
                 <div class="batch-items-list"></div>
-                <div class="modal-footer">
+                <div class="modal-footer model-content">
                     <button class="import-btn">${this.options.buttonText}</button>
                 </div>
             </div>
@@ -116,6 +146,34 @@ class BatchChoice {
                 this.closeDialog();
             }
         });
+
+        if (this.options.allowNewItem) {
+            const radioButtons = this.dialogContainer.querySelectorAll('input[name="target-type"]');
+            const newNameContainer = this.dialogContainer.querySelector('.new-name-container');
+            const newNameInput = this.dialogContainer.querySelector('.new-name-input');
+            const validationMessage = this.dialogContainer.querySelector('.name-validation-message');
+
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    this.useNewItem = e.target.value === 'new';
+                    newNameContainer.style.display = this.useNewItem ? 'block' : 'none';
+                    if (!this.useNewItem) {
+                        validationMessage.textContent = '';
+                        newNameInput.value = '';
+                    }
+                });
+            });
+
+            if (newNameInput) {
+                newNameInput.addEventListener('input', async () => {
+                    const name = newNameInput.value.trim();
+                    const isValid = await this.options.validateNewName(name);
+                    validationMessage.textContent = isValid ? '' : 'This name is not available';
+                    validationMessage.style.color = isValid ? 'green' : 'red';
+                    importBtn.disabled = this.useNewItem && !isValid;
+                });
+            }
+        }
     }
 
     async loadItems() {
@@ -185,15 +243,27 @@ class BatchChoice {
         const modeSelector = this.dialogContainer.querySelector('.import-mode-select');
         const selectedMode = modeSelector ? modeSelector.value : null;
         
+        let newName = null;
+        if (this.useNewItem) {
+            const newNameInput = this.dialogContainer.querySelector('.new-name-input');
+            if (newNameInput) {
+                newName = newNameInput.value.trim();
+                const isValid = await this.options.validateNewName(newName);
+                if (!isValid) {
+                    return;
+                }
+            }
+        }
+        
         // Save user preferences if type is specified
         // Only save preferences when user explicitly clicks the OK button
         // Preferences are not saved when dialog is closed via X button or clicking outside
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
         if (this.type === 'runner' || this.type === 'importer') {
-            this.savePreferences(selectAllCheckbox.checked, selectedMode);
+            this.savePreferences(selectAllCheckbox.checked, selectedMode, this.useNewItem);
         }
         
-        this.options.onSelect(selectedItems, selectedMode);
+        this.options.onSelect(selectedItems, selectedMode, this.useNewItem, newName);
         this.closeDialog();
     }
 

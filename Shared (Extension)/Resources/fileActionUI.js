@@ -13,9 +13,6 @@ class FileActionUI {
             "play": `<svg width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M4 2v12l8-6z"/>
             </svg>`,
-            "transcribe_chat": `<svg width="24" height="24" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M15 8l-3-3v2h-5v2h5v2l3-3zM8 2H2v12h6v-3h-2v1H4v-8h2v1h2V2z"/>
-            </svg>`,
             "rename": `<svg width="24" height="24"  viewBox="0 0 24 24">
                 <path fill="currentColor" d="M13.4 1.4l1.2 1.2c.8.8.8 2 0 2.8L5.2 14.8 0 16l1.2-5.2L10.6 1.4c.8-.8 2-.8 2.8 0z"/>
             </svg>`,

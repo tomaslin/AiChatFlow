@@ -258,5 +258,4 @@ class StorageManager {
         await this.setInStore('preferences', this.KEYS.CHAT_TRANSCRIBER_PREFS, prefs);
     }
 
-
 }

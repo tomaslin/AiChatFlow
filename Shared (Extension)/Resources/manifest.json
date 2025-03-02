@@ -22,7 +22,6 @@
     "content_scripts": [{
         "js": [
             "baseProvider.js",
-            "chatTranscriber.js",
             "claude.js",
             "grok.js",
             "gemini.js",
@@ -30,15 +29,16 @@
             "fileAction.js",
             "fileActionUI.js",
             "fileManager.js",
+            "chatTranscriber.js",
             "editorUI.js",
-            "content.js",
             "batchChoice.js",
             "promptPlayer.js",
             "markDownConverter.js",
             "zipManager.js",
             "simpleChoice.js",
             "copilot.js",
-            "deepseek.js"
+            "deepseek.js",
+            "content.js"
         ],
         "css": [ "content.css", "dialogs.css"],
         "matches": [

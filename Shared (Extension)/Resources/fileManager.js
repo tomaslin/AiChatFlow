@@ -167,11 +167,6 @@ class FileManager {
         return success;
     }
 
-    transcribeChat() {
-        const chatTranscriber = new ChatTranscriber();
-        chatTranscriber.createDialogWithFileOptions(this);
-    }
-
     async setActiveFile(name) {
         this.fileActions.setActiveFile(name);
         const content = this.fileActions.getFileContent(name);

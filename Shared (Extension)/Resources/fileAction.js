@@ -192,5 +192,3 @@ class FileActions {
         this.saveToStorage();
     }
 }
-
-window.FileActions = FileActions;

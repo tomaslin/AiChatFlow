@@ -1,15 +1,22 @@
 class ChatTranscriber {
-    constructor() {
-        this.separator = 'NEW_PROMPT';
+    constructor(options = {}) {
+        this.separator = 'NEXT_PROMPT';
         StorageManager.getBatchSeparator().then(separator => {
             this.separator = separator;
         });
+        this.onAddFile = options.onAddFile || ((name, content) => {});
         
         this.batchChoice = new BatchChoice({
             type: 'importer',
             title: 'Transcribe From Chat',
             buttonText: 'Import Selected',
             showModeSelector: true,
+            allowNewItem: true,
+            validateNewName: async (name) => {
+                if (!name || !name.trim()) return false;
+                const fileIndex = await StorageManager.loadFileIndex();
+                return !fileIndex.includes(name);
+            },
             modes: [
                 { value: 'responses', label: 'Responses only', default: true },
                 { value: 'prompts', label: 'Prompts only' },
@@ -22,38 +29,38 @@ class ChatTranscriber {
                     description: msg.answer
                 }));
             },
-            onSelect: (selectedItems, mode) => {
+            onSelect: async (selectedItems, mode, useNewItem, newName) => {
                 let selectedMessages = '';
+                const separator = this.separator || 'NEXT_PROMPT';
                 
                 if (mode === 'prompts') {
-                    // Prompts only mode - format for batch runner
                     selectedMessages = selectedItems
                         .map((item, index) => {
-                            return `${this.separator}\n
-${item.title}`;
+                            return `${separator}\n\n${item.title}`;
                         })
                         .join('\n\n');
                 } else if (mode === 'both') {
-                    // Prompts and responses mode
                     selectedMessages = selectedItems
                         .map(item => {
-                            return `${this.separator}\n
-${item.title}\n\nRESPONSE\n\n${item.description}`;
+                            return `${separator}\n\n${item.title}\n\nRESPONSE\n\n${item.description}`;
                         })
                         .join('\n\n');
                 } else {
-                    // Default: Responses only (current implementation)
                     selectedMessages = selectedItems
                         .map(item => `${item.description}\n\n`)
                         .join('');
                 }
                 if (selectedMessages) {
-                    const editor = document.querySelector('.editor-content textarea');
-                    if (editor) {
-                        const currentContent = editor.value;
-                        const cursorPosition = editor.selectionStart;
-                        editor.value = currentContent.slice(0, cursorPosition) + selectedMessages + currentContent.slice(cursorPosition);
-                        editor.dispatchEvent(new Event('input'));
+                    if (useNewItem && newName) {
+                        this.onAddFile(newName, selectedMessages);
+                    } else {
+                        const editor = document.querySelector('.editor-content textarea');
+                        if (editor) {
+                            const currentContent = editor.value;
+                            const cursorPosition = editor.selectionStart;
+                            editor.value = currentContent.slice(0, cursorPosition) + selectedMessages + currentContent.slice(cursorPosition);
+                            editor.dispatchEvent(new Event('input'));
+                        }
                     }
                 }
             }
