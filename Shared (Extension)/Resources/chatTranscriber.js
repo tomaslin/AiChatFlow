@@ -1,4 +1,4 @@
-class ChatImporter {
+class ChatTranscriber {
     constructor() {
         this.separator = 'NEW_PROMPT';
         StorageManager.getBatchSeparator().then(separator => {

@@ -476,16 +476,10 @@
     color: inherit;
 }
 
-#ai-chat-flow-editor.minimized .ai-chat-flow-minimize-btn svg {
-    width: 24px;
-    height: 24px;
-    color: #fff;
-    transform: rotate(45deg);
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
+.file-action-btn[data-tooltip],
+.toolbar-btn[data-tooltip] {
+    /* Unified tooltip styles */
+    /* Using native title attribute for tooltips */
 }
 
 .ai-chat-flow-minimize-btn svg path {

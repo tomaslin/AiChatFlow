@@ -1,4 +1,4 @@
-class BatchRunner {
+class PromptPlayer {
     constructor() {
         this.separator = 'NEXT_PROMPT';
         StorageManager.getBatchSeparator().then(separator => {
@@ -9,7 +9,7 @@ class BatchRunner {
             title: 'Run prompts',
             buttonText: 'Run Selected',
             loadItems: async () => {
-                return this.parseBatchContent(this.content);
+                return this.parseContent(this.content);
             },
             onSelect: (selectedItems) => {
                 if (selectedItems.length > 0 && aiProvider) {
@@ -25,7 +25,7 @@ class BatchRunner {
         this.batchChoice.createDialog();
     }
 
-    parseBatchContent(content) {
+    parseContent(content) {
         if (!content) return [];
         
         const separator = this.separator;

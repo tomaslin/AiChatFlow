@@ -10,10 +10,10 @@ class FileActionUI {
             "chat": `<svg width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M10 2v3h6v6h-6v3L0 8z"/>
             </svg>`,
-            "batch": `<svg width="24" height="24" viewBox="0 0 24 24">
+            "play": `<svg width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M4 2v12l8-6z"/>
             </svg>`,
-            "import_chat": `<svg width="24" height="24" viewBox="0 0 24 24">
+            "transcribe_chat": `<svg width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M15 8l-3-3v2h-5v2h5v2l3-3zM8 2H2v12h6v-3h-2v1H4v-8h2v1h2V2z"/>
             </svg>`,
             "rename": `<svg width="24" height="24"  viewBox="0 0 24 24">
@@ -32,9 +32,79 @@ class FileActionUI {
     createActionButton(action, title) {
         const button = document.createElement('button');
         button.className = `file-action-btn ${action}-btn`;
-        button.dataset.tooltip = title;
+        button.title = title;
         button.innerHTML = FileActionUI.icons[action];
         return button;
+    }
+
+    // Handle file download
+    handleDownload(fileName) {
+        const content = this.fileManager.fileActions.files.get(fileName);
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 100);
+    }
+
+    // Handle file deletion
+    handleDelete(fileName) {
+        if (confirm(`Are you sure you want to delete ${fileName}?`)) {
+            const wasActive = this.fileManager.fileActions.activeFile === fileName;
+            this.fileManager.fileActions.deleteFile(fileName);
+            
+            const tabToRemove = Array.from(document.querySelectorAll('.tab')).find(tab => 
+                tab.querySelector('.tab-name').textContent === fileName
+            );
+            if (tabToRemove) tabToRemove.remove();
+            
+            if (wasActive) {
+                const remainingFiles = Array.from(this.fileManager.fileActions.files.keys());
+                if (remainingFiles.length > 0) {
+                    this.fileManager.setActiveFile(remainingFiles[0]);
+                } else {
+                    this.fileManager.setActiveFile(null);
+                }
+            }
+            
+            this.fileManager.updateFileList();
+        }
+    }
+
+    // Handle file rename
+    handleRename(fileName) {
+        const simpleChoice = new SimpleChoice({
+            title: 'Rename File',
+            buttonText: 'Rename',
+            placeholder: 'Enter new name',
+            initialValue: fileName,
+            validator: (name) => {
+                if (!name.trim()) return 'File name cannot be empty.';
+                if (name === fileName) return 'New name must be different from the current name.';
+                if (this.fileManager.fileActions.files.has(name)) return 'A file with this name already exists.';
+                return true;
+            },
+            onConfirm: (newName) => {
+                const success = this.fileManager.renameFile(fileName, newName);
+                if (success) {
+                    this.fileManager.updateFileList();
+                } else {
+                    if (this.fileManager.fileActions.files.has(newName)) {
+                        alert('A file with this name already exists. Please choose a different name.');
+                    } else {
+                        alert('Failed to rename file. Please try again.');
+                    }
+                }
+            }
+        });
+        simpleChoice.createDialog();
     }
 
     // Create all file action buttons for a file item in the file list
@@ -50,96 +120,40 @@ class FileActionUI {
             aiProvider.sendFile(content, fileName);
         });
         
-        // Batch button
-        const batchBtn = this.createActionButton('batch', 'Run batch prompts');
-        batchBtn.addEventListener('click', (e) => {
+        // Play button
+        const playBtn = this.createActionButton('play', 'Play prompts');
+        playBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             const content = this.fileManager.fileActions.files.get(fileName);
-            const batchRunner = new BatchRunner();
-            batchRunner.createDialog(fileName, content);
+            const promptPlayer = new PromptPlayer();
+            promptPlayer.createDialog(fileName, content);
         });
         
         // Download button
         const downloadBtn = this.createActionButton('download', 'Download');
         downloadBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const content = this.fileManager.fileActions.files.get(fileName);
-            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
+            this.handleDownload(fileName);
         });
         
         // Rename button
         const renameBtn = this.createActionButton('rename', 'Rename');
         renameBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const simpleChoice = new SimpleChoice({
-                title: 'Rename File',
-                buttonText: 'Rename',
-                placeholder: 'Enter new name',
-                initialValue: fileName,
-                validator: (name) => {
-                    if (!name.trim()) return 'File name cannot be empty.';
-                    if (name === fileName) return 'New name must be different from the current name.';
-                    if (this.fileManager.fileActions.files.has(name)) return 'A file with this name already exists.';
-                    return true;
-                },
-                onConfirm: (newName) => {
-                    const success = this.fileManager.renameFile(fileName, newName);
-                    if (success) {
-                        this.fileManager.updateFileList();
-                    } else {
-                        // Check if failure is due to file already existing
-                        if (this.fileManager.fileActions.files.has(newName)) {
-                            alert('A file with this name already exists. Please choose a different name.');
-                        } else {
-                            alert('Failed to rename file. Please try again.');
-                        }
-                    }
-                }
-            });
-            simpleChoice.createDialog();
+            this.handleRename(fileName);
         });
         
         // Delete button
         const deleteBtn = this.createActionButton('delete', 'Delete');
         deleteBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (confirm(`Are you sure you want to delete ${fileName}?`)) {
-                const wasActive = this.fileManager.fileActions.activeFile === fileName;
-                this.fileManager.fileActions.deleteFile(fileName);
-                
-                const tabToRemove = Array.from(document.querySelectorAll('.tab')).find(tab => 
-                    tab.querySelector('.tab-name').textContent === fileName
-                );
-                if (tabToRemove) tabToRemove.remove();
-                
-                if (wasActive) {
-                    const remainingFiles = Array.from(this.fileManager.fileActions.files.keys());
-                    if (remainingFiles.length > 0) {
-                        this.fileManager.setActiveFile(remainingFiles[0]);
-                    } else {
-                        this.fileManager.setActiveFile(null);
-                    }
-                }
-                
-                this.fileManager.updateFileList();
-            }
+            this.handleDelete(fileName);
         });
         
         // Add all buttons to the container
         actionsContainer.appendChild(chatBtn);
-        actionsContainer.appendChild(batchBtn);
         actionsContainer.appendChild(downloadBtn);
+        actionsContainer.appendChild(playBtn);
         actionsContainer.appendChild(renameBtn);
         actionsContainer.appendChild(deleteBtn);
         
@@ -158,101 +172,30 @@ class FileActionUI {
             aiProvider.sendFile(content, fileName);
         });
         
-        // Batch button
-        const batchBtn = this.createActionButton('batch', 'Run batch prompts');
-        batchBtn.addEventListener('click', (e) => {
+        // Play button
+        const playBtn = this.createActionButton('play', 'Play prompts');
+        playBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             const content = this.fileManager.fileActions.files.get(fileName);
-            const batchRunner = new BatchRunner();
-            batchRunner.createDialog(fileName, content);
-        });
-        
-        // Import chat button
-        const importChatBtn = this.createActionButton('import_chat', 'Import from Chat');
-        importChatBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const chatImporter = new ChatImporter();
-            chatImporter.createDialog();
+            const promptPlayer = new PromptPlayer();
+            promptPlayer.createDialog(fileName, content);
         });
         
         // Rename button
         const renameBtn = this.createActionButton('rename', 'Rename');
-        renameBtn.addEventListener('click', () => {
-            const simpleChoice = new SimpleChoice({
-                title: 'Rename File',
-                buttonText: 'Rename',
-                placeholder: 'Enter new name',
-                initialValue: fileName,
-                validator: (name) => {
-                    if (!name.trim()) return 'File name cannot be empty.';
-                    if (name === fileName) return 'New name must be different from the current name.';
-                    if (this.fileManager.fileActions.files.has(name)) return 'A file with this name already exists.';
-                    return true;
-                },
-                onConfirm: (newName) => {
-                    const success = this.fileManager.renameFile(fileName, newName);
-                    if (success) {
-                        this.fileManager.updateFileList();
-                    } else {
-                        // Check if failure is due to file already existing
-                        if (this.fileManager.fileActions.files.has(newName)) {
-                            alert('A file with this name already exists. Please choose a different name.');
-                        } else {
-                            alert('Failed to rename file. Please try again.');
-                        }
-                    }
-                }
-            });
-            simpleChoice.createDialog();
-        });
+        renameBtn.addEventListener('click', () => this.handleRename(fileName));
         
         // Download button
         const downloadBtn = this.createActionButton('download', 'Download');
-        downloadBtn.addEventListener('click', () => {
-            const content = this.fileManager.fileActions.files.get(fileName);
-            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
-        });
+        downloadBtn.addEventListener('click', () => this.handleDownload(fileName));
         
         // Delete button
         const deleteBtn = this.createActionButton('delete', 'Delete');
-        deleteBtn.addEventListener('click', () => {
-            if (confirm(`Are you sure you want to delete ${fileName}?`)) {
-                const wasActive = this.fileManager.fileActions.activeFile === fileName;
-                this.fileManager.fileActions.deleteFile(fileName);
-                
-                const tabToRemove = Array.from(document.querySelectorAll('.tab')).find(tab => 
-                    tab.querySelector('.tab-name').textContent === fileName
-                );
-                if (tabToRemove) tabToRemove.remove();
-                
-                if (wasActive) {
-                    const remainingFiles = Array.from(this.fileManager.fileActions.files.keys());
-                    if (remainingFiles.length > 0) {
-                        this.fileManager.setActiveFile(remainingFiles[0]);
-                    } else {
-                        this.fileManager.setActiveFile(null);
-                    }
-                }
-                
-                this.fileManager.updateFileList();
-            }
-        });
+        deleteBtn.addEventListener('click', () => this.handleDelete(fileName));
         
         // Add all buttons to the container
         actionsContainer.appendChild(chatBtn);
-        actionsContainer.appendChild(batchBtn);
-        actionsContainer.appendChild(importChatBtn);
+        actionsContainer.appendChild(playBtn);
         actionsContainer.appendChild(renameBtn);
         actionsContainer.appendChild(downloadBtn);
         actionsContainer.appendChild(deleteBtn);

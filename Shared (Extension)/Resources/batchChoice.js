@@ -23,7 +23,7 @@ class BatchChoice {
     }
 
     loadPreferences() {
-        const storageMethod = this.type === 'runner' ? StorageManager.getBatchRunnerPrefs : StorageManager.getChatImporterPrefs;
+        const storageMethod = this.type === 'runner' ? StorageManager.getpromptPlayerPrefs : StorageManager.getChatTranscriberPrefs;
         return new Promise(async resolve => {
             const prefs = await storageMethod.call(StorageManager);
             if (prefs) {
@@ -51,9 +51,9 @@ class BatchChoice {
         }
         
         if (this.type === 'runner') {
-            StorageManager.setBatchRunnerPrefs(prefs);
+            StorageManager.setpromptPlayerPrefs(prefs);
         } else {
-            StorageManager.setChatImporterPrefs(prefs);
+            StorageManager.setChatTranscriberPrefs(prefs);
         }
     }
     

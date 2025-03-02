@@ -22,7 +22,7 @@
     "content_scripts": [{
         "js": [
             "baseProvider.js",
-            "chatImporter.js",
+            "chatTranscriber.js",
             "claude.js",
             "grok.js",
             "gemini.js",
@@ -33,7 +33,7 @@
             "editorUI.js",
             "content.js",
             "batchChoice.js",
-            "batchRunner.js",
+            "promptPlayer.js",
             "markDownConverter.js",
             "zipManager.js",
             "simpleChoice.js",

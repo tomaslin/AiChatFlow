@@ -8,8 +8,8 @@ class StorageManager {
         EDITOR_MINIMIZED: 'editorMinimized',
         SHOW_MORE_FILES: 'showMoreFiles',
         BATCH_SEPARATOR: 'batchSeparator',
-        BATCH_RUNNER_PREFS: 'batchRunnerPrefs',
-        CHAT_IMPORTER_PREFS: 'chatImporterPrefs',
+        PROMPT_PLAYER_PREFS: 'promptPlayerPrefs',
+        CHAT_TRANSCRIBER_PREFS: 'chatTranscriberPrefs',
         getMetaKey: (name) => `ai-chat-flow-meta-${name}`,
         getChunkKey: (name, index) => `ai-chat-flow-chunk-${name}-${index}`
     };
@@ -240,21 +240,21 @@ class StorageManager {
         await this.setInStore('preferences', this.KEYS.BATCH_SEPARATOR, separator);
     }
 
-    static async getBatchRunnerPrefs() {
-        const result = await this.getFromStore('preferences', this.KEYS.BATCH_RUNNER_PREFS);
+    static async getpromptPlayerPrefs() {
+        const result = await this.getFromStore('preferences', this.KEYS.PROMPT_PLAYER_PREFS);
         return result || {};
     }
 
-    static async setBatchRunnerPrefs(prefs) {
-        await this.setInStore('preferences', this.KEYS.BATCH_RUNNER_PREFS, prefs);
+    static async setpromptPlayerPrefs(prefs) {
+        await this.setInStore('preferences', this.KEYS.PROMPT_PLAYER_PREFS, prefs);
     }
 
-    static async getChatImporterPrefs() {
+    static async getChatTranscriberPrefs() {
         const result = await this.getFromStore('preferences', this.KEYS.CHAT_TRANSCRIBER_PREFS);
         return result || {};
     }
 
-    static async setChatImporterPrefs(prefs) {
+    static async setChatTranscriberPrefs(prefs) {
         await this.setInStore('preferences', this.KEYS.CHAT_TRANSCRIBER_PREFS, prefs);
     }
 
