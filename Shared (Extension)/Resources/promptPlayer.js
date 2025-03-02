@@ -8,13 +8,17 @@ class PromptPlayer {
             type: 'player',
             title: 'Run prompts',
             buttonText: 'Run Selected',
+            allowNewItem: true,
+            validateNewName: async (name) => {
+                return name && name.trim().length > 0;
+            },
             loadItems: async () => {
                 return this.parseContent(this.content);
             },
-            onSelect: (selectedItems) => {
+            onSelect: (selectedItems, mode, useNewItem, newName) => {
                 if (selectedItems.length > 0 && aiProvider) {
                     const messages = selectedItems.map(item => item.description);
-                    aiProvider.sendBatch(messages);
+                    aiProvider.sendBatch(messages, useNewItem, newName);
                 }
             }
         });

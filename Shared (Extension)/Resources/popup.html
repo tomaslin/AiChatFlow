@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="popup.css">
-    <script src="storageManager.js"></script>
-    <script src="syncManager.js"></script>
     <script src="popup.js"></script>
     <style>
         body {
@@ -15,21 +13,9 @@
 <body>
     <div class="settings-container">
         <div class="setting-item">
-            <label for="batch-separator">Batch Separator:</label>
+            <label for="batch-separator">Play Separator:</label>
             <input type="text" id="batch-separator" placeholder="NEXT_PROMPT">
-            <p class="setting-description">This is what run as batch uses to know when a new prompt starts in a file.</p>
-        </div>
-        
-        <div class="setting-item">
-            <label>Workspaces:</label>
-            <div class="workspace-controls">
-                <select id="workspace-selector" class="workspace-selector" title="Select a workspace to manage your files"></select>
-                <button id="new-workspace" class="secondary-button" title="Create a new workspace to organize a different set of files">New</button>
-                <button id="delete-workspace" class="secondary-button" title="Delete the selected workspace and all its files">Delete</button>
-                <button id="purge-workspace" class="secondary-button" title="Clear all files in the current workspace">Purge All</button>
-            </div>
-            <p class="setting-description">Workspaces help you organize different sets of files. Create separate workspaces for different projects or tasks.</p>
-            <p class="setting-description">Use the New button to create a workspace, and Delete to remove the selected workspace and its files.</p>
+            <p class="setting-description">This is what run prompts uses to separate prompts in a file.</p>
         </div>
         
         <div class="button-container">
