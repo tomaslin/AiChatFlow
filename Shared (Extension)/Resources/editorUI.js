@@ -9,12 +9,12 @@ async function getMinimizedState() {
     return StorageManager.getEditorMinimizedState();
 }
 
-async function getShowMoreFilesState() {
-    return StorageManager.getShowMoreFilesState();
+async function getShowFilesState() {
+    return StorageManager.getShowFilesState();
 }
 
-async function setShowMoreFilesState(showMore) {
-    await StorageManager.setShowMoreFilesState(showMore);
+async function setShowFilesState(show) {
+    await StorageManager.setShowFilesState(show);
 }
 
 async function setMinimizedState(minimized) {
@@ -75,19 +75,16 @@ async function createEditorUI() {
     toggleFilesBtn.title = 'Show list of files';
     const fileListContainer = editorContainer.querySelector('.file-list-container');
 
-    const updateFileListHeight = async () => {
-        const showMore = await getShowMoreFilesState();
-        fileListContainer.style.display = showMore ? '' : 'none';   
-        if(isIPhone){
-            fileListContainer.style.height = '50vh';
-        }
-        toggleFilesBtn.innerHTML = showMore ? icons.caret_up : icons.caret_down;
+    const updateFileListVisibility = async () => {
+        const showFiles = await getShowFilesState();
+        editorContainer.classList.toggle('showFiles', showFiles);
+        toggleFilesBtn.innerHTML = showFiles ? icons.caret_up : icons.caret_down;
     };
 
     toggleFilesBtn.addEventListener('click', async () => {
-        const currentState = await getShowMoreFilesState();
-        await setShowMoreFilesState(!currentState);
-        await updateFileListHeight();
+        const currentState = await getShowFilesState();
+        await setShowFilesState(!currentState);
+        await updateFileListVisibility();
     });
 
     // Insert toggle button after download button
@@ -97,7 +94,7 @@ async function createEditorUI() {
     }
 
     // Initialize state
-    updateFileListHeight();
+    updateFileListVisibility();
     const transcribeChatBtn = document.getElementById('transcribe-chat-btn');
     const newFileBtn = document.getElementById('new-file-btn');
     const importFileBtn = document.getElementById('import-file-btn');

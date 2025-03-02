@@ -6,7 +6,7 @@ class StorageManager {
         TABS: 'ai-chat-flow-tabs',
         ACTIVE_FILE: 'ai-chat-flow-active-file',
         EDITOR_MINIMIZED: 'editorMinimized',
-        SHOW_MORE_FILES: 'showMoreFiles',
+        SHOW_FILES: 'showFiles',
         BATCH_SEPARATOR: 'batchSeparator',
         PROMPT_PLAYER_PREFS: 'promptPlayerPrefs',
         CHAT_TRANSCRIBER_PREFS: 'chatTranscriberPrefs',
@@ -222,13 +222,13 @@ class StorageManager {
         await this.setInStore('preferences', this.KEYS.EDITOR_MINIMIZED, minimized);
     }
 
-    static async getShowMoreFilesState() {
-        const result = await this.getFromStore('preferences', this.KEYS.SHOW_MORE_FILES);
+    static async getShowFilesState() {
+        const result = await this.getFromStore('preferences', this.KEYS.SHOW_FILES);
         return result || false;
     }
 
-    static async setShowMoreFilesState(showMore) {
-        await this.setInStore('preferences', this.KEYS.SHOW_MORE_FILES, showMore);
+    static async setShowFilesState(show) {
+        await this.setInStore('preferences', this.KEYS.SHOW_FILES, show);
     }
 
     static async getBatchSeparator() {

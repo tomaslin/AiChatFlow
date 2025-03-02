@@ -104,8 +104,7 @@ class FileManager {
         
         tab.innerHTML = `
             <span class="tab-name">${name}</span>
-            ${!isIPhone ? '<span class="close-btn">×</span>' : ''}
-        `;
+            <span class="close-btn">×</span>`;
         
         tabList.appendChild(tab);
         
@@ -236,31 +235,12 @@ class FileManager {
             textStats.className = 'text-stats';
             textStats.innerHTML = `
                 <span class="word-count">Words: 0</span>
-                ${isIPhone ? '<button class="toolbar-button close-btn"><svg class="close-icon" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg></button>' : ''}
             `;
             
             toolbar.appendChild(fileActions);
             toolbar.appendChild(textStats);
             editorContent.appendChild(toolbar);
             editorContent.appendChild(textarea);
-            
-            if (isIPhone) {
-                const closeBtn = textStats.querySelector('.close-btn');
-                closeBtn.addEventListener('click', () => {
-                    const activeTab = document.querySelector('.tab.active');
-                    if (activeTab) {
-                        activeTab.remove();
-                        const remainingTabs = Array.from(document.querySelectorAll('.tab'));
-                        if (remainingTabs.length > 0) {
-                            const nextTab = remainingTabs[0];
-                            const nextFileName = nextTab.querySelector('.tab-name').textContent;
-                            this.setActiveFile(nextFileName);
-                        } else {
-                            this.setActiveFile(null);
-                        }
-                    }
-                });
-            }
             
             const updateTextStats = () => {
                 const text = textarea.value;
