@@ -1,0 +1,493 @@
+/* Base editor styles */
+#ai-chat-flow-editor {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100vh;
+    background: #2e2e2e;
+    border-left: 1px solid #444;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.5);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    padding: 0;
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+/* Tooltip styles */
+[title] {
+    position: relative;
+}
+
+[title]:hover::before {
+    content: '';
+    position: fixed;
+    left: attr(data-tooltip-x);
+    top: attr(data-tooltip-y);
+    transform: translate(-50%, 8px);
+    border: 4px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.8);
+    z-index: 100000;
+    pointer-events: none;
+}
+
+[title]:hover::after {
+    content: attr(title);
+    position: fixed;
+    left: attr(data-tooltip-x);
+    top: attr(data-tooltip-y);
+    transform: translate(-50%, calc(100% + 8px));
+    padding: 6px 10px;
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 100000;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.ai-chat-flow-minimize-icon {
+    display: none;
+    position: fixed;
+    top: 120px;
+    right: 30px;
+    width: 48px;
+    height: 48px;
+    background: #2e2e2e;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 10000;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ai-chat-flow-minimize-icon.visible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-chat-flow-minimize-icon:hover {
+    background: #3a3a3a;
+    transform: scale(1.05);
+}
+
+.ai-chat-flow-minimize-icon svg {
+    width: 24px;
+    height: 24px;
+    color: #fff;
+}
+
+#ai-chat-flow-editor.minimized {
+    width: 48px !important;
+    height: 48px !important;
+    top: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+}
+
+#ai-chat-flow-editor.minimized > * {
+    display: none;
+}
+
+#ai-chat-flow-editor.minimized .ai-chat-flow-minimize-btn {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    background: #2e2e2e;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    align-items: center;
+    justify-content: center;
+}
+
+#ai-chat-flow-editor.minimized .ai-chat-flow-minimize-btn svg {
+    width: 24px;
+    height: 24px;
+    color: #fff;
+    transform: rotate(45deg);
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+#ai-chat-flow-editor.minimized .ai-chat-flow-minimize-btn:hover {
+    background: #3a3a3a;
+}
+
+#ai-chat-flow-editor.minimized .ai-chat-flow-minimize-btn:hover svg {
+    color: #fff;
+}
+
+
+
+/* Header and file list styles */
+.editor-header {
+    display: flex;
+    flex-direction: column;
+    background: #3a3a3a;
+    position: relative;
+}
+
+.editor-top-bar {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+    background: #3a3a3a;
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 0;
+}
+
+.file-count-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #aaa;
+    font-size: 14px;
+    margin-right: auto;
+}
+
+/* File list scrollbar styles */
+.file-list-container {
+    scrollbar-width: thin;
+    scrollbar-color: #666 #2e2e2e;
+    min-height: 30vh;
+    max-height: 30vh;
+    transition: max-height 0.3s ease;
+    position: relative;
+    overflow-y: scroll;
+    padding-bottom: 5px;
+}
+
+.file-list-container::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2e2e2e;
+}
+
+.file-list-container::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 4px;
+}
+
+.file-list-container::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+}
+
+.file-list-container::-webkit-scrollbar-track {
+    background-color: #2e2e2e;
+}
+
+.file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px;
+    background: #333333;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 2px;
+    border: 1px solid #444;
+    transition: all 0.2s ease;
+}
+
+.file-item.active {
+    background: #4a4a4a;
+    border-color: #666;
+    box-shadow: 0 0 0 1px #666;
+}
+
+.file-item:hover:not(.active) {
+    background: #404040;
+    border-color: #555;
+}
+
+.file-item:active:not(.active) {
+    background: #454545;
+    transform: translateY(1px);
+}
+
+.file-name {
+    flex: 1;
+    color: #fff;
+    margin-right: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+}
+
+.file-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* Common button styles */
+.file-action-btn,
+.toolbar-btn,
+.copy-btn {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.file-action-btn:hover,
+.toolbar-btn:hover,
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.toolbar-btn svg,
+.copy-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Toolbar styles */
+.toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 8px;
+    justify-content: space-between;
+    border-bottom: 1px solid #444;
+    background: #3a3a3a;
+}
+
+.toggle-files-btn {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.toggle-files-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.toggle-files-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.text-stats {
+    display: flex;
+    gap: 12px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.text-stats span {
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+
+.tab-list {
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px 0;
+    border-bottom: 1px solid #555;
+    overflow-x: hidden;
+    background: #2e2e2e;
+}
+
+.tab {
+    position: relative;
+    padding: 8px 16px;
+    background: #1e1e1e;
+    border: 1px solid #555;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #aaa;
+    font-size: 14px;
+    margin-right: 0;
+    transition: all 0.2s ease;
+    min-width: 60px;
+    max-width: 100px;
+    justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab .close-btn {
+    font-size: 20px;
+    padding: 0 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    transition: background-color 0.2s;
+}
+
+.tab .close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.tab-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab:hover {
+    background: #2e2e2e;
+}
+
+.tab.active {
+    background: #5a5a5a;
+    color: #fff;
+    border-bottom-color: #5a5a5a;
+    z-index: 1;
+}
+
+.tab:not(.active) {
+    background: #1e1e1e;
+}
+
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.editor-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background: #1e1e1e;
+    overflow: hidden;
+    position: relative;
+}
+
+.tab.active {
+    background: #5a5a5a;
+}
+
+.editor-content textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 15px;
+    resize: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #1e1e1e;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 12px;
+    min-height: 200px;
+    height: calc(100vh - 120px);
+}
+
+/* Welcome message */
+.welcome-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    padding: 20px;
+}
+
+.welcome-message h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.welcome-message p {
+    margin-bottom: 20px;
+    color: #aaa;
+    font-size: 16px;
+}
+
+/* Minimize button */
+.ai-chat-flow-minimize-btn {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.ai-chat-flow-minimize-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.ai-chat-flow-minimize-btn svg {
+    width: 24px;
+    height: 24px;
+    color: inherit;
+}
+
+#ai-chat-flow-editor.minimized .ai-chat-flow-minimize-btn svg {
+    width: 24px;
+    height: 24px;
+    color: #fff;
+    transform: rotate(45deg);
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.ai-chat-flow-minimize-btn svg path {
+    fill: currentColor;
+}

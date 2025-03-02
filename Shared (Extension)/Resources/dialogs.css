@@ -1,0 +1,273 @@
+/* Modal Dialog Styles */
+/* Common modal dialog styles */
+#simple-choice,
+#batch-choice {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* Modal dialog base styles */
+#simple-choice .modal-dialog,
+#batch-choice .modal-dialog {
+    background: #1e1e1e;
+    border-radius: 12px;
+    width: 90%;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    border: 1px solid #333;
+    position: relative;
+    z-index: 10002;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Simple choice specific styles */
+#simple-choice {
+    align-items: flex-start;
+    padding-top: 30vh;
+}
+
+#simple-choice .modal-dialog {
+    padding: 24px;
+    max-width: 400px;
+}
+
+/* Batch choice specific styles */
+#batch-choice .modal-dialog {
+    padding: 28px;
+    max-width: 600px;
+    max-height: 90vh;
+}
+
+#simple-choice .modal-header,
+#batch-choice .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+}
+
+#simple-choice .modal-title,
+#batch-choice .modal-title {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+}
+
+#simple-choice .modal-close-btn,
+#batch-choice .modal-close-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+#simple-choice .modal-close-btn:hover,
+#batch-choice .modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+#batch-choice .chat-importer-options {
+    margin-bottom: 16px;
+}
+
+#batch-choice .select-all-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #ddd;
+}
+
+#batch-choice .mode-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#batch-choice .import-mode-select {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #333;
+    background-color: #2a2a2a;
+    color: #ddd;
+    font-size: 14px;
+}
+
+#batch-choice .select-all-checkbox {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+#batch-choice .batch-choice-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#batch-choice .batch-items-list {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(90vh - 240px);
+    margin: 0 -28px;
+    padding: 0 28px;
+    margin-bottom: 24px;
+}
+
+#batch-choice .batch-item {
+    margin-bottom: 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease;
+}
+
+#batch-choice .item-checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px 20px;
+    gap: 16px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#batch-choice .item-checkbox {
+    margin: 4px 0 0 0;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+#batch-choice .item-preview {
+    flex: 1;
+    min-width: 0;
+}
+
+#batch-choice .item-title {
+    color: #fff;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+#batch-choice .item-description {
+    color: #aaa;
+    font-size: 14px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+#batch-choice .modal-footer {
+    margin-top: 4px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#simple-choice .modal-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#batch-choice .import-btn {
+    background: #878f97;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#simple-choice .import-btn {
+    background: #0066cc;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#batch-choice .import-btn:hover {
+    background: #0052a3;
+}
+
+#simple-choice .import-btn:hover {
+    background: #0052a3;
+}
+
+#batch-choice .import-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#simple-choice .import-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Simple Choice Input Styling */
+#simple-choice .modal-content {
+    margin-bottom: 0;
+}
+
+#simple-choice .simple-input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+#simple-choice .simple-input:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.25);
+}
+
+#simple-choice .simple-input::placeholder {
+    color: #888;
+}

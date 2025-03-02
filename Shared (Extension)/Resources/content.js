@@ -1,7 +1,92 @@
-browser.runtime.sendMessage({ greeting: "hello" }).then((response) => {
-    console.log("Received response: ", response);
-});
+// Make aiProvider globally accessible
+let aiProvider;
 
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log("Received request: ", request);
-});
+const isIPhone = /iPhone/i.test(navigator.userAgent);
+
+// Initialize Claude provider and apply margins
+function initializeProvider() {
+    const styleSheet = document.createElement('style');
+
+    if (window.location.hostname === 'claude.ai' && !aiProvider) {
+        aiProvider = new ClaudeProvider();
+    }
+
+    if (window.location.hostname === 'gemini.google.com' && !aiProvider) {
+        
+        styleSheet.textContent = `
+        .ai-chat-flow-minimize-icon {
+            top: 8px !important;
+            right: ${isIPhone ? '175px' : '135px'} !important;
+        }
+        `;
+
+        aiProvider = new GeminiProvider();
+    }
+
+    if (window.location.hostname === 'grok.com' && !aiProvider) {
+        
+        styleSheet.textContent = `
+        .ai-chat-flow-minimize-icon {
+            top: 8px !important;
+            right: ${isIPhone ? '175px' : '135px'} !important;
+        }
+        `;
+
+        aiProvider = new GrokProvider();
+    }
+
+    if (window.location.hostname === 'chat.deepseek.com' && !aiProvider) {
+        
+        styleSheet.textContent = `
+        .ai-chat-flow-minimize-icon {
+            top: 8px !important;
+            right: ${isIPhone ? '175px' : '135px'} !important;
+        }
+        `;
+
+        aiProvider = new DeepseekProvider();
+    }
+
+    if (window.location.hostname === 'copilot.microsoft.com' && !aiProvider) {
+        
+        styleSheet.textContent = `
+        .ai-chat-flow-minimize-icon {
+            top: 8px !important;
+            right: ${isIPhone ? '175px' : '135px'} !important;
+        }
+        `;
+
+        aiProvider = new CopilotProvider();
+    }
+    
+    if(isIPhone){
+        styleSheet.textContent += `
+        #ai-chat-flow-editor {
+            width: 100%;
+        }
+        `;
+    }
+
+
+    document.head.appendChild(styleSheet);
+
+    if(!isIPhone){
+        getMinimizedState().then(isMinimized => {
+            aiProvider.slideContent(isMinimized);
+        });
+    }
+}
+
+// Initialize the editor
+function initializeEditor() {
+    const initUI = () => createEditorUI().then(initializeProvider);
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initUI);
+    } else {
+        initUI();
+    }
+}
+
+// Initialize the editor when the page loads
+initializeEditor();

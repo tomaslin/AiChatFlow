@@ -1,15 +1,295 @@
 :root {
     color-scheme: light dark;
+    --primary-color: #0066cc;
+    --primary-color-dark: #0055aa;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --border-radius: 8px;
 }
 
 body {
-    width: 100px;
-    padding: 10px;
+    padding: var(--spacing-md);
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    margin: 0;
+    max-width: 100%;
+    min-width: 250px;
+}
 
-    font-family: system-ui;
-    text-align: center;
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.setting-item label {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.workspace-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    margin-top: 4px;
+}
+
+.workspace-selector {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    background-color: white;
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    outline: none;
+}
+
+.workspace-selector:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+.workspace-selector:active {
+    background-color: #f8f8f8;
+}
+
+.secondary-button {
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    background-color: white;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+}
+
+.secondary-button:hover {
+    background-color: #f5f5f5;
 }
 
 @media (prefers-color-scheme: dark) {
-    /* Dark Mode styles go here. */
+    .workspace-selector {
+        background: #2c2c2e;
+        border-color: #3a3a3c;
+        color: #fff;
+    }
+
+    .secondary-button {
+        background: #2c2c2e;
+        border-color: #3a3a3c;
+        color: #fff;
+    }
+
+    .secondary-button:hover {
+        background: #3a3a3c;
+    }
+}
+
+.setting-item input {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 16px; /* Larger for better touch targets on iOS */
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none; /* Remove default iOS styling */
+    appearance: none;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--spacing-sm);
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    -webkit-appearance: none; /* Remove default iOS styling */
+    appearance: none;
+    min-height: 44px; /* iOS minimum touch target */
+}
+
+.primary-button:hover {
+    background-color: var(--primary-color-dark);
+}
+
+.primary-button:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+
+/* iOS specific enhancements */
+@supports (-webkit-touch-callout: none) {
+    .workspace-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    margin-top: 4px;
+}
+
+.workspace-selector {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    background-color: white;
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.secondary-button {
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    background-color: white;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+}
+
+.secondary-button:hover {
+    background-color: #f5f5f5;
+}
+
+@media (prefers-color-scheme: dark) {
+    .workspace-selector {
+        background: #2c2c2e;
+        border-color: #3a3a3c;
+        color: #fff;
+    }
+
+    .secondary-button {
+        background: #2c2c2e;
+        border-color: #3a3a3c;
+        color: #fff;
+    }
+
+    .secondary-button:hover {
+        background: #3a3a3c;
+    }
+}
+
+.setting-item input {
+        font-size: 16px; /* Prevents zoom on focus in iOS */
+    }
+    
+    .primary-button {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+.setting-description {
+    font-size: 13px;
+    color: #666;
+    margin: 4px 0 0 0;
+    line-height: 1.4;
+}
+
+@media (prefers-color-scheme: dark) {
+    .setting-description {
+        color: #aaa;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #3a8ee6;
+        --primary-color-dark: #2d7dd2;
+    }
+    
+    body {
+        background-color: #1c1c1e;
+    }
+    
+    .setting-item label {
+        color: #f0f0f0;
+    }
+    
+    .workspace-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    margin-top: 4px;
+}
+
+.workspace-selector {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    background-color: white;
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.secondary-button {
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    background-color: white;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+}
+
+.secondary-button:hover {
+    background-color: #f5f5f5;
+}
+
+@media (prefers-color-scheme: dark) {
+    .workspace-selector {
+        background: #2c2c2e;
+        border-color: #3a3a3c;
+        color: #fff;
+    }
+
+    .secondary-button {
+        background: #2c2c2e;
+        border-color: #3a3a3c;
+        color: #fff;
+    }
+
+    .secondary-button:hover {
+        background: #3a3a3c;
+    }
+}
+
+.setting-item input {
+        background: #2c2c2e;
+        border-color: #3a3a3c;
+        color: #fff;
+    }
 }

@@ -1,10 +1,10 @@
 {
     "extension_name": {
-        "message": "aiChatFlow",
+        "message": "AI Chat Flow",
         "description": "The display name for the extension."
     },
     "extension_description": {
-        "message": "This is aiChatFlow. You should tell us what your extension does here.",
+        "message": "Easily transcribe and replay your AI Chats",
         "description": "Description of what the extension does."
     }
 }
