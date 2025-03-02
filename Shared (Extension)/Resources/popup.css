@@ -44,7 +44,7 @@ body {
 
 .workspace-selector {
     flex: 1;
-    padding: 10px 12px;
+    padding: 8px 10px;
     border: 1px solid #ccc;
     border-radius: var(--border-radius);
     font-size: 16px;
@@ -65,7 +65,7 @@ body {
 }
 
 .secondary-button {
-    padding: 10px 16px;
+    padding: 8px 12px;
     border: 1px solid #ccc;
     border-radius: var(--border-radius);
     background-color: white;
@@ -74,7 +74,7 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    min-height: 44px;
+    min-height: 38px;
 }
 
 .secondary-button:hover {
@@ -100,13 +100,13 @@ body {
 }
 
 .setting-item input {
-    padding: 10px 12px;
+    padding: 8px 10px;
     border: 1px solid #ccc;
     border-radius: var(--border-radius);
-    font-size: 16px; /* Larger for better touch targets on iOS */
+    font-size: 16px;
     width: 100%;
     box-sizing: border-box;
-    -webkit-appearance: none; /* Remove default iOS styling */
+    -webkit-appearance: none;
     appearance: none;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
@@ -122,14 +122,14 @@ body {
     color: white;
     border: none;
     border-radius: var(--border-radius);
-    padding: 10px 16px;
+    padding: 8px 12px;
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    -webkit-appearance: none; /* Remove default iOS styling */
+    -webkit-appearance: none;
     appearance: none;
-    min-height: 44px; /* iOS minimum touch target */
+    min-height: 38px;
 }
 
 .primary-button:hover {

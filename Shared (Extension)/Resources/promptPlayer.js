@@ -8,6 +8,8 @@ class PromptPlayer {
             type: 'player',
             title: 'Run prompts',
             buttonText: 'Run Selected',
+            existingDescriptor: 'chat',
+            hasCurrent: () => true,
             allowNewItem: true,
             validateNewName: async (name) => {
                 return name && name.trim().length > 0;

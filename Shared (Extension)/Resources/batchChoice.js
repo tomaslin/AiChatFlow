@@ -6,6 +6,7 @@ class BatchChoice {
         this.options = {
             title: options.title || 'Select Items',
             buttonText: options.buttonText || 'Import Selected',
+            existingDescriptor: options.existingDescriptor || 'file',
             loadItems: options.loadItems || (() => []),
             onSelect: options.onSelect || (() => {}),
             renderItem: options.renderItem || this.defaultRenderItem.bind(this),
@@ -98,12 +99,12 @@ class BatchChoice {
                                 ${this.options.hasCurrent ? `
                                 <label class="radio-container">
                                     <input type="radio" name="target-type" value="current" ${!this.useNewItem ? 'checked' : ''}>
-                                    <span>Open</span>
+                                    <span>In open ` + this.options.existingDescriptor +  `</span>
                                 </label>
                                 ` : ''}
                                 <label class="radio-container">
                                     <input type="radio" name="target-type" value="new" ${!this.options.hasCurrent || this.useNewItem ? 'checked' : ''}>
-                                    <span>New:</span>
+                                    <span>In a new ` + this.options.existingDescriptor +  `</span>
                                     <input type="text" class="new-name-input" placeholder="Enter name...">
                                 </label>
                             </div>

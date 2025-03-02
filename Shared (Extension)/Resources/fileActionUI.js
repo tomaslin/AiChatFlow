@@ -8,19 +8,19 @@ class FileActionUI {
     static get icons() {
         return {
             "chat": `<svg width="24" height="24" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M10 2v3h6v6h-6v3L0 8z"/>
+                <path fill="currentColor" d="M8 5v4h8v8h-8v4L2 12z"/>
             </svg>`,
             "play": `<svg width="24" height="24" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M4 2v12l8-6z"/>
+                <path fill="currentColor" d="M9 6v12l10-6z"/>
             </svg>`,
-            "rename": `<svg width="24" height="24"  viewBox="0 0 24 24">
-                <path fill="currentColor" d="M13.4 1.4l1.2 1.2c.8.8.8 2 0 2.8L5.2 14.8 0 16l1.2-5.2L10.6 1.4c.8-.8 2-.8 2.8 0z"/>
+            "rename": `<svg width="24" height="24" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M16.4 4.4l2.2 2.2c1 1 1 2.6 0 3.6L8.2 20.6 2 23l2.4-6.2L14.8 6.4c1-1 2.6-1 3.6 0z"/>
             </svg>`,
             "download": `<svg width="24" height="24" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M8 12l-4-4h2.5V2h3v6H12L8 12zm-6 2h12v2H2v-2z"/>
+                <path fill="currentColor" d="M12 16l-4-4h2.5V6h3v6H16l-4 4zm-8 2h16v2H4v-2z"/>
             </svg>`,
-            "delete": `<svg width="24" height="24"  viewBox="0 0 24 24">
-                <path fill="currentColor" d="M6 2h4v2H6zM2 4h12v1H2zm1 2h10l-1 9H4L3 6zm3 2v6h1V8H6zm3 0v6h1V8H9z"/>
+            "delete": `<svg width="24" height="24" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M9 4h6v2H9zM5 7h14v2H5zm2 3h10l-1 10H8L7 10zm3 2v6h2v-6h-2zm4 0v6h2v-6h-2z"/>
             </svg>`
         };
     }

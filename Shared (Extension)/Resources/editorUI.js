@@ -103,9 +103,7 @@ async function createEditorUI() {
         transcribeChatBtn.addEventListener('click', () => {
             new ChatTranscriber({
                 onAddFile: (name, content) => fileManager.addFile(name, content),
-                hasCurrent: () => {
-                    return ( fileManager.fileActions.activeFile !== null)
-                }
+                hasCurrent: () => fileManager.activeFile !== null
             }).createDialog();
         });
         newFileBtn.addEventListener('click', () => {

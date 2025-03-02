@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: clamp(16px, 4vw, 24px);
+    padding: clamp(8px, 2vw, 16px);
     margin: 0 auto;
 }
 
@@ -57,8 +57,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
     border-bottom: 1px solid #333;
     flex-shrink: 0;
 }
@@ -98,7 +98,7 @@
 #batch-choice .controls-container {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 /* Close button styles */
@@ -108,9 +108,9 @@
     border: none;
     color: #888;
     cursor: pointer;
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -132,8 +132,8 @@
 #batch-choice .mode-selector-container {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 6px;
+    gap: 4px;
+    margin-bottom: 4px;
 }
 
 /* Batch choice header */
@@ -142,13 +142,13 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 #batch-choice .batch-choice-header > div {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 12px;
     width: 100%;
 }
 
@@ -162,6 +162,7 @@
     color: #ddd;
     width: 70px;
     flex-shrink: 0;
+    min-height: 36px;
 }
 
 #batch-choice .select-all-checkbox {
@@ -175,22 +176,23 @@
 #batch-choice .radio-container {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     cursor: pointer;
     font-size: 14px;
     color: #ddd;
     padding: 4px 8px;
     margin: 0;
     width: 22%;
+    min-height: 36px;
 }
 
 #batch-choice .radio-group {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 8px 12px;
+    gap: 8px;
+    padding: 4px 8px;
     border-radius: 6px;
-    margin-right: 12px;
+    margin-right: 8px;
     width: 100%;
 }
 
@@ -231,12 +233,13 @@
 
 #batch-choice .item-checkbox-container {
     display: flex;
-    align-items: flex-start;
-    padding: 12px 16px;
-    gap: 12px;
+    align-items: center;
+    padding: 8px;
+    gap: 8px;
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
+    min-height: 36px;
 }
 
 #batch-choice .item-checkbox {
@@ -289,12 +292,14 @@
     background: #878f97;
     color: #fff;
     border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
+    padding: 8px 12px;
+    border-radius: 6px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s ease;
+    min-height: 36px;
+    min-width: 36px;
 }
 
 #batch-choice .import-btn:disabled {
@@ -307,12 +312,14 @@
     background: #0066cc;
     color: #fff;
     border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
+    padding: 8px 12px;
+    border-radius: 6px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
+    min-height: 36px;
+    min-width: 36px;
 }
 
 #batch-choice .import-btn:hover,
@@ -339,7 +346,7 @@
 #batch-choice .new-name-input,
 #simple-choice .simple-input,
 #batch-choice .import-mode-select {
-    padding: clamp(8px, 2vw, 12px);
+    padding: clamp(6px, 1.5vw, 10px);
     border-radius: 4px;
     border: 1px solid #444;
     background-color: #2a2a2a;
