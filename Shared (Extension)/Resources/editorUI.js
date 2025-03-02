@@ -32,7 +32,8 @@ async function createEditorUI() {
         "new_file": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"M8 1v6h6v2H8v6H6V9H0V7h6V1h2z\"/></svg>",
         "import_file": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"M14 6l-1.4 1.4L8 2.8V13H6V2.8L1.4 7.4 0 6l7-7 7 7z\"/></svg>",
         "download_all": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"M8 12l-4-4h2.5V2h3v6H12L8 12zm-6 2h12v2H2v-2z\"/></svg>",
-        "close": "<svg class=\"close-icon\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z\"/></svg>",
+        "close": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z\"/></svg>",
+        "chat": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z\"/></svg>",
         "caret_down": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"M8 4l6 6H2z\"/></svg>",
         "caret_up": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"M8 12l-6-6h12z\"/></svg>",
         "transcribe_chat": `<svg width="24" height="24" viewBox="0 0 16 16"><path fill="currentColor" d="M15 8l-3-3v2h-5v2h5v2l3-3zM8 2H2v12h6v-3h-2v1H4v-8h2v1h2V2z"/></svg>`
@@ -47,15 +48,15 @@ async function createEditorUI() {
                 aiProvider.slideContent(true);
         }
     }
-    editorContainer.innerHTML = `<div class="editor-header"><div class="editor-top-bar"><div class="toolbar"><button id="transcribe-chat-btn" class="toolbar-btn" title="Transcribe From Chat">${icons.transcribe_chat}</button><button id="new-file-btn" class="toolbar-btn" title="New File">${icons.new_file}</button><button id="import-file-btn" class="toolbar-btn" title="Import File">${icons.import_file}</button><button id="download-all-btn" class="toolbar-btn" title="Download All">${icons.download_all}</button></div><div style="flex: 1"></div><button class="ai-chat-flow-minimize-btn" title="Close Editor">${icons.close}</button></div><input type="file" id="file-input" multiple style="display: none"><div class="file-list-container"><div class="file-list"></div></div></div><div class="tab-container"><div class="tab-list"></div><div class="editor-content"><div class="welcome-message"><p>No file selected. Please create a new one or select an existing one.</p></div></div></div>`;
+    editorContainer.innerHTML = `<div class="editor-header"><div class="editor-top-bar"><div class="toolbar"><button id="transcribe-chat-btn" class="toolbar-btn" title="Transcribe From Chat">${icons.transcribe_chat}</button><button id="new-file-btn" class="toolbar-btn" title="New File">${icons.new_file}</button><button id="import-file-btn" class="toolbar-btn" title="Import File">${icons.import_file}</button><button id="download-all-btn" class="toolbar-btn" title="Download All">${icons.download_all}</button></div><div style="flex: 1"></div><button class="ai-chat-flow-minimize-btn" title="Minimize">${icons.chat}</button></div><input type="file" id="file-input" multiple style="display: none"><div class="file-list-container"><div class="file-list"></div></div></div><div class="tab-container"><div class="tab-list"></div><div class="editor-content"><div class="welcome-message"><p>No file selected. Please create a new one or select an existing one.</p></div></div></div>`;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = chrome.runtime.getURL('content.css');
     document.head.appendChild(link);
     document.body.appendChild(editorContainer);
-    const closeBtn = editorContainer.querySelector('.ai-chat-flow-minimize-btn');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', async (e) => {
+    const minimizeBtn = editorContainer.querySelector('.ai-chat-flow-minimize-btn');
+    if (minimizeBtn) {
+        minimizeBtn.addEventListener('click', async (e) => {
             e.stopPropagation();
             editorContainer.classList.add('minimized');
             minimizeIcon.classList.add('visible');
