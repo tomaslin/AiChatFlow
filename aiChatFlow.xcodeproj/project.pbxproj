@@ -1,0 +1,903 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF914AEA2D73D95C00F0033D /* aiChatFlow Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BF914AE92D73D95C00F0033D /* aiChatFlow Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF914AF42D73D95C00F0033D /* aiChatFlow Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BF914AF32D73D95C00F0033D /* aiChatFlow Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BF914AEB2D73D95C00F0033D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF914AAF2D73D95B00F0033D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF914AE82D73D95C00F0033D;
+			remoteInfo = "aiChatFlow Extension (iOS)";
+		};
+		BF914AF52D73D95C00F0033D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF914AAF2D73D95B00F0033D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF914AF22D73D95C00F0033D;
+			remoteInfo = "aiChatFlow Extension (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BF914B1D2D73D95C00F0033D /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BF914AEA2D73D95C00F0033D /* aiChatFlow Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914B272D73D95C00F0033D /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BF914AF42D73D95C00F0033D /* aiChatFlow Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BF914ACB2D73D95C00F0033D /* aiChatFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aiChatFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF914ADD2D73D95C00F0033D /* aiChatFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aiChatFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF914AE92D73D95C00F0033D /* aiChatFlow Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "aiChatFlow Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF914AF32D73D95C00F0033D /* aiChatFlow Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "aiChatFlow Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		BF914B182D73D95C00F0033D /* Exceptions for "Shared (App)" folder in "aiChatFlow (iOS)" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"/Localized: Resources/Main.html",
+				Assets.xcassets,
+				Resources/Icon.png,
+				Resources/Script.js,
+				Resources/Style.css,
+				ViewController.swift,
+			);
+			target = BF914ACA2D73D95C00F0033D /* aiChatFlow (iOS) */;
+		};
+		BF914B1C2D73D95C00F0033D /* Exceptions for "iOS (Extension)" folder in "aiChatFlow Extension (iOS)" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = BF914AE82D73D95C00F0033D /* aiChatFlow Extension (iOS) */;
+		};
+		BF914B212D73D95C00F0033D /* Exceptions for "iOS (App)" folder in "aiChatFlow (iOS)" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = BF914ACA2D73D95C00F0033D /* aiChatFlow (iOS) */;
+		};
+		BF914B222D73D95C00F0033D /* Exceptions for "Shared (App)" folder in "aiChatFlow (macOS)" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"/Localized: Resources/Main.html",
+				Assets.xcassets,
+				Resources/Icon.png,
+				Resources/Script.js,
+				Resources/Style.css,
+				ViewController.swift,
+			);
+			target = BF914ADC2D73D95C00F0033D /* aiChatFlow (macOS) */;
+		};
+		BF914B262D73D95C00F0033D /* Exceptions for "macOS (Extension)" folder in "aiChatFlow Extension (macOS)" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = BF914AF22D73D95C00F0033D /* aiChatFlow Extension (macOS) */;
+		};
+		BF914B2B2D73D95C00F0033D /* Exceptions for "Shared (Extension)" folder in "aiChatFlow Extension (iOS)" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/_locales,
+				Resources/background.js,
+				Resources/content.js,
+				Resources/images,
+				Resources/manifest.json,
+				Resources/popup.css,
+				Resources/popup.html,
+				Resources/popup.js,
+				SafariWebExtensionHandler.swift,
+			);
+			target = BF914AE82D73D95C00F0033D /* aiChatFlow Extension (iOS) */;
+		};
+		BF914B2C2D73D95C00F0033D /* Exceptions for "Shared (Extension)" folder in "aiChatFlow Extension (macOS)" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/_locales,
+				Resources/background.js,
+				Resources/content.js,
+				Resources/images,
+				Resources/manifest.json,
+				Resources/popup.css,
+				Resources/popup.html,
+				Resources/popup.js,
+				SafariWebExtensionHandler.swift,
+			);
+			target = BF914AF22D73D95C00F0033D /* aiChatFlow Extension (macOS) */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		BF914AB32D73D95B00F0033D /* Shared (App) */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BF914B182D73D95C00F0033D /* Exceptions for "Shared (App)" folder in "aiChatFlow (iOS)" target */,
+				BF914B222D73D95C00F0033D /* Exceptions for "Shared (App)" folder in "aiChatFlow (macOS)" target */,
+			);
+			path = "Shared (App)";
+			sourceTree = "<group>";
+		};
+		BF914ABC2D73D95C00F0033D /* Shared (Extension) */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BF914B2B2D73D95C00F0033D /* Exceptions for "Shared (Extension)" folder in "aiChatFlow Extension (iOS)" target */,
+				BF914B2C2D73D95C00F0033D /* Exceptions for "Shared (Extension)" folder in "aiChatFlow Extension (macOS)" target */,
+			);
+			explicitFolders = (
+				Resources/_locales,
+				Resources/images,
+			);
+			path = "Shared (Extension)";
+			sourceTree = "<group>";
+		};
+		BF914ACD2D73D95C00F0033D /* iOS (App) */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BF914B212D73D95C00F0033D /* Exceptions for "iOS (App)" folder in "aiChatFlow (iOS)" target */,
+			);
+			path = "iOS (App)";
+			sourceTree = "<group>";
+		};
+		BF914ADE2D73D95C00F0033D /* macOS (App) */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "macOS (App)";
+			sourceTree = "<group>";
+		};
+		BF914AED2D73D95C00F0033D /* iOS (Extension) */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BF914B1C2D73D95C00F0033D /* Exceptions for "iOS (Extension)" folder in "aiChatFlow Extension (iOS)" target */,
+			);
+			path = "iOS (Extension)";
+			sourceTree = "<group>";
+		};
+		BF914AF72D73D95C00F0033D /* macOS (Extension) */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BF914B262D73D95C00F0033D /* Exceptions for "macOS (Extension)" folder in "aiChatFlow Extension (macOS)" target */,
+			);
+			path = "macOS (Extension)";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BF914AC82D73D95C00F0033D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914ADA2D73D95C00F0033D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914AE62D73D95C00F0033D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914AF02D73D95C00F0033D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BF914AAE2D73D95B00F0033D = {
+			isa = PBXGroup;
+			children = (
+				BF914AB32D73D95B00F0033D /* Shared (App) */,
+				BF914ABC2D73D95C00F0033D /* Shared (Extension) */,
+				BF914ACD2D73D95C00F0033D /* iOS (App) */,
+				BF914ADE2D73D95C00F0033D /* macOS (App) */,
+				BF914AED2D73D95C00F0033D /* iOS (Extension) */,
+				BF914AF72D73D95C00F0033D /* macOS (Extension) */,
+				BF914ACC2D73D95C00F0033D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BF914ACC2D73D95C00F0033D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BF914ACB2D73D95C00F0033D /* aiChatFlow.app */,
+				BF914ADD2D73D95C00F0033D /* aiChatFlow.app */,
+				BF914AE92D73D95C00F0033D /* aiChatFlow Extension.appex */,
+				BF914AF32D73D95C00F0033D /* aiChatFlow Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BF914ACA2D73D95C00F0033D /* aiChatFlow (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF914B1E2D73D95C00F0033D /* Build configuration list for PBXNativeTarget "aiChatFlow (iOS)" */;
+			buildPhases = (
+				BF914AC72D73D95C00F0033D /* Sources */,
+				BF914AC82D73D95C00F0033D /* Frameworks */,
+				BF914AC92D73D95C00F0033D /* Resources */,
+				BF914B1D2D73D95C00F0033D /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BF914AEC2D73D95C00F0033D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				BF914ACD2D73D95C00F0033D /* iOS (App) */,
+			);
+			name = "aiChatFlow (iOS)";
+			packageProductDependencies = (
+			);
+			productName = "aiChatFlow (iOS)";
+			productReference = BF914ACB2D73D95C00F0033D /* aiChatFlow.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BF914ADC2D73D95C00F0033D /* aiChatFlow (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF914B282D73D95C00F0033D /* Build configuration list for PBXNativeTarget "aiChatFlow (macOS)" */;
+			buildPhases = (
+				BF914AD92D73D95C00F0033D /* Sources */,
+				BF914ADA2D73D95C00F0033D /* Frameworks */,
+				BF914ADB2D73D95C00F0033D /* Resources */,
+				BF914B272D73D95C00F0033D /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BF914AF62D73D95C00F0033D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				BF914ADE2D73D95C00F0033D /* macOS (App) */,
+			);
+			name = "aiChatFlow (macOS)";
+			packageProductDependencies = (
+			);
+			productName = "aiChatFlow (macOS)";
+			productReference = BF914ADD2D73D95C00F0033D /* aiChatFlow.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BF914AE82D73D95C00F0033D /* aiChatFlow Extension (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF914B192D73D95C00F0033D /* Build configuration list for PBXNativeTarget "aiChatFlow Extension (iOS)" */;
+			buildPhases = (
+				BF914AE52D73D95C00F0033D /* Sources */,
+				BF914AE62D73D95C00F0033D /* Frameworks */,
+				BF914AE72D73D95C00F0033D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				BF914AED2D73D95C00F0033D /* iOS (Extension) */,
+			);
+			name = "aiChatFlow Extension (iOS)";
+			packageProductDependencies = (
+			);
+			productName = "aiChatFlow Extension (iOS)";
+			productReference = BF914AE92D73D95C00F0033D /* aiChatFlow Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		BF914AF22D73D95C00F0033D /* aiChatFlow Extension (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF914B232D73D95C00F0033D /* Build configuration list for PBXNativeTarget "aiChatFlow Extension (macOS)" */;
+			buildPhases = (
+				BF914AEF2D73D95C00F0033D /* Sources */,
+				BF914AF02D73D95C00F0033D /* Frameworks */,
+				BF914AF12D73D95C00F0033D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				BF914AF72D73D95C00F0033D /* macOS (Extension) */,
+			);
+			name = "aiChatFlow Extension (macOS)";
+			packageProductDependencies = (
+			);
+			productName = "aiChatFlow Extension (macOS)";
+			productReference = BF914AF32D73D95C00F0033D /* aiChatFlow Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF914AAF2D73D95B00F0033D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					BF914ACA2D73D95C00F0033D = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					BF914ADC2D73D95C00F0033D = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					BF914AE82D73D95C00F0033D = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					BF914AF22D73D95C00F0033D = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = BF914AB22D73D95B00F0033D /* Build configuration list for PBXProject "aiChatFlow" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BF914AAE2D73D95B00F0033D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = BF914ACC2D73D95C00F0033D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF914ACA2D73D95C00F0033D /* aiChatFlow (iOS) */,
+				BF914ADC2D73D95C00F0033D /* aiChatFlow (macOS) */,
+				BF914AE82D73D95C00F0033D /* aiChatFlow Extension (iOS) */,
+				BF914AF22D73D95C00F0033D /* aiChatFlow Extension (macOS) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BF914AC92D73D95C00F0033D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914ADB2D73D95C00F0033D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914AE72D73D95C00F0033D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914AF12D73D95C00F0033D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BF914AC72D73D95C00F0033D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914AD92D73D95C00F0033D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914AE52D73D95C00F0033D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF914AEF2D73D95C00F0033D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BF914AEC2D73D95C00F0033D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF914AE82D73D95C00F0033D /* aiChatFlow Extension (iOS) */;
+			targetProxy = BF914AEB2D73D95C00F0033D /* PBXContainerItemProxy */;
+		};
+		BF914AF62D73D95C00F0033D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF914AF22D73D95C00F0033D /* aiChatFlow Extension (macOS) */;
+			targetProxy = BF914AF52D73D95C00F0033D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BF914B1A2D73D95C00F0033D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3GWE7NQU6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "aiChatFlow Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomaslin.aiChatFlow.Extension;
+				PRODUCT_NAME = "aiChatFlow Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BF914B1B2D73D95C00F0033D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3GWE7NQU6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "aiChatFlow Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomaslin.aiChatFlow.Extension;
+				PRODUCT_NAME = "aiChatFlow Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BF914B1F2D73D95C00F0033D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3GWE7NQU6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = aiChatFlow;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomaslin.aiChatFlow;
+				PRODUCT_NAME = aiChatFlow;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BF914B202D73D95C00F0033D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3GWE7NQU6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = aiChatFlow;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomaslin.aiChatFlow;
+				PRODUCT_NAME = aiChatFlow;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BF914B242D73D95C00F0033D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "macOS (Extension)/aiChatFlow.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3GWE7NQU6;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "aiChatFlow Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomaslin.aiChatFlow.Extension;
+				PRODUCT_NAME = "aiChatFlow Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BF914B252D73D95C00F0033D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "macOS (Extension)/aiChatFlow.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3GWE7NQU6;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "aiChatFlow Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomaslin.aiChatFlow.Extension;
+				PRODUCT_NAME = "aiChatFlow Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		BF914B292D73D95C00F0033D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "macOS (App)/aiChatFlow.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3GWE7NQU6;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = aiChatFlow;
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomaslin.aiChatFlow;
+				PRODUCT_NAME = aiChatFlow;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BF914B2A2D73D95C00F0033D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "macOS (App)/aiChatFlow.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3GWE7NQU6;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = aiChatFlow;
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomaslin.aiChatFlow;
+				PRODUCT_NAME = aiChatFlow;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		BF914B2D2D73D95C00F0033D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BF914B2E2D73D95C00F0033D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BF914AB22D73D95B00F0033D /* Build configuration list for PBXProject "aiChatFlow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF914B2D2D73D95C00F0033D /* Debug */,
+				BF914B2E2D73D95C00F0033D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF914B192D73D95C00F0033D /* Build configuration list for PBXNativeTarget "aiChatFlow Extension (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF914B1A2D73D95C00F0033D /* Debug */,
+				BF914B1B2D73D95C00F0033D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF914B1E2D73D95C00F0033D /* Build configuration list for PBXNativeTarget "aiChatFlow (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF914B1F2D73D95C00F0033D /* Debug */,
+				BF914B202D73D95C00F0033D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF914B232D73D95C00F0033D /* Build configuration list for PBXNativeTarget "aiChatFlow Extension (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF914B242D73D95C00F0033D /* Debug */,
+				BF914B252D73D95C00F0033D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF914B282D73D95C00F0033D /* Build configuration list for PBXNativeTarget "aiChatFlow (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF914B292D73D95C00F0033D /* Debug */,
+				BF914B2A2D73D95C00F0033D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BF914AAF2D73D95B00F0033D /* Project object */;
+}
