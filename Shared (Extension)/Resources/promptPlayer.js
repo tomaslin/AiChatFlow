@@ -10,6 +10,7 @@ class PromptPlayer {
             buttonText: 'Run Selected',
             existingDescriptor: 'chat',
             hasCurrent: () => true,
+            emptyMessage: 'No prompts to play',
             validateNewName: async (name) => {
                 return name && name.trim().length > 0;
             },

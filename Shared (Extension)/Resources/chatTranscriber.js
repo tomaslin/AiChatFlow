@@ -21,7 +21,7 @@ class ChatTranscriber {
             modes: [
                 { value: 'responses', label: 'Responses', default: true },
                 { value: 'prompts', label: 'Prompts' },
-                { value: 'both', label: 'Both' }
+                { value: 'both', label: 'Prompts and Responses' }
             ],
             loadItems: async () => {
                 const messages = await this.getChatMessages();
@@ -30,6 +30,7 @@ class ChatTranscriber {
                     description: msg.answer
                 }));
             },
+            emptyMessage: 'No messages to transcribe, select another chat or start one',
             onSelect: async (selectedItems, mode, useNewItem, newName) => {
                 let selectedMessages = '';
                 const separator = this.separator || 'NEXT_PROMPT';
@@ -70,7 +71,15 @@ class ChatTranscriber {
 
     createDialog() {
         if (!document.body) return;
-        this.batchChoice.createDialog();
+        
+        // Check if there are any chat messages to transcribe
+        this.getChatMessages().then(messages => {
+            if (messages.length === 0) {
+                alert('No chats to transcribe, pick a chat or start one');
+                return;
+            }
+            this.batchChoice.createDialog();
+        });
     }
 
     async getChatMessages() {

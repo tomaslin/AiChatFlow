@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: clamp(8px, 2vw, 16px);
+    padding: clamp(8px, 1.5vw, 12px);
     margin: 0 auto;
 }
 
@@ -61,24 +61,35 @@
     padding-bottom: 6px;
     border-bottom: 1px solid #333;
     flex-shrink: 0;
+    position: relative;
+    background: transparent;
 }
 
 #batch-choice .modal-header .header-content {
     display: flex;
     align-items: center;
-    width: 90%;
+    width: 100%;
+    background: transparent;
+    border: none;
 }
 
 #batch-choice .modal-header .modal-title {
-    width: 50%;
+    width: auto;
+    flex-grow: 1;
+    background: transparent;
+    position: relative;
+    z-index: 2;
 }
 
 #batch-choice .modal-header .import-mode-select {
-    width: 40%;
+    width: auto;
+    margin-right: 44px;
 }
 
 #batch-choice .modal-header .modal-close-btn {
-    width: 10%;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 #simple-choice .modal-title,
@@ -141,7 +152,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 #batch-choice .batch-choice-header > div {
@@ -154,15 +165,14 @@
 /* Radio group container */
 #batch-choice .radio-group {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.05);
+    flex-direction: row;
+    gap: 16px;
+    padding: 8px;
     border-radius: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+    align-items: center;
 }
 
-/* Select all container */
 #batch-choice .select-all-container {
     display: flex;
     align-items: center;
@@ -170,12 +180,31 @@
     cursor: pointer;
     font-size: 14px;
     color: #ddd;
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 8px;
     border-radius: 6px;
-    margin-bottom: 12px;
+    margin-bottom: 4px;
+    background: transparent;
 }
 
+#batch-choice .batch-item {
+    margin-bottom: 8px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#batch-choice .item-checkbox-container {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    gap: 8px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 36px;
+}
+
+#batch-choice .item-checkbox,
 #batch-choice .select-all-checkbox {
     margin: 0;
     width: 16px;
@@ -191,11 +220,12 @@
     cursor: pointer;
     font-size: 14px;
     color: #ddd;
-    padding: 6px 8px;
+    padding: 6px 12px;
     margin: 0;
-    width: auto;
+    flex: 0 1 auto;
     min-height: 36px;
     position: relative;
+    white-space: nowrap;
 }
 
 #batch-choice .radio-container input[type="radio"] {
@@ -228,22 +258,12 @@
     background-color: #8ab4f8;
 }
 
-#batch-choice .radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    margin-right: 8px;
-    width: 100%;
-}
-
-/* New name container */
 #batch-choice .new-name-container {
     display: none;
-    width: 25%;
+    flex: 1;
     margin-left: 12px;
     min-width: 180px;
+    max-width: 300px;
 }
 
 #batch-choice .new-name-container.visible {
@@ -261,13 +281,13 @@
     overflow-y: auto;
     overflow-x: hidden;
     max-height: calc(90vh - 220px);
-    margin: 0 -20px;
-    padding: 0 20px;
-    margin-bottom: 16px;
+    margin: 0 -8px;
+    padding: 0 8px;
+    margin-bottom: 12px;
 }
 
 #batch-choice .batch-item {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     border-radius: 6px;
     background: rgba(255, 255, 255, 0.05);
     transition: background 0.2s ease;
@@ -430,15 +450,29 @@
 #batch-choice .name-validation-message {
     font-size: 12px;
     margin-top: 4px;
-    min-height: 16px;
     width: 100%;
+    position: absolute;
     display: none;
+    color: #ff4444;
 }
 
 #batch-choice .name-validation-message:not(:empty) {
     display: block;
+    position: static;
 }
 
 #batch-choice .target-selector-row {
     margin-top: 10px;
+}
+
+/* Import mode section styles */
+#batch-choice .import-mode-section {
+    padding: 10px;
+    border-top: 1px solid #333;
+}
+
+#batch-choice .import-mode-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }

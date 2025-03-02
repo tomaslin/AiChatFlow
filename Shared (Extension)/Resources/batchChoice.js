@@ -9,6 +9,7 @@ class BatchChoice {
             existingDescriptor: options.existingDescriptor || 'file',
             loadItems: options.loadItems || (() => []),
             onSelect: options.onSelect || (() => {}),
+            emptyMessage: options.emptyMessage || 'No items found',
             renderItem: options.renderItem || this.defaultRenderItem.bind(this),
             truncateLength: options.truncateLength || { title: 140, description: 260 },
             selectAllByDefault: options.selectAllByDefault || false,
@@ -71,6 +72,13 @@ class BatchChoice {
         // Wait for preferences to be loaded before creating the dialog
         await this.prefsLoaded;
         
+        // Check if there are items to display
+        const items = await this.options.loadItems();
+        if (items.length === 0) {
+            alert(this.options.emptyMessage || 'No items found');
+            return;
+        }
+        
         this.closeDialog();
         this.dialogContainer = document.createElement('div');
         this.dialogContainer.className = 'modal-overlay';
@@ -79,32 +87,37 @@ class BatchChoice {
             <div class="modal-dialog">
                 <div class="modal-header">
                     <div class="header-content">
-                        <span class="modal-title">${this.options.title}</span>
-                        ${this.options.showModeSelector ? `
-                        <select id="import-mode" class="import-mode-select">
-                            ${this.options.modes.map(mode => `<option value="${mode.value}"${mode.default ? ' selected' : ''}>${mode.label}</option>`).join('')}
-                        </select>
-                        ` : ''}
+                        <h3 class="modal-title">${this.options.title}</h3>
+                        <button class="modal-close-btn">×</button>
                     </div>
-                    <button class="modal-close-btn">×</button>
                 </div>
+                 ${this.options.showModeSelector ? `
+                <div class="import-mode-section">
+                    <label class="import-mode-label">
+                        <span>Copy over:</span>
+                        <select id="import-mode" class="import-mode-select">
+                            ${this.options.modes.map(mode => `
+                                <option value="${mode.value}" ${mode.default ? 'selected' : ''}>
+                                    ${mode.label}
+                                </option>
+                            `).join('')}
+                        </select>
+                    </label>
+                </div>
+                ` : ''}
                 <div class="batch-choice-options">
                     <div class="batch-choice-header">
                         <div>
-                            <label class="select-all-container">
-                                <input type="checkbox" class="select-all-checkbox">
-                                <span>All</span>
-                            </label>
                             <div class="radio-group">
                                 ${this.options.hasCurrent ? `
                                 <label class="radio-container">
                                     <input type="radio" name="target-type" value="current" ${!this.useNewItem ? 'checked' : ''}>
-                                    <span>In open ` + this.options.existingDescriptor +  `</span>
+                                    <span>In open ${this.options.existingDescriptor}</span>
                                 </label>
                                 ` : ''}
                                 <label class="radio-container">
                                     <input type="radio" name="target-type" value="new" ${!this.options.hasCurrent || this.useNewItem ? 'checked' : ''}>
-                                    <span>In a new ` + this.options.existingDescriptor +  `</span>
+                                    <span>In a new ${this.options.existingDescriptor}</span>
                                 </label>
                                 <div class="new-name-container ${!this.options.hasCurrent || this.useNewItem ? 'visible' : ''}">
                                     <input type="text" class="new-name-input" placeholder="Enter name...">
@@ -113,6 +126,11 @@ class BatchChoice {
                             <div class="name-validation-message"></div>
                         </div>
                     </div>
+                </div>
+
+                <div class="select-all-container">
+                <input type="checkbox" class="select-all-checkbox">
+                <span>Select All</span>
                 </div>
                 <div class="batch-items-list"></div>
                 <div class="modal-footer model-content">
