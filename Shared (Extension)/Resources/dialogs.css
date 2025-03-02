@@ -19,9 +19,9 @@
 #simple-choice .modal-dialog,
 #batch-choice .modal-dialog {
     background: #1e1e1e;
-    border-radius: 12px;
+    border-radius: 8px;
     width: 90%;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     border: 1px solid #333;
     position: relative;
     z-index: 10002;
@@ -29,56 +29,89 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding: clamp(16px, 4vw, 24px);
+    margin: 0 auto;
 }
 
 /* Simple choice specific styles */
 #simple-choice {
     align-items: flex-start;
-    padding-top: 30vh;
+    padding-top: min(25vh, 30%);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
 }
 
 #simple-choice .modal-dialog {
-    padding: 24px;
-    max-width: 400px;
+    max-width: min(400px, 90vw);
 }
 
 /* Batch choice specific styles */
 #batch-choice .modal-dialog {
-    padding: 28px;
-    max-width: 600px;
+    max-width: min(600px, 95vw);
     max-height: 90vh;
 }
 
+/* Header styles */
 #simple-choice .modal-header,
 #batch-choice .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    padding-bottom: 20px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
     border-bottom: 1px solid #333;
     flex-shrink: 0;
+}
+
+#batch-choice .modal-header .header-content {
+    display: flex;
+    align-items: center;
+    width: 90%;
+}
+
+#batch-choice .modal-header .modal-title {
+    width: 50%;
+}
+
+#batch-choice .modal-header .import-mode-select {
+    width: 40%;
+}
+
+#batch-choice .modal-header .modal-close-btn {
+    width: 10%;
 }
 
 #simple-choice .modal-title,
 #batch-choice .modal-title {
     color: #fff;
-    font-size: 20px;
+    font-size: clamp(16px, 4vw, 18px);
     font-weight: 600;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.3;
 }
 
+#batch-choice .modal-prefix,
+#batch-choice .modal-subtitle {
+    font-size: 0.9em;
+}
+
+#batch-choice .controls-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Close button styles */
 #simple-choice .modal-close-btn,
 #batch-choice .modal-close-btn {
     background: transparent;
     border: none;
     color: #888;
     cursor: pointer;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    font-size: 20px;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -91,32 +124,44 @@
     color: #fff;
 }
 
+/* Batch choice options */
 #batch-choice .chat-importer-options {
-    margin-bottom: 16px;
-}
-
-#batch-choice .select-all-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    font-size: 15px;
-    color: #ddd;
+    margin-bottom: 12px;
 }
 
 #batch-choice .mode-selector-container {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    margin-bottom: 6px;
 }
 
-#batch-choice .import-mode-select {
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid #333;
-    background-color: #2a2a2a;
-    color: #ddd;
+/* Batch choice header */
+#batch-choice .batch-choice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+#batch-choice .batch-choice-header > div {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Select all container */
+#batch-choice .select-all-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
     font-size: 14px;
+    color: #ddd;
+    width: 70px;
+    flex-shrink: 0;
 }
 
 #batch-choice .select-all-checkbox {
@@ -126,25 +171,60 @@
     cursor: pointer;
 }
 
-#batch-choice .batch-choice-options {
+/* Radio container */
+#batch-choice .radio-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #ddd;
+    padding: 4px 8px;
+    margin: 0;
+    width: 22%;
 }
 
+#batch-choice .radio-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-right: 12px;
+    width: 100%;
+}
+
+/* New name container */
+#batch-choice .new-name-container {
+    display: none;
+    width: 25%;
+    margin-left: 12px;
+    min-width: 180px;
+}
+
+#batch-choice .new-name-container.visible {
+    display: block;
+}
+
+#batch-choice .batch-choice-options {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+/* Batch items list */
 #batch-choice .batch-items-list {
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: calc(90vh - 240px);
-    margin: 0 -28px;
-    padding: 0 28px;
-    margin-bottom: 24px;
+    max-height: calc(90vh - 220px);
+    margin: 0 -20px;
+    padding: 0 20px;
+    margin-bottom: 16px;
 }
 
 #batch-choice .batch-item {
-    margin-bottom: 16px;
-    border-radius: 8px;
+    margin-bottom: 10px;
+    border-radius: 6px;
     background: rgba(255, 255, 255, 0.05);
     transition: background 0.2s ease;
 }
@@ -152,8 +232,8 @@
 #batch-choice .item-checkbox-container {
     display: flex;
     align-items: flex-start;
-    padding: 16px 20px;
-    gap: 16px;
+    padding: 12px 16px;
+    gap: 12px;
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
@@ -175,15 +255,15 @@
 #batch-choice .item-title {
     color: #fff;
     font-weight: 500;
-    font-size: 15px;
-    margin-bottom: 8px;
-    line-height: 1.4;
+    font-size: 14px;
+    margin-bottom: 6px;
+    line-height: 1.3;
 }
 
 #batch-choice .item-description {
     color: #aaa;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -191,24 +271,26 @@
     max-width: 100%;
 }
 
+/* Footer styles */
 #batch-choice .modal-footer {
-    margin-top: 4px;
+    margin-top: 0;
     display: flex;
     justify-content: flex-end;
 }
 
 #simple-choice .modal-footer {
-    margin-top: 20px;
+    margin-top: 12px;
     display: flex;
     justify-content: flex-end;
 }
 
+/* Button styles */
 #batch-choice .import-btn {
     background: #878f97;
     color: #fff;
     border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -225,18 +307,15 @@
     background: #0066cc;
     color: #fff;
     border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-#batch-choice .import-btn:hover {
-    background: #0052a3;
-}
-
+#batch-choice .import-btn:hover,
 #simple-choice .import-btn:hover {
     background: #0052a3;
 }
@@ -251,29 +330,63 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Simple Choice Input Styling */
+/* Input styling */
 #simple-choice .modal-content {
     margin-bottom: 0;
 }
 
-#simple-choice .simple-input {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 6px;
+/* Common input styles */
+#batch-choice .new-name-input,
+#simple-choice .simple-input,
+#batch-choice .import-mode-select {
+    padding: clamp(8px, 2vw, 12px);
+    border-radius: 4px;
     border: 1px solid #444;
     background-color: #2a2a2a;
     color: #fff;
-    font-size: 15px;
+    font-size: clamp(14px, 3.5vw, 16px);
     transition: all 0.2s ease;
     box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
-#simple-choice .simple-input:focus {
+#batch-choice .new-name-input:focus,
+#simple-choice .simple-input:focus,
+#batch-choice .import-mode-select:focus {
     outline: none;
     border-color: #0066cc;
     box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.25);
 }
 
+#batch-choice .new-name-input::placeholder,
 #simple-choice .simple-input::placeholder {
     color: #888;
+}
+
+/* Specific input styles */
+#simple-choice .simple-input {
+    width: 100%;
+}
+
+#batch-choice .new-name-input {
+    height: 32px;
+    min-width: 180px;
+    margin: 0;
+}
+
+#batch-choice .name-validation-message {
+    font-size: 12px;
+    margin-top: 4px;
+    min-height: 16px;
+    width: 100%;
+    display: none;
+}
+
+#batch-choice .name-validation-message:not(:empty) {
+    display: block;
+}
+
+#batch-choice .target-selector-row {
+    margin-top: 10px;
 }

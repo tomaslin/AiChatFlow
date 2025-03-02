@@ -104,99 +104,73 @@ class FileActionUI {
         simpleChoice.createDialog();
     }
 
-    // Create all file action buttons for a file item in the file list
-    createFileItemActions(fileName) {
+    // Create action buttons with common configuration
+    createActionButtons(fileName, isFileItem = false) {
         const actionsContainer = document.createElement('div');
         actionsContainer.className = 'file-actions';
         
-        // Chat button
-        const chatBtn = this.createActionButton('chat', 'Send to Chat');
-        chatBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const content = this.fileManager.fileActions.files.get(fileName);
-            aiProvider.sendFile(content, fileName);
+        const buttons = [
+            {
+                action: 'chat',
+                title: 'Send to Chat',
+                handler: (e) => {
+                    if (isFileItem) e.stopPropagation();
+                    const content = this.fileManager.fileActions.files.get(fileName);
+                    aiProvider.sendFile(content, fileName);
+                }
+            },
+            {
+                action: 'play',
+                title: 'Play prompts',
+                handler: (e) => {
+                    if (isFileItem) e.stopPropagation();
+                    const content = this.fileManager.fileActions.files.get(fileName);
+                    const promptPlayer = new PromptPlayer();
+                    promptPlayer.createDialog(fileName, content);
+                }
+            },
+            {
+                action: 'download',
+                title: 'Download',
+                handler: (e) => {
+                    if (isFileItem) e.stopPropagation();
+                    this.handleDownload(fileName);
+                }
+            },
+            {
+                action: 'rename',
+                title: 'Rename',
+                handler: (e) => {
+                    if (isFileItem) e.stopPropagation();
+                    this.handleRename(fileName);
+                }
+            },
+            {
+                action: 'delete',
+                title: 'Delete',
+                handler: (e) => {
+                    if (isFileItem) e.stopPropagation();
+                    this.handleDelete(fileName);
+                }
+            }
+        ];
+
+        buttons.forEach(({ action, title, handler }) => {
+            const button = this.createActionButton(action, title);
+            button.addEventListener('click', handler);
+            actionsContainer.appendChild(button);
         });
-        
-        // Play button
-        const playBtn = this.createActionButton('play', 'Play prompts');
-        playBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const content = this.fileManager.fileActions.files.get(fileName);
-            const promptPlayer = new PromptPlayer();
-            promptPlayer.createDialog(fileName, content);
-        });
-        
-        // Download button
-        const downloadBtn = this.createActionButton('download', 'Download');
-        downloadBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.handleDownload(fileName);
-        });
-        
-        // Rename button
-        const renameBtn = this.createActionButton('rename', 'Rename');
-        renameBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.handleRename(fileName);
-        });
-        
-        // Delete button
-        const deleteBtn = this.createActionButton('delete', 'Delete');
-        deleteBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.handleDelete(fileName);
-        });
-        
-        // Add all buttons to the container
-        actionsContainer.appendChild(chatBtn);
-        actionsContainer.appendChild(downloadBtn);
-        actionsContainer.appendChild(playBtn);
-        actionsContainer.appendChild(renameBtn);
-        actionsContainer.appendChild(deleteBtn);
-        
+
         return actionsContainer;
+    }
+
+    // Create all file action buttons for a file item in the file list
+    createFileItemActions(fileName) {
+        return this.createActionButtons(fileName, true);
     }
     
     // Create file action buttons for the editor toolbar
     createEditorToolbarActions(fileName) {
-        const actionsContainer = document.createElement('div');
-        actionsContainer.className = 'file-actions';
-        
-        // Chat button
-        const chatBtn = this.createActionButton('chat', 'Send to Chat');
-        chatBtn.addEventListener('click', () => {
-            const content = this.fileManager.fileActions.files.get(fileName);
-            aiProvider.sendFile(content, fileName);
-        });
-        
-        // Play button
-        const playBtn = this.createActionButton('play', 'Play prompts');
-        playBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const content = this.fileManager.fileActions.files.get(fileName);
-            const promptPlayer = new PromptPlayer();
-            promptPlayer.createDialog(fileName, content);
-        });
-        
-        // Rename button
-        const renameBtn = this.createActionButton('rename', 'Rename');
-        renameBtn.addEventListener('click', () => this.handleRename(fileName));
-        
-        // Download button
-        const downloadBtn = this.createActionButton('download', 'Download');
-        downloadBtn.addEventListener('click', () => this.handleDownload(fileName));
-        
-        // Delete button
-        const deleteBtn = this.createActionButton('delete', 'Delete');
-        deleteBtn.addEventListener('click', () => this.handleDelete(fileName));
-        
-        // Add all buttons to the container
-        actionsContainer.appendChild(chatBtn);
-        actionsContainer.appendChild(playBtn);
-        actionsContainer.appendChild(renameBtn);
-        actionsContainer.appendChild(downloadBtn);
-        actionsContainer.appendChild(deleteBtn);
-        
-        return actionsContainer;
+        return this.createActionButtons(fileName, false);
     }
 }

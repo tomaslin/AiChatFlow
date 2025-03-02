@@ -5,22 +5,24 @@ class ChatTranscriber {
             this.separator = separator;
         });
         this.onAddFile = options.onAddFile || ((name, content) => {});
+        this.hasCurrent = options.hasCurrent || true;
         
         this.batchChoice = new BatchChoice({
             type: 'importer',
-            title: 'Transcribe From Chat',
+            title: 'Transcribe from Chat',
             buttonText: 'Import Selected',
             showModeSelector: true,
             allowNewItem: true,
+            hasCurrent: this.hasCurrent,
             validateNewName: async (name) => {
                 if (!name || !name.trim()) return false;
                 const fileIndex = await StorageManager.loadFileIndex();
                 return !fileIndex.includes(name);
             },
             modes: [
-                { value: 'responses', label: 'Responses only', default: true },
-                { value: 'prompts', label: 'Prompts only' },
-                { value: 'both', label: 'Prompts and Responses' }
+                { value: 'responses', label: 'Responses', default: true },
+                { value: 'prompts', label: 'Prompts' },
+                { value: 'both', label: 'Both' }
             ],
             loadItems: async () => {
                 const messages = await this.getChatMessages();

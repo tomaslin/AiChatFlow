@@ -14,7 +14,6 @@ class BatchChoice {
             showModeSelector: options.showModeSelector || false,
             modes: options.modes || [],
             validateNewName: options.validateNewName || (() => true),
-            allowNewItem: options.allowNewItem !== false,
             hasCurrent: options.hasCurrent || false
         }
         
@@ -78,42 +77,39 @@ class BatchChoice {
         this.dialogContainer.innerHTML = `
             <div class="modal-dialog">
                 <div class="modal-header">
-                    <h3 class="modal-title">${this.options.title}</h3>
-                    <button class="modal-close-btn">×</button>
-                </div>
-                <div class="batch-choice-options">
-                    <label class="select-all-container">
-                        <input type="checkbox" class="select-all-checkbox">
-                        <span>Select All</span>
-                    </label>
-                    ${this.options.showModeSelector ? `
-                    <div class="mode-selector-container">
-                        <label for="import-mode">Import Mode:</label>
+                    <div class="header-content">
+                        <span class="modal-title">${this.options.title}</span>
+                        ${this.options.showModeSelector ? `
                         <select id="import-mode" class="import-mode-select">
                             ${this.options.modes.map(mode => `<option value="${mode.value}"${mode.default ? ' selected' : ''}>${mode.label}</option>`).join('')}
                         </select>
+                        ` : ''}
                     </div>
-                    ` : ''}
-                      ${this.options.allowNewItem ? `
-                    <div class="target-selector">
-                        <div class="radio-group">
-                            ${this.options.hasCurrent ? `
-                            <label class="radio-container">
-                                <input type="radio" name="target-type" value="current" ${!this.useNewItem ? 'checked' : ''}>
-                                <span>Use Current</span>
+                    <button class="modal-close-btn">×</button>
+                </div>
+                <div class="batch-choice-options">
+                    <div class="batch-choice-header">
+                        <div>
+                            <label class="select-all-container">
+                                <input type="checkbox" class="select-all-checkbox">
+                                <span>All</span>
                             </label>
-                            ` : ''}
-                            <label class="radio-container">
-                                <input type="radio" name="target-type" value="new" ${!this.options.hasCurrent || this.useNewItem ? 'checked' : ''}>
-                                <span>Create New</span>
-                            </label>
-                        </div>
-                        <div class="new-name-container simple-input-container" style="display: ${this.useNewItem ? 'block' : 'none'}">
-                            <input type="text" class="new-name-input simple-input" placeholder="Enter name...">
+                            <div class="radio-group">
+                                ${this.options.hasCurrent ? `
+                                <label class="radio-container">
+                                    <input type="radio" name="target-type" value="current" ${!this.useNewItem ? 'checked' : ''}>
+                                    <span>Open</span>
+                                </label>
+                                ` : ''}
+                                <label class="radio-container">
+                                    <input type="radio" name="target-type" value="new" ${!this.options.hasCurrent || this.useNewItem ? 'checked' : ''}>
+                                    <span>New:</span>
+                                    <input type="text" class="new-name-input" placeholder="Enter name...">
+                                </label>
+                            </div>
                             <div class="name-validation-message"></div>
                         </div>
                     </div>
-                    ` : ''}
                 </div>
                 <div class="batch-items-list"></div>
                 <div class="modal-footer model-content">
@@ -147,32 +143,32 @@ class BatchChoice {
             }
         });
 
-        if (this.options.allowNewItem) {
-            const radioButtons = this.dialogContainer.querySelectorAll('input[name="target-type"]');
-            const newNameContainer = this.dialogContainer.querySelector('.new-name-container');
-            const newNameInput = this.dialogContainer.querySelector('.new-name-input');
-            const validationMessage = this.dialogContainer.querySelector('.name-validation-message');
+        const radioButtons = this.dialogContainer.querySelectorAll('input[name="target-type"]');
+        const newNameContainer = this.dialogContainer.querySelector('.new-name-container');
+        const newNameInput = this.dialogContainer.querySelector('.new-name-input');
+        const validationMessage = this.dialogContainer.querySelector('.name-validation-message');
 
-            radioButtons.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    this.useNewItem = e.target.value === 'new';
-                    newNameContainer.style.display = this.useNewItem ? 'block' : 'none';
-                    if (!this.useNewItem) {
-                        validationMessage.textContent = '';
-                        newNameInput.value = '';
-                    }
-                });
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.useNewItem = e.target.value === 'new';
+                if (this.useNewItem) {
+                    newNameContainer.classList.add('visible');
+                } else {
+                    newNameContainer.classList.remove('visible');
+                    validationMessage.textContent = '';
+                    newNameInput.value = '';
+                }
             });
+        });
 
-            if (newNameInput) {
-                newNameInput.addEventListener('input', async () => {
-                    const name = newNameInput.value.trim();
-                    const isValid = await this.options.validateNewName(name);
-                    validationMessage.textContent = isValid ? '' : 'This name is not available';
-                    validationMessage.style.color = isValid ? 'green' : 'red';
-                    importBtn.disabled = this.useNewItem && !isValid;
-                });
-            }
+        if (newNameInput) {
+            newNameInput.addEventListener('input', async () => {
+                const name = newNameInput.value.trim();
+                const isValid = await this.options.validateNewName(name);
+                validationMessage.textContent = isValid ? '' : 'This name is not available';
+                validationMessage.style.color = isValid ? 'green' : 'red';
+                importBtn.disabled = this.useNewItem && !isValid;
+            });
         }
     }
 
