@@ -139,30 +139,41 @@
 /* Batch choice header */
 #batch-choice .batch-choice-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
 }
 
 #batch-choice .batch-choice-header > div {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 12px;
     width: 100%;
+}
+
+/* Radio group container */
+#batch-choice .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-bottom: 16px;
 }
 
 /* Select all container */
 #batch-choice .select-all-container {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     cursor: pointer;
     font-size: 14px;
     color: #ddd;
-    width: 70px;
-    flex-shrink: 0;
-    min-height: 36px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    margin-bottom: 12px;
 }
 
 #batch-choice .select-all-checkbox {
@@ -176,19 +187,50 @@
 #batch-choice .radio-container {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     cursor: pointer;
     font-size: 14px;
     color: #ddd;
-    padding: 4px 8px;
+    padding: 6px 8px;
     margin: 0;
-    width: 22%;
+    width: auto;
     min-height: 36px;
+    position: relative;
+}
+
+#batch-choice .radio-container input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #888;
+    border-radius: 50%;
+    outline: none;
+    margin: 0;
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+#batch-choice .radio-container input[type="radio"]:checked {
+    border-color: #8ab4f8;
+}
+
+#batch-choice .radio-container input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #8ab4f8;
 }
 
 #batch-choice .radio-group {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 8px;
     padding: 4px 8px;
     border-radius: 6px;
@@ -289,17 +331,18 @@
 
 /* Button styles */
 #batch-choice .import-btn {
-    background: #878f97;
-    color: #fff;
+    background: #8ab4f8;
+    color: #202124;
     border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 8px 16px;
+    border-radius: 4px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s ease;
     min-height: 36px;
     min-width: 36px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 #batch-choice .import-btn:disabled {
@@ -309,22 +352,24 @@
 }
 
 #simple-choice .import-btn {
-    background: #0066cc;
-    color: #fff;
+    background: #8ab4f8;
+    color: #202124;
     border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 8px 16px;
+    border-radius: 4px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     min-height: 36px;
     min-width: 36px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 #batch-choice .import-btn:hover,
 #simple-choice .import-btn:hover {
-    background: #0052a3;
+    background: #a1c4f7;
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
 }
 
 #batch-choice .import-btn:active {

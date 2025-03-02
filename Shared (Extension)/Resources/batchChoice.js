@@ -105,8 +105,10 @@ class BatchChoice {
                                 <label class="radio-container">
                                     <input type="radio" name="target-type" value="new" ${!this.options.hasCurrent || this.useNewItem ? 'checked' : ''}>
                                     <span>In a new ` + this.options.existingDescriptor +  `</span>
-                                    <input type="text" class="new-name-input" placeholder="Enter name...">
                                 </label>
+                                <div class="new-name-container ${!this.options.hasCurrent || this.useNewItem ? 'visible' : ''}">
+                                    <input type="text" class="new-name-input" placeholder="Enter name...">
+                                </div>
                             </div>
                             <div class="name-validation-message"></div>
                         </div>
@@ -154,6 +156,7 @@ class BatchChoice {
                 this.useNewItem = e.target.value === 'new';
                 if (this.useNewItem) {
                     newNameContainer.classList.add('visible');
+                    setTimeout(() => newNameInput.focus(), 50);
                 } else {
                     newNameContainer.classList.remove('visible');
                     validationMessage.textContent = '';
@@ -161,6 +164,13 @@ class BatchChoice {
                 }
             });
         });
+        
+        // Add touch-friendly event handling for iOS
+        if (newNameInput) {
+            newNameInput.addEventListener('touchstart', (e) => {
+                e.stopPropagation();
+            });
+        }
 
         if (newNameInput) {
             newNameInput.addEventListener('input', async () => {

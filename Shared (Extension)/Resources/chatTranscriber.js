@@ -69,6 +69,7 @@ class ChatTranscriber {
     }
 
     createDialog() {
+        if (!document.body) return;
         this.batchChoice.createDialog();
     }
 
