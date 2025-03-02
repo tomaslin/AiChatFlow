@@ -32,7 +32,7 @@ class FileActionUI {
     createActionButton(action, title) {
         const button = document.createElement('button');
         button.className = `file-action-btn ${action}-btn`;
-        button.title = title;
+        button.dataset.tooltip = title;
         button.innerHTML = FileActionUI.icons[action];
         return button;
     }
