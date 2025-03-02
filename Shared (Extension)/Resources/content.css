@@ -1,10 +1,10 @@
 /* Base editor styles */
 #ai-chat-flow-editor {
     position: fixed;
-    top: 0;
+    top: 64px;
     right: 0;
     width: 50%;
-    height: 100vh;
+    height: calc(100vh-80px);
     background: #2e2e2e;
     border-left: 1px solid #444;
     box-shadow: -2px 0 8px rgba(0,0,0,0.5);
@@ -54,7 +54,8 @@
 }
 
 #ai-chat-flow-editor.minimized {
-    height: 30vh !important;
+    height: 60px !important;
+    width: 132px !important;
     position: fixed;
     right: 20px;
     bottom: 20px;
@@ -188,24 +189,6 @@
     padding-bottom: 5px;
     background: #1e1e1e;
     display: none;
-}
-
-.file-list-container::-webkit-scrollbar {
-    width: 8px;
-    background-color: #2e2e2e;
-}
-
-.file-list-container::-webkit-scrollbar-thumb {
-    background-color: #666;
-    border-radius: 4px;
-}
-
-.file-list-container::-webkit-scrollbar-thumb:hover {
-    background-color: #888;
-}
-
-.file-list-container::-webkit-scrollbar-track {
-    background-color: #2e2e2e;
 }
 
 .file-list {
