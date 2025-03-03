@@ -63,6 +63,12 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     overflow: hidden;
 }
+
+#ai-chat-flow-editor.minimized.showFiles{
+    height: calc(15vh + 52px) !important;
+    width: 300px !important;
+}
+
 #ai-chat-flow-editor.minimized .tab-container {
     display: none !important;
 }
@@ -79,6 +85,10 @@
 }
 
 #ai-chat-flow-editor.showFiles .file-list-container {
+    display: block;
+}
+
+#ai-chat-flow-editor.minimized.showFiles .file-list-container {
     display: block;
 }
 

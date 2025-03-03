@@ -3,7 +3,7 @@ class FileActionUI {
     constructor(fileManager) {
         this.fileManager = fileManager;
     }
-
+    
     // SVG icons for file actions
     static get icons() {
         return {
@@ -28,7 +28,8 @@ class FileActionUI {
     // Create a file action button with tooltip
     createActionButton(action, title) {
         const button = document.createElement('button');
-        button.className = `file-action-btn ${action}-btn`;
+        const fileButtons = ['download', 'rename', 'delete'];
+        button.className = `file-action-btn ${action}-btn ${fileButtons.includes(action) ? 'file-button' :''}`;
         button.title = title;
         button.innerHTML = FileActionUI.icons[action];
         return button;
