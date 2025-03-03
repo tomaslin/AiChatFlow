@@ -8,11 +8,25 @@ class FileManager {
                 this.createTab(event.detail.fileName);
             }
         });
+
+        window.addEventListener('focus', () => {
+            this.refreshFromStorage();
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                this.refreshFromStorage();
+            }
+        });
         
         this.loadFromStorage();
     }
 
     async loadFromStorage() {
+        await this.refreshFromStorage();
+    }
+
+    async refreshFromStorage() {
         await this.fileActions.loadFromStorage();
         this.updateFileList();
         
