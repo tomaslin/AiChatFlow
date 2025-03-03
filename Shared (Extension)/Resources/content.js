@@ -24,38 +24,14 @@ function initializeProvider() {
     }
 
     if (window.location.hostname === 'grok.com' && !aiProvider) {
-        
-        styleSheet.textContent = `
-        .ai-chat-flow-minimize-icon {
-            top: 8px !important;
-            right: ${isIPhone ? '175px' : '135px'} !important;
-        }
-        `;
-
         aiProvider = new GrokProvider();
     }
 
     if (window.location.hostname === 'chat.deepseek.com' && !aiProvider) {
-        
-        styleSheet.textContent = `
-        .ai-chat-flow-minimize-icon {
-            top: 8px !important;
-            right: ${isIPhone ? '175px' : '135px'} !important;
-        }
-        `;
-
         aiProvider = new DeepseekProvider();
     }
 
     if (window.location.hostname === 'copilot.microsoft.com' && !aiProvider) {
-        
-        styleSheet.textContent = `
-        .ai-chat-flow-minimize-icon {
-            top: 8px !important;
-            right: ${isIPhone ? '175px' : '135px'} !important;
-        }
-        `;
-
         aiProvider = new CopilotProvider();
     }
     
@@ -63,10 +39,10 @@ function initializeProvider() {
         styleSheet.textContent += `
         #ai-chat-flow-editor {
             width: 100%;
+            height: 75%;
         }
         `;
     }
-
 
     document.head.appendChild(styleSheet);
 
