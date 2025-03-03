@@ -6,7 +6,7 @@ class BatchChoice {
         this.options = {
             title: options.title || 'Select Items',
             buttonLabel: options.buttonText || 'Import Selected',
-            descriptor: options.existingDescriptor || 'file',
+            descriptor: options.descriptor || 'file',
             loadItems: options.loadItems || (() => []),
             onSelect: options.onSelect || (() => {}),
             emptyMessage: options.emptyMessage || 'No items found',
@@ -16,6 +16,7 @@ class BatchChoice {
             showModeSelector: options.showModeSelector || false,
             modes: options.modes || [],
             validateNewName: options.validateNewName || (() => true),
+            requireNewName: options.requireNewName ?? true,
             hasCurrent: options.hasCurrent || false
         }
         
@@ -91,6 +92,12 @@ class BatchChoice {
                 </label>
             </div>` : '';
 
+        const newNameInput = this.options.requireNewName ? `
+            <div class="new-name-container ${this.useNewItem ? 'visible' : ''}">
+                <input type="text" class="new-name-input" placeholder="Enter name...">
+            </div>
+        ` : '';
+
         const radioGroupHTML = this.options.hasCurrent ? `
             <label class="radio-container">
                 <input type="radio" name="target-type" value="current" ${!this.useNewItem ? 'checked' : ''}>
@@ -99,13 +106,11 @@ class BatchChoice {
             <label class="radio-container">
                 <input type="radio" name="target-type" value="new" ${this.useNewItem ? 'checked' : ''}>
                 <span>In a new ${this.options.descriptor}</span>
-                <div class="new-name-container ${this.useNewItem ? 'visible' : ''}">
-                    <input type="text" class="new-name-input" placeholder="Enter name...">
-                </div>
+                ${newNameInput}
             </label>` : `
             <div class="new-name-container visible">
                 <label class="input-label">In a new ${this.options.descriptor}</label>
-                <input type="text" class="new-name-input" placeholder="Enter name...">
+                ${this.options.requireNewName ? `<input type="text" class="new-name-input" placeholder="Enter name...">` : ''}
             </div>`;
 
         return `
@@ -258,7 +263,7 @@ class BatchChoice {
         const selectedMode = modeSelector ? modeSelector.value : null;
         
         let newName = null;
-        if (this.useNewItem || !this.options.hasCurrent) {
+        if ((this.useNewItem || !this.options.hasCurrent)) {
             const newNameInput = this.dialogContainer.querySelector('.new-name-input');
             if (newNameInput) {
                 newName = newNameInput.value.trim();
