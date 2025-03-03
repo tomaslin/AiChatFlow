@@ -54,8 +54,8 @@
 }
 
 #ai-chat-flow-editor.minimized {
-    height: 60px !important;
-    width: 132px !important;
+    height: 52px !important;
+    width: 128px !important;
     position: fixed;
     right: 20px;
     bottom: 20px;
@@ -78,7 +78,6 @@
     width: auto;
 }
 
-#ai-chat-flow-editor.minimized .file-list-container,
 #ai-chat-flow-editor.showFiles .file-list-container {
     display: block;
 }
@@ -86,6 +85,15 @@
 #ai-chat-flow-editor.minimized .file-list-container {
     height: 100% !important;
 }
+
+#ai-chat-flow-editor.minimized .file-button {
+    display:none;
+}
+
+#ai-chat-flow-editor.minimized .file-list-container {
+    display:none;
+}
+
 
 #ai-chat-flow-editor .file-list-container .more{
     height: calc(40vh-50px) !important;

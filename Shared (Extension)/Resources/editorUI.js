@@ -36,7 +36,43 @@ async function createEditorUI() {
         "caret_up": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"M8 12l-6-6h12z\"/></svg>",
         "transcribe_chat": `<svg width="24" height="24" viewBox="0 0 16 16"><path fill="currentColor" d="M15 8l-3-3v2h-5v2h5v2l3-3zM8 2H2v12h6v-3h-2v1H4v-8h2v1h2V2z"/></svg>`
     };
-    editorContainer.innerHTML = `<div class="editor-header"><div class="editor-top-bar"><div class="toolbar"><button id="transcribe-chat-btn" class="toolbar-btn" title="Transcribe From Chat">${icons.transcribe_chat}</button><button id="new-file-btn" class="toolbar-btn" title="New File">${icons.new_file}</button><button id="import-file-btn" class="toolbar-btn" title="Import File">${icons.import_file}</button><button id="download-all-btn" class="toolbar-btn" title="Download All">${icons.download_all}</button></div><div style="flex: 1"></div><button class="ai-chat-flow-minimize-btn" title="Minimize">${icons.chat}</button></div><input type="file" id="file-input" multiple style="display: none"><div class="file-list-container"><div class="file-list"></div></div></div><div class="tab-container"><div class="tab-list"></div><div class="editor-content"><div class="welcome-message"><p>No file selected. Please create a new one or select an existing one.</p></div></div></div>`;
+    const editorTemplate = {
+        toolbar: `
+            <div class="toolbar">
+                <button id="transcribe-chat-btn" class="toolbar-btn" title="Transcribe From Chat">${icons.transcribe_chat}</button>
+                <button id="new-file-btn" class="toolbar-btn file-button" title="New File">${icons.new_file}</button>
+                <button id="import-file-btn" class="toolbar-btn file-button" title="Import File">${icons.import_file}</button>
+                <button id="download-all-btn" class="toolbar-btn file-button" title="Download All">${icons.download_all}</button>
+            </div>
+        `,
+        header: function() {
+            return `
+                <div class="editor-header">
+                    <div class="editor-top-bar">
+                        ${this.toolbar}
+                        <div style="flex: 1"></div>
+                        <button class="ai-chat-flow-minimize-btn" title="Minimize">${icons.chat}</button>
+                    </div>
+                    <input type="file" id="file-input" multiple style="display: none">
+                    <div class="file-list-container">
+                        <div class="file-list"></div>
+                    </div>
+                </div>
+            `;
+        },
+        content: `
+            <div class="tab-container">
+                <div class="tab-list"></div>
+                <div class="editor-content">
+                    <div class="welcome-message">
+                        <p>No file selected. Please create a new one or select an existing one.</p>
+                    </div>
+                </div>
+            </div>
+        `
+    };
+
+    editorContainer.innerHTML = editorTemplate.header() + editorTemplate.content;
     document.body.appendChild(editorContainer);
     const minimizeBtn = editorContainer.querySelector('.ai-chat-flow-minimize-btn');
     if (minimizeBtn) {

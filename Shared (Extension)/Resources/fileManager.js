@@ -176,8 +176,14 @@ class FileManager {
         const tabList = document.querySelector('.tab-list');
         const hasOpenTabs = tabList && tabList.children.length > 0;
 
-        if (this.fileActions.files.size === 0 || (!name && !hasOpenTabs)) {
-            await setShowMoreFilesState(true);
+        if (!hasOpenTabs || !name) {
+            editorContent.innerHTML = `
+                <div class="welcome-message">
+                    <h2>No file selected.</h2>
+                    <p>Please create a new one by clicking on the '+'.</p>
+                    <p>You can also import a new file or select an existing one in the list. </p>
+                </div>`;
+            await setShowFilesState(true);
             const fileListContainer = document.querySelector('.file-list-container');
             if (fileListContainer) {
                 fileListContainer.style.display = '';
@@ -196,14 +202,7 @@ class FileManager {
             item.classList.toggle('active', fileName === name);
         });
         
-        if (this.fileActions.files.size === 0 || (!name && !hasOpenTabs)) {
-            editorContent.innerHTML = `
-                <div class="welcome-message">
-                    <h2>No file selected.</h2>
-                    <p>Please create a new one by clicking on the '+'.</p>
-                    <p>You can also import a new file or select an existing one in the list. </p>
-                </div>`;
-        } else {
+        if (name && hasOpenTabs) {
             if (name) {
                 const existingTab = Array.from(document.querySelectorAll('.tab')).find(tab => 
                     tab.querySelector('.tab-name').textContent === name
