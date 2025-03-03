@@ -258,7 +258,7 @@ class BatchChoice {
         const selectedMode = modeSelector ? modeSelector.value : null;
         
         let newName = null;
-        if (this.useNewItem) {
+        if (this.useNewItem || !this.options.hasCurrent) {
             const newNameInput = this.dialogContainer.querySelector('.new-name-input');
             if (newNameInput) {
                 newName = newNameInput.value.trim();
@@ -274,7 +274,7 @@ class BatchChoice {
             this.savePreferences(selectAllCheckbox.checked, selectedMode, this.useNewItem);
         }
         
-        this.options.onSelect(selectedItems, selectedMode, this.useNewItem, newName);
+        this.options.onSelect(selectedItems, selectedMode, this.options.hasCurrent ? this.useNewItem : true, newName);
         this.closeDialog();
     }
 
