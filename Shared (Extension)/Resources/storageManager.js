@@ -169,10 +169,6 @@ class StorageManager {
             // Save content
             await this.setInStore('files', name, content);
 
-            // Notify other windows about the file change
-            if (window.syncManager) {
-                window.syncManager.broadcastChange('fileContent', { fileName: name, content });
-            }
         } catch (error) {
             console.error('Error saving file:', error);
             throw new Error(`Failed to save file "${name}": ${error.message}`);

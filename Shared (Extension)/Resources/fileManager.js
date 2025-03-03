@@ -93,9 +93,6 @@ class FileManager {
             this.updateFileList();
             this.createTab(name);
             this.setActiveFile(name);
-            if (window.syncManager) {
-                window.syncManager.broadcastChange('fileOperation', { operation: 'create', fileName: name, content });
-            }
         }
         return success;
     }
@@ -154,9 +151,6 @@ class FileManager {
     updateFile(name, content) {
         this.fileActions.files.set(name, content);
         this.saveToStorage();
-        if (window.syncManager) {
-            window.syncManager.broadcastChange('fileContent', { fileName: name, content });
-        }
     }
 
     async renameFile(oldName, newName) {
@@ -168,13 +162,6 @@ class FileManager {
             if (existingTab) {
                 existingTab.querySelector('.tab-name').textContent = newName;
             }
-            if (window.syncManager) {
-                await window.syncManager.broadcastChange('fileOperation', { 
-                    operation: 'rename', 
-                    fileName: oldName, 
-                    newFileName: newName 
-                });
-            }
             this.updateFileList();
         }
         return success;
@@ -183,9 +170,6 @@ class FileManager {
     async setActiveFile(name) {
         this.fileActions.setActiveFile(name);
         const content = this.fileActions.getFileContent(name);
-        if (window.syncManager) {
-            window.syncManager.broadcastChange('tabSelection', { fileName: name });
-        }
         const editorContent = document.querySelector('.editor-content');
         const tabList = document.querySelector('.tab-list');
         const hasOpenTabs = tabList && tabList.children.length > 0;

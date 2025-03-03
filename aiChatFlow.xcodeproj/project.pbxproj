@@ -135,7 +135,6 @@
 				Resources/promptPlayer.js,
 				Resources/simpleChoice.js,
 				Resources/storageManager.js,
-				Resources/syncmanager.js,
 				Resources/zipManager.js,
 				SafariWebExtensionHandler.swift,
 			);
@@ -170,7 +169,6 @@
 				Resources/promptPlayer.js,
 				Resources/simpleChoice.js,
 				Resources/storageManager.js,
-				Resources/syncmanager.js,
 				Resources/zipManager.js,
 				SafariWebExtensionHandler.swift,
 			);
