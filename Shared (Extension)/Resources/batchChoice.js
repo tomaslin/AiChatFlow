@@ -5,8 +5,8 @@ class BatchChoice {
         this.type = options.type || 'default';
         this.options = {
             title: options.title || 'Select Items',
-            buttonText: options.buttonText || 'Import Selected',
-            existingDescriptor: options.existingDescriptor || 'file',
+            buttonLabel: options.buttonText || 'Import Selected',
+            descriptor: options.existingDescriptor || 'file',
             loadItems: options.loadItems || (() => []),
             onSelect: options.onSelect || (() => {}),
             emptyMessage: options.emptyMessage || 'No items found',
@@ -19,7 +19,6 @@ class BatchChoice {
             hasCurrent: options.hasCurrent || false
         }
         
-        // Load saved preferences if type is specified
         this.prefsLoaded = Promise.resolve();
         if (this.type === 'runner' || this.type === 'importer') {
             this.prefsLoaded = this.loadPreferences();
@@ -31,18 +30,13 @@ class BatchChoice {
         return new Promise(async resolve => {
             const prefs = await storageMethod.call(StorageManager);
             if (prefs) {
-                if (prefs.selectAll !== undefined) {
-                    this.options.selectAllByDefault = prefs.selectAll;
-                }
+                this.options.selectAllByDefault = prefs.selectAll !== undefined ? prefs.selectAll : this.options.selectAllByDefault;
                 if (prefs.selectedMode && this.options.showModeSelector) {
-                    // Update default mode in modes array
                     this.options.modes.forEach(mode => {
                         mode.default = (mode.value === prefs.selectedMode);
                     });
                 }
-                if (prefs.useNewItem !== undefined) {
-                    this.useNewItem = prefs.useNewItem;
-                }
+                this.useNewItem = prefs.useNewItem !== undefined ? prefs.useNewItem : this.useNewItem;
             }
             resolve();
         });
@@ -52,30 +46,23 @@ class BatchChoice {
         if (this.type !== 'runner' && this.type !== 'importer') return;
         
         const prefs = { selectAll };
-        
         if (selectedMode && this.options.showModeSelector) {
             prefs.selectedMode = selectedMode;
         }
-
-        if (useNewItem !== undefined) {
+        if (useNewItem !== undefined && this.options.hasCurrent) {
             prefs.useNewItem = useNewItem;
         }
         
-        if (this.type === 'runner') {
-            StorageManager.setpromptPlayerPrefs(prefs);
-        } else {
-            StorageManager.setChatTranscriberPrefs(prefs);
-        }
+        const storageMethod = this.type === 'runner' ? StorageManager.setpromptPlayerPrefs : StorageManager.setChatTranscriberPrefs;
+        storageMethod(prefs);
     }
     
     async createDialog() {
-        // Wait for preferences to be loaded before creating the dialog
         await this.prefsLoaded;
         
-        // Check if there are items to display
         const items = await this.options.loadItems();
         if (items.length === 0) {
-            alert(this.options.emptyMessage || 'No items found');
+            alert(this.options.emptyMessage);
             return;
         }
         
@@ -83,7 +70,45 @@ class BatchChoice {
         this.dialogContainer = document.createElement('div');
         this.dialogContainer.className = 'modal-overlay';
         this.dialogContainer.id = 'batch-choice';
-        this.dialogContainer.innerHTML = `
+        this.dialogContainer.innerHTML = this.getDialogHTML();
+        document.body.appendChild(this.dialogContainer);
+        this.setupEventListeners();
+        this.loadItems();
+    }
+
+    getDialogHTML() {
+        const modeSelectorHTML = this.options.showModeSelector ? `
+            <div class="import-mode-section">
+                <label class="import-mode-label">
+                    <span>Copy over:</span>
+                    <select id="import-mode" class="import-mode-select">
+                        ${this.options.modes.map(mode => `
+                            <option value="${mode.value}" ${mode.default ? 'selected' : ''}>
+                                ${mode.label}
+                            </option>
+                        `).join('')}
+                    </select>
+                </label>
+            </div>` : '';
+
+        const radioGroupHTML = this.options.hasCurrent ? `
+            <label class="radio-container">
+                <input type="radio" name="target-type" value="current" ${!this.useNewItem ? 'checked' : ''}>
+                <span>In open ${this.options.descriptor}</span>
+            </label>
+            <label class="radio-container">
+                <input type="radio" name="target-type" value="new" ${this.useNewItem ? 'checked' : ''}>
+                <span>In a new ${this.options.descriptor}</span>
+                <div class="new-name-container ${this.useNewItem ? 'visible' : ''}">
+                    <input type="text" class="new-name-input" placeholder="Enter name...">
+                </div>
+            </label>` : `
+            <div class="new-name-container visible">
+                <label class="input-label">In a new ${this.options.descriptor}</label>
+                <input type="text" class="new-name-input" placeholder="Enter name...">
+            </div>`;
+
+        return `
             <div class="modal-dialog">
                 <div class="modal-header">
                     <div class="header-content">
@@ -91,56 +116,26 @@ class BatchChoice {
                         <button class="modal-close-btn">×</button>
                     </div>
                 </div>
-                 ${this.options.showModeSelector ? `
-                <div class="import-mode-section">
-                    <label class="import-mode-label">
-                        <span>Copy over:</span>
-                        <select id="import-mode" class="import-mode-select">
-                            ${this.options.modes.map(mode => `
-                                <option value="${mode.value}" ${mode.default ? 'selected' : ''}>
-                                    ${mode.label}
-                                </option>
-                            `).join('')}
-                        </select>
-                    </label>
-                </div>
-                ` : ''}
+                ${modeSelectorHTML}
                 <div class="batch-choice-options">
                     <div class="batch-choice-header">
                         <div>
                             <div class="radio-group">
-                                ${this.options.hasCurrent ? `
-                                <label class="radio-container">
-                                    <input type="radio" name="target-type" value="current" ${!this.useNewItem ? 'checked' : ''}>
-                                    <span>In open ${this.options.existingDescriptor}</span>
-                                </label>
-                                ` : ''}
-                                <label class="radio-container">
-                                    <input type="radio" name="target-type" value="new" ${!this.options.hasCurrent || this.useNewItem ? 'checked' : ''}>
-                                    <span>In a new ${this.options.existingDescriptor}</span>
-                                </label>
-                                <div class="new-name-container ${!this.options.hasCurrent || this.useNewItem ? 'visible' : ''}">
-                                    <input type="text" class="new-name-input" placeholder="Enter name...">
-                                </div>
+                                ${radioGroupHTML}
+                                <div class="name-validation-message"></div>
                             </div>
-                            <div class="name-validation-message"></div>
                         </div>
                     </div>
                 </div>
-
                 <div class="select-all-container">
-                <input type="checkbox" class="select-all-checkbox">
-                <span>Select All</span>
+                    <input type="checkbox" class="select-all-checkbox">
+                    <span>Select All</span>
                 </div>
                 <div class="batch-items-list"></div>
                 <div class="modal-footer model-content">
-                    <button class="import-btn">${this.options.buttonText}</button>
+                    <button class="import-btn">${this.options.buttonLabel}</button>
                 </div>
-            </div>
-        `;
-        document.body.appendChild(this.dialogContainer);
-        this.setupEventListeners();
-        this.loadItems();
+            </div>`;
     }
 
     closeDialog() {
@@ -182,15 +177,12 @@ class BatchChoice {
                 }
             });
         });
-        
-        // Add touch-friendly event handling for iOS
+
         if (newNameInput) {
             newNameInput.addEventListener('touchstart', (e) => {
                 e.stopPropagation();
             });
-        }
 
-        if (newNameInput) {
             newNameInput.addEventListener('input', async () => {
                 const name = newNameInput.value.trim();
                 const isValid = await this.options.validateNewName(name);
@@ -217,11 +209,9 @@ class BatchChoice {
             </div>
         `).join('');
 
-        // Set the select all checkbox state and initialize selectedItems
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
         if (this.options.selectAllByDefault) {
             selectAllCheckbox.checked = true;
-            // Add all items to selectedItems
             items.forEach((_, index) => this.selectedItems.add(index));
         }
 
@@ -238,7 +228,6 @@ class BatchChoice {
     }
 
     defaultRenderItem(item) {
-        // Use arrow function to preserve 'this' context
         return `
             <div class="item-preview">
                 <div class="item-title">${this.truncateText(item.title || '', this.options.truncateLength.title)}</div>
@@ -279,11 +268,8 @@ class BatchChoice {
                 }
             }
         }
-        
-        // Save user preferences if type is specified
-        // Only save preferences when user explicitly clicks the OK button
-        // Preferences are not saved when dialog is closed via X button or clicking outside
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
+        
         if (this.type === 'runner' || this.type === 'importer') {
             this.savePreferences(selectAllCheckbox.checked, selectedMode, this.useNewItem);
         }

@@ -7,8 +7,8 @@ class PromptPlayer {
         this.batchChoice = new BatchChoice({
             type: 'player',
             title: 'Run prompts',
-            buttonText: 'Run Selected',
-            existingDescriptor: 'chat',
+            buttonLabel: 'Run Selected',
+            descriptor: 'chat',
             hasCurrent: () => true,
             emptyMessage: 'No prompts to play',
             validateNewName: async (name) => {

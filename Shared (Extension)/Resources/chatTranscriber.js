@@ -5,12 +5,12 @@ class ChatTranscriber {
             this.separator = separator;
         });
         this.onAddFile = options.onAddFile || ((name, content) => {});
-        this.hasCurrent = typeof options.hasCurrent === 'function' ? options.hasCurrent : () => true;
+        this.hasCurrent = options.hasCurrent || false;
         
         this.batchChoice = new BatchChoice({
             type: 'importer',
             title: 'Transcribe from Chat',
-            buttonText: 'Import Selected',
+            buttonLabel: 'Import Selected',
             showModeSelector: true,
             hasCurrent: this.hasCurrent,
             validateNewName: async (name) => {
