@@ -216,28 +216,19 @@
     box-shadow: none;
 }
 
-.file-item:hover:not(.active) {
-    background: #3a3a3a;
-}
-
-.file-item:active:not(.active) {
-    background: #3a3a3a;
-    transform: none;
-}
-
 .file-name {
     flex: 1;
-    color: #ccc;
     margin-right: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 14px;
+    color: #fff;
+    font-size: 15px;
 }
 
 .file-actions {
     display: flex;
-    gap: 1px;
+    gap: 2px;
 }
 
 .file-action-btn {
@@ -258,21 +249,6 @@
 .file-item:active:not(.active) {
     background: #454545;
     transform: translateY(1px);
-}
-
-.file-name {
-    flex: 1;
-    color: #fff;
-    margin-right: 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 15px;
-}
-
-.file-actions {
-    display: flex;
-    gap: 2px;
 }
 
 /* Tab styles */

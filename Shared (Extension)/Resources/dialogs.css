@@ -193,17 +193,6 @@
     background: rgba(255, 255, 255, 0.05);
 }
 
-#batch-choice .item-checkbox-container {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    gap: 8px;
-    cursor: pointer;
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 36px;
-}
-
 #batch-choice .item-checkbox,
 #batch-choice .select-all-checkbox {
     margin: 0;
@@ -284,13 +273,6 @@
     margin: 0 -8px;
     padding: 0 8px;
     margin-bottom: 12px;
-}
-
-#batch-choice .batch-item {
-    margin-bottom: 8px;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.05);
-    transition: background 0.2s ease;
 }
 
 #batch-choice .item-checkbox-container {
