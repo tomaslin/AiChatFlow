@@ -200,7 +200,17 @@ async function createEditorUI() {
         updateFileListVisibility(),
         updateMinimizedState()
     ]);
-    
+
+    // Add visibilitychange event listener
+    document.addEventListener('visibilitychange', async () => {
+        if (document.visibilityState === 'visible') {
+            await Promise.all([
+                updateFileListVisibility(),
+                updateMinimizedState()
+            ]);
+        }
+    });
+
     const setupFileHandlers = () => {
         const elements = {
             transcribeChatBtn: document.getElementById('transcribe-chat-btn'),
