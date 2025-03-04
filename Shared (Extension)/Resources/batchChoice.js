@@ -127,7 +127,6 @@ class BatchChoice {
                         <div>
                             <div class="radio-group">
                                 ${radioGroupHTML}
-                                <div class="name-validation-message"></div>
                             </div>
                         </div>
                     </div>
@@ -138,6 +137,7 @@ class BatchChoice {
                 </div>
                 <div class="batch-items-list"></div>
                 <div class="modal-footer model-content">
+                    <div class="status-message"></div>
                     <button class="import-btn">${this.options.buttonLabel}</button>
                 </div>
             </div>`;
@@ -149,6 +149,33 @@ class BatchChoice {
             this.dialogContainer = null;
             this.selectedItems.clear();
         }
+    }
+
+    async validateDialogState() {
+        const importBtn = this.dialogContainer.querySelector('.import-btn');
+        const statusMessage = this.dialogContainer.querySelector('.status-message');
+        const newNameInput = this.dialogContainer.querySelector('.new-name-input');
+    
+        const hasSelectedItems = this.selectedItems.size > 0;
+        let isValid = hasSelectedItems;
+        let statusText = '';
+    
+        if (!hasSelectedItems) {
+            statusText = 'No items selected';
+        } else if (this.useNewItem && newNameInput) {
+            const name = newNameInput.value.trim();
+            const isNameValid = await this.options.validateNewName(name);
+            isValid = isNameValid;
+            
+            if (!isNameValid) {
+                statusText = 'Please enter a valid name - this name is not available';
+            }
+        }
+    
+        importBtn.disabled = !isValid;
+        statusMessage.textContent = statusText;
+    
+        return isValid;
     }
 
     setupEventListeners() {
@@ -163,48 +190,43 @@ class BatchChoice {
                 this.closeDialog();
             }
         });
-
+    
         const radioButtons = this.dialogContainer.querySelectorAll('input[name="target-type"]');
         const newNameContainer = this.dialogContainer.querySelector('.new-name-container');
         const newNameInput = this.dialogContainer.querySelector('.new-name-input');
-        const validationMessage = this.dialogContainer.querySelector('.name-validation-message');
-
+    
         radioButtons.forEach(radio => {
-            radio.addEventListener('change', (e) => {
+            radio.addEventListener('change', async (e) => {
                 this.useNewItem = e.target.value === 'new';
                 if (this.useNewItem) {
                     newNameContainer.classList.add('visible');
                     setTimeout(() => newNameInput.focus(), 50);
                 } else {
                     newNameContainer.classList.remove('visible');
-                    validationMessage.textContent = '';
                     newNameInput.value = '';
                 }
+                await this.validateDialogState();
             });
         });
-
+    
         if (newNameInput) {
             newNameInput.addEventListener('touchstart', (e) => {
                 e.stopPropagation();
             });
-
-            newNameInput.addEventListener('input', async () => {
-                const name = newNameInput.value.trim();
-                const isValid = await this.options.validateNewName(name);
-                validationMessage.textContent = isValid ? '' : 'This name is not available';
-                validationMessage.style.color = isValid ? 'green' : 'red';
-                importBtn.disabled = this.useNewItem && !isValid;
-            });
+    
+            newNameInput.addEventListener('input', () => this.validateDialogState());
         }
     }
 
     async loadItems() {
         const itemsList = this.dialogContainer.querySelector('.batch-items-list');
         const items = await this.options.loadItems();
+    
         if (items.length === 0) {
             itemsList.innerHTML = '<div class="no-items">No items found</div>';
             return;
         }
+    
         itemsList.innerHTML = items.map((item, index) => `
             <div class="batch-item">
                 <label class="item-checkbox-container">
@@ -213,13 +235,13 @@ class BatchChoice {
                 </label>
             </div>
         `).join('');
-
+    
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
         if (this.options.selectAllByDefault) {
             selectAllCheckbox.checked = true;
             items.forEach((_, index) => this.selectedItems.add(index));
         }
-
+    
         itemsList.querySelectorAll('.item-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', (e) => {
                 const index = parseInt(e.target.dataset.index);
@@ -228,8 +250,42 @@ class BatchChoice {
                 } else {
                     this.selectedItems.delete(index);
                 }
+                this.validateDialogState();
             });
         });
+    
+        await this.validateDialogState();
+    }
+
+    async handleSelection() {
+        const items = await this.options.loadItems();
+        const isValid = await this.validateDialogState();
+        
+        if (!isValid) return;
+    
+        const selectedItems = Array.from(this.selectedItems)
+            .sort((a, b) => a - b)
+            .map(index => items[index]);
+        
+        const modeSelector = this.dialogContainer.querySelector('.import-mode-select');
+        const selectedMode = modeSelector ? modeSelector.value : null;
+        
+        let newName = null;
+        if ((this.useNewItem || !this.options.hasCurrent)) {
+            const newNameInput = this.dialogContainer.querySelector('.new-name-input');
+            if (newNameInput) {
+                newName = newNameInput.value.trim();
+            }
+        }
+    
+        const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
+        
+        if (this.type === 'runner' || this.type === 'importer') {
+            this.savePreferences(selectAllCheckbox.checked, selectedMode, this.useNewItem);
+        }
+        
+        this.options.onSelect(selectedItems, selectedMode, this.options.hasCurrent ? this.useNewItem : true, newName);
+        this.closeDialog();
     }
 
     defaultRenderItem(item) {
@@ -243,6 +299,10 @@ class BatchChoice {
 
     toggleSelectAll(checked) {
         const checkboxes = this.dialogContainer.querySelectorAll('.item-checkbox');
+        const importBtn = this.dialogContainer.querySelector('.import-btn');
+        const statusMessage = this.dialogContainer.querySelector('.status-message');
+        const newNameInput = this.dialogContainer.querySelector('.new-name-input');
+
         checkboxes.forEach((checkbox, index) => {
             checkbox.checked = checked;
             if (checked) {
@@ -251,36 +311,20 @@ class BatchChoice {
                 this.selectedItems.delete(index);
             }
         });
-    }
 
-    async handleSelection() {
-        const items = await this.options.loadItems();
-        const selectedItems = Array.from(this.selectedItems)
-            .sort((a, b) => a - b)
-            .map(index => items[index]);
-        
-        const modeSelector = this.dialogContainer.querySelector('.import-mode-select');
-        const selectedMode = modeSelector ? modeSelector.value : null;
-        
-        let newName = null;
-        if ((this.useNewItem || !this.options.hasCurrent)) {
-            const newNameInput = this.dialogContainer.querySelector('.new-name-input');
-            if (newNameInput) {
-                newName = newNameInput.value.trim();
-                const isValid = await this.options.validateNewName(newName);
-                if (!isValid) {
-                    return;
-                }
-            }
+        if (this.selectedItems.size === 0) {
+            statusMessage.textContent = 'No items selected';
+            importBtn.disabled = true;
+        } else if (this.useNewItem && newNameInput) {
+            const name = newNameInput.value.trim();
+            this.options.validateNewName(name).then(isValid => {
+                importBtn.disabled = !isValid;
+                statusMessage.textContent = !isValid ? 'Please enter a valid name - this name is not available' : '';
+            });
+        } else {
+            statusMessage.textContent = '';
+            importBtn.disabled = false;
         }
-        const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
-        
-        if (this.type === 'runner' || this.type === 'importer') {
-            this.savePreferences(selectAllCheckbox.checked, selectedMode, this.useNewItem);
-        }
-        
-        this.options.onSelect(selectedItems, selectedMode, this.options.hasCurrent ? this.useNewItem : true, newName);
-        this.closeDialog();
     }
 
     truncateText(text, maxLength) {
