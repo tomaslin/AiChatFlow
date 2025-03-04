@@ -156,4 +156,8 @@ class GeminiProvider extends BaseAIProvider {
             return null;
         }
     }
+
+    async newChat() {
+        document.location = 'https://gemini.google.com';
+    }
 }

@@ -12,14 +12,6 @@ function initializeProvider() {
     }
 
     if (window.location.hostname === 'gemini.google.com' && !aiProvider) {
-        
-        styleSheet.textContent = `
-        .ai-chat-flow-minimize-icon {
-            top: 8px !important;
-            right: ${isIPhone ? '175px' : '135px'} !important;
-        }
-        `;
-
         aiProvider = new GeminiProvider();
     }
 
@@ -51,6 +43,7 @@ function initializeProvider() {
             aiProvider.slideContent(isMinimized);
         });
     }
+    aiProvider.runChatBatchIfNeeded();
 }
 
 // Initialize the editor

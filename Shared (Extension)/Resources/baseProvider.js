@@ -80,6 +80,26 @@ class BaseAIProvider {
         }
     }
 
+    async sendBatchToNewChat(messages) {
+        await StorageManager.setChatBatch({
+            provider: this.getType(),
+            messages: messages
+        });
+        await this.newChat();
+    }
+
+    async newChat() {
+        throw new Error('Method not implemented');
+    }
+
+    async runChatBatchIfNeeded(){
+        const batch = await StorageManager.getChatBatch();
+        if(batch && batch.provider === this.getType()){
+            await StorageManager.clearChatBatch();
+            await this.sendBatch(batch.messages);
+        }
+    }
+
     async waitForElement(selector, timeout = 5000) {
         return new Promise((resolve) => {
             if (document.querySelector(selector)) {

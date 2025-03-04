@@ -21,7 +21,11 @@ class PromptPlayer {
             onSelect: (selectedItems, mode, useNewItem, newName) => {
                 if (selectedItems.length > 0 && aiProvider) {
                     const messages = selectedItems.map(item => item.description);
-                    aiProvider.sendBatch(messages, useNewItem, newName);
+                    if(useNewItem){
+                        aiProvider.sendBatchToNewChat(messages);
+                    } else {
+                        aiProvider.sendBatch(messages);
+                    }
                 }
             }
         });

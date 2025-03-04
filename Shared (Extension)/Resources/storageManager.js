@@ -10,6 +10,7 @@ class StorageManager {
         BATCH_SEPARATOR: 'batchSeparator',
         PROMPT_PLAYER_PREFS: 'promptPlayerPrefs',
         CHAT_TRANSCRIBER_PREFS: 'chatTranscriberPrefs',
+        CHAT_BATCH: 'chatBatch',
         getMetaKey: (name) => `ai-chat-flow-meta-${name}`,
         getChunkKey: (name, index) => `ai-chat-flow-chunk-${name}-${index}`
     };
@@ -254,4 +255,16 @@ class StorageManager {
         await this.setInStore('preferences', this.KEYS.CHAT_TRANSCRIBER_PREFS, prefs);
     }
 
+    static async getChatBatch() {
+        const result = await this.getFromStore('preferences', this.KEYS.CHAT_BATCH);
+        return result ? JSON.parse(result) : { provider: null, messages: [] };
+    }
+
+    static async setChatBatch(chatBatch) {
+        await this.setInStore('preferences', this.KEYS.CHAT_BATCH, JSON.stringify(chatBatch));
+    }
+
+    static async clearChatBatch() {
+        await this.setInStore('preferences', this.KEYS.CHAT_BATCH, JSON.stringify({ provider: null, messages: [] }));
+    }
 }

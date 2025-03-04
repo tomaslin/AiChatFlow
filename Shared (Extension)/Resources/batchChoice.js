@@ -5,7 +5,7 @@ class BatchChoice {
         this.type = options.type || 'default';
         this.options = {
             title: options.title || 'Select Items',
-            buttonLabel: options.buttonText || 'Import Selected',
+            buttonLabel: options.buttonLabel || 'Import Selected',
             descriptor: options.descriptor || 'file',
             loadItems: options.loadItems || (() => []),
             onSelect: options.onSelect || (() => {}),
