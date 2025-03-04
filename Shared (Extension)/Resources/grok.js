@@ -28,7 +28,6 @@ class GrokProvider extends BaseAIProvider {
         setTimeout(() => {
             const mainContent = document.querySelector('main');
             if (!mainContent) return;
-
             mainContent.style.marginRight = minimized ? '' : '50%';
             mainContent.style.transition = 'margin-right 0.3s ease';
         }, 500);

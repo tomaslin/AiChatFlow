@@ -1,7 +1,7 @@
 class CopilotProvider extends BaseAIProvider {
     constructor() {
         super();
-        this.mainContentSelector = '.main-container';
+        this.mainContentSelector = '[data-content="conversation"]';
         this.markDownConverter = new MarkDownConverter();
         this.maxWaitTime = 120000;
         this.userMessageSelector = '[data-content="user-message"]';
@@ -26,18 +26,16 @@ class CopilotProvider extends BaseAIProvider {
     slideContent(minimized) {
         setTimeout(() => {
             const mainContent = document.querySelector(this.mainContentSelector);
-            if (!mainContent) return;
-
-            mainContent.style.marginRight = minimized ? '' : '52%';
-            mainContent.style.transition = 'margin-right 0.3s ease';
+            mainContent.style.marginRight = minimized ? '' : '50%';
+            const textArea = document.querySelector(this.textboxSelector);
+            textArea.style.marginRight = minimized ? '' : '50%';
         }, 500);
     }
 
     async getChatMessages() {
         const messages = [];
         const questionEls = document.querySelectorAll(this.userMessageSelector);
-        const answerEls = document.querySelectorAll(this.aiMessageSelector);
-        
+        const answerEls = document.querySelectorAll(this.aiMessageSelector);    
         const count = Math.min(questionEls.length, answerEls.length);
         for (let i = 0; i < count; i++) {
             const message = await this.parsePromptAndResponse(questionEls[i], answerEls[i]);
@@ -45,7 +43,6 @@ class CopilotProvider extends BaseAIProvider {
                 messages.push(message);
             }
         }
-        
         return messages;
     }
 
@@ -102,8 +99,8 @@ class CopilotProvider extends BaseAIProvider {
             const startTime = Date.now();
             const intervalId = setInterval(() => {
                 try {
-                    const containers = this.getMessageContainers();
-                    const currentCount = containers.length;
+                    const aiMessages = document.querySelectorAll(this.aiMessageSelector);
+                    const currentCount = aiMessages.length;
                     if (currentCount > initialContainerCount) {
                         const elements = document.querySelectorAll(this.aiMessageSelector);
                         const aiMessage = elements[elements.length - 1];
@@ -114,7 +111,7 @@ class CopilotProvider extends BaseAIProvider {
                             return;
                         }
                     }
-
+                    
                     if (Date.now() - startTime > this.maxWaitTime) {
                         console.warn('Timed out waiting for request completion');
                         clearInterval(intervalId);
@@ -129,23 +126,8 @@ class CopilotProvider extends BaseAIProvider {
         });
     }
 
-    async waitForRequestCompletion(expectedCount) {
-        return this.waitForCompletion();
-    }
-
-    async retrieveResponse() {
-        try {
-            const containers = this.getMessageContainers();
-            if (containers.length === 0) {
-                return null;
-            }
-
-            const lastContainer = containers[containers.length - 1];
-            return await this.getPromptAndResponse(lastContainer);
-        } catch (error) {
-            console.error('Error retrieving response:', error);
-            return null;
-        }
+    async newChat() {
+        document.location = 'https://copilot.microsoft.com';
     }
 }
 

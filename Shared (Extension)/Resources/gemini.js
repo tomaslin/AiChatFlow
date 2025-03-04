@@ -30,7 +30,6 @@ class GeminiProvider extends BaseAIProvider {
             const mainContent = document.querySelector(this.mainContentSelector);
             if (!mainContent) return;
             mainContent.style.marginRight = minimized ? '' : '52%';
-            mainContent.style.transition = 'margin-right 0.3s ease';
         }, 500);
     }
 
@@ -140,21 +139,6 @@ class GeminiProvider extends BaseAIProvider {
                 }
             }, 1000);
         });
-    }
-
-    async retrieveResponse() {
-        try {
-            const containers = this.getMessageContainers();
-            if (containers.length === 0) {
-                return null;
-            }
-            
-            const lastContainer = containers[containers.length - 1];
-            return await this.getPromptAndResponse(lastContainer);
-        } catch (error) {
-            console.error('Error retrieving response:', error);
-            return null;
-        }
     }
 
     async newChat() {

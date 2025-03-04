@@ -142,10 +142,6 @@ class BaseAIProvider {
         throw new Error('Method not implemented');
     }
     
-    async retrieveResponse() {
-        throw new Error('Method not implemented');
-    }
-
     async getPromptAndResponse(container) {
         throw new Error('Method not implemented');
     }

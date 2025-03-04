@@ -168,7 +168,6 @@ class FileManager {
     }
 
     async setActiveFile(name) {
-        await this.expandEditor();
         this.fileActions.setActiveFile(name);
         const content = this.fileActions.getFileContent(name);
         const editorContent = document.querySelector('.editor-content');

@@ -4,7 +4,7 @@
     top: 64px;
     right: 0;
     width: 50%;
-    height: calc(100vh - 128px) !important;
+    height: calc(100vh - 64px) !important;
     background: #2e2e2e;
     border-left: 1px solid #444;
     box-shadow: -2px 0 8px rgba(0,0,0,0.5);
