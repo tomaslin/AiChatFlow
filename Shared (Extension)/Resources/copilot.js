@@ -4,7 +4,6 @@ class CopilotProvider extends BaseAIProvider {
         this.mainContentSelector = '.main-container';
         this.markDownConverter = new MarkDownConverter();
         this.maxWaitTime = 120000;
-        this.messageContainerSelector = '[data-content="conversation"]';
         this.userMessageSelector = '[data-content="user-message"]';
         this.aiMessageSelector = '[data-content="ai-message"]';
         this.textboxSelector = '#userInput';
@@ -34,20 +33,31 @@ class CopilotProvider extends BaseAIProvider {
         }, 500);
     }
 
-    async getPromptAndResponse(container) {
-        if (!container) return null;
+    async getChatMessages() {
+        const messages = [];
+        const questionEls = document.querySelectorAll(this.userMessageSelector);
+        const answerEls = document.querySelectorAll(this.aiMessageSelector);
+        
+        const count = Math.min(questionEls.length, answerEls.length);
+        for (let i = 0; i < count; i++) {
+            const message = await this.parsePromptAndResponse(questionEls[i], answerEls[i]);
+            if (message) {
+                messages.push(message);
+            }
+        }
+        
+        return messages;
+    }
 
-        const questionEl = container.querySelector(this.userMessageSelector);
-        const answerEl = container.querySelector(this.aiMessageSelector);
-
+    async parsePromptAndResponse(questionEl, answerEl) {
         if (questionEl && answerEl) {
             try {
                 const cleanedHtml = this.markDownConverter.remove(
                     answerEl.innerHTML.trim(),
-                    ['model-thoughts', '.experimental-mode-disclaimer-container', '.stopped-draft-message']
+                    ['.sr-only']
                 );
                 return {
-                    question: questionEl.textContent.trim(),
+                    question: this.markDownConverter.convert(questionEl.textContent.trim()),
                     answer: this.markDownConverter.convert(cleanedHtml)
                 };
             } catch (error) {
@@ -95,21 +105,13 @@ class CopilotProvider extends BaseAIProvider {
                     const containers = this.getMessageContainers();
                     const currentCount = containers.length;
                     if (currentCount > initialContainerCount) {
-                        const lastContainer = containers[containers.length - 1];
-                        if (!lastContainer) {
+                        const elements = document.querySelectorAll(this.aiMessageSelector);
+                        const aiMessage = elements[elements.length - 1];
+                        const willChangeElements = aiMessage.querySelectorAll(this.willChangeSelector);
+                        if (willChangeElements.length === 0) {
                             clearInterval(intervalId);
-                            resolve(false);
+                            resolve(true);
                             return;
-                        }
-
-                        const aiMessage = lastContainer.querySelector(this.aiMessageSelector);
-                        if (aiMessage) {
-                            const willChangeElements = aiMessage.querySelectorAll(this.willChangeSelector);
-                            if (willChangeElements.length === 0) {
-                                clearInterval(intervalId);
-                                resolve(true);
-                                return;
-                            }
                         }
                     }
 
