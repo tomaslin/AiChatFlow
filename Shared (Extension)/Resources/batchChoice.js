@@ -319,7 +319,7 @@ class BatchChoice {
             const name = newNameInput.value.trim();
             this.options.validateNewName(name).then(isValid => {
                 importBtn.disabled = !isValid;
-                statusMessage.textContent = !isValid ? 'Please enter a valid name - this name is not available' : '';
+                statusMessage.textContent = !isValid ? 'Please enter a non-empty file name or one not in use' : '';
             });
         } else {
             statusMessage.textContent = '';

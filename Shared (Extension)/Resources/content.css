@@ -86,10 +86,12 @@
 
 #ai-chat-flow-editor.showFiles .file-list-container {
     display: block;
+    overflow-y: scroll !important;
 }
 
 #ai-chat-flow-editor.minimized.showFiles .file-list-container {
     display: block;
+    overflow-y: scroll !important;
 }
 
 #ai-chat-flow-editor.minimized .file-list-container {
@@ -102,6 +104,7 @@
 
 #ai-chat-flow-editor.minimized .file-list-container {
     display:none;
+    overflow-y: scroll !important;
 }
 
 
@@ -197,16 +200,31 @@
 
 /* File list styles */
 .file-list-container {
-    scrollbar-width: thin;
+    scrollbar-width: auto;
     scrollbar-color: #666 #2e2e2e;
     min-height: 15vh;
     max-height: 15vh;
     transition: all 0.3s ease;
     position: relative;
-    overflow-y: scroll;
+    overflow-y: scroll !important;
     padding-bottom: 5px;
     background: #1e1e1e;
     display: none;
+}
+
+.file-list-container::-webkit-scrollbar {
+    width: 12px;
+    background-color: #2e2e2e;
+}
+
+.file-list-container::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 6px;
+    border: 2px solid #2e2e2e;
+}
+
+.file-list-container::-webkit-scrollbar-track {
+    background-color: #2e2e2e;
 }
 
 .file-list {
