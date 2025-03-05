@@ -84,6 +84,28 @@ async function getAllFromStore(storeName) {
     });
 }
 
+// Method to reset the database
+async function resetDB() {
+    try {
+        // Delete the existing database
+        await new Promise((resolve, reject) => {
+            const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
+            deleteRequest.onsuccess = () => resolve();
+            deleteRequest.onerror = () => reject(deleteRequest.error);
+            deleteRequest.onblocked = () => {
+                console.warn('Database deletion was blocked');
+                reject(new Error('Database deletion was blocked'));
+            };
+        });
+
+        // Reinitialize the database
+        await initDB();
+        console.log('Database reset successfully');
+    } catch (error) {
+        console.error('Failed to reset database:', error);
+    }
+}
+
 // Message handler for storage operations
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const handleStorageOperation = async () => {
@@ -141,6 +163,8 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return true; // Will respond asynchronously
     }
 });
+
+// resetDB();
 
 // Initialize database when background script loads
 initDB().catch(error => console.error('Failed to initialize database:', error));
