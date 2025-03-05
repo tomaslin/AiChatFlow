@@ -7,8 +7,7 @@ class CopilotProvider extends BaseAIProvider {
         this.userMessageSelector = '[data-content="user-message"]';
         this.aiMessageSelector = '[data-content="ai-message"]';
         this.textboxSelector = '#userInput';
-        this.sendButtonSelector = 'button[data-testid="submit-button"]';
-        this.willChangeSelector = '[style*="will-change"]';
+        this.sendButtonSelector = 'button[data-testid="submit-button"]:not([disabled])';
     }
 
     getType() {
@@ -27,8 +26,6 @@ class CopilotProvider extends BaseAIProvider {
         setTimeout(() => {
             const mainContent = document.querySelector(this.mainContentSelector);
             mainContent.style.marginRight = minimized ? '' : '50%';
-            const textArea = document.querySelector(this.textboxSelector);
-            textArea.style.marginRight = minimized ? '' : '50%';
         }, 500);
     }
 
@@ -86,43 +83,48 @@ class CopilotProvider extends BaseAIProvider {
             if (!sendButton) {
                 throw new Error('Could not find send button');
             }
-
             sendButton.click();
         } catch (error) {
             console.error('Error filling textbox:', error);
             throw error;
         }
     }
-
+   
     async waitForCompletion(initialContainerCount) {
         return new Promise((resolve) => {
             const startTime = Date.now();
-            const intervalId = setInterval(() => {
-                try {
-                    const aiMessages = document.querySelectorAll(this.aiMessageSelector);
-                    const currentCount = aiMessages.length;
-                    if (currentCount > initialContainerCount) {
-                        const elements = document.querySelectorAll(this.aiMessageSelector);
-                        const aiMessage = elements[elements.length - 1];
-                        const willChangeElements = aiMessage.querySelectorAll(this.willChangeSelector);
-                        if (willChangeElements.length === 0) {
-                            clearInterval(intervalId);
-                            resolve(true);
-                            return;
+    
+            // Introduce a 2-second delay before starting the polling interval
+            setTimeout(() => {
+                const intervalId = setInterval(() => {
+                    try {
+                        const aiMessages = document.querySelectorAll(this.aiMessageSelector);
+                        const currentCount = aiMessages.length;
+    
+                        if (currentCount > initialContainerCount) {
+                            const lastAiMessage = aiMessages[aiMessages.length - 1];
+                            if (lastAiMessage) {
+                                const opacityElements = lastAiMessage.querySelectorAll('*[style="opacity: 1;"]');
+                                if (opacityElements.length <=1) {
+                                    clearInterval(intervalId);
+                                    resolve(true);
+                                    return;
+                                }
+                            }
                         }
-                    }
-                    
-                    if (Date.now() - startTime > this.maxWaitTime) {
-                        console.warn('Timed out waiting for request completion');
+    
+                        if (Date.now() - startTime > this.maxWaitTime) {
+                            console.warn('Timed out waiting for request completion');
+                            clearInterval(intervalId);
+                            resolve(false);
+                        }
+                    } catch (error) {
+                        console.error('Error in waitForCompletion:', error);
                         clearInterval(intervalId);
                         resolve(false);
                     }
-                } catch (error) {
-                    console.error('Error in waitForCompletion:', error);
-                    clearInterval(intervalId);
-                    resolve(false);
-                }
-            }, 1000);
+                }, 1000); // Polling interval remains 1 second
+            }, 2000); // 2-second initial delay
         });
     }
 
