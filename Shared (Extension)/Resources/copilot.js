@@ -15,7 +15,7 @@ class CopilotProvider extends BaseAIProvider {
     }
 
     getMessageContainers() {
-        return document.querySelectorAll(this.messageContainerSelector);
+        return document.querySelectorAll(this.aiMessageSelector);
     }
 
     getMaxPartSize() {
@@ -94,7 +94,6 @@ class CopilotProvider extends BaseAIProvider {
         return new Promise((resolve) => {
             const startTime = Date.now();
     
-            // Introduce a 2-second delay before starting the polling interval
             setTimeout(() => {
                 const intervalId = setInterval(() => {
                     try {
@@ -105,7 +104,7 @@ class CopilotProvider extends BaseAIProvider {
                             const lastAiMessage = aiMessages[aiMessages.length - 1];
                             if (lastAiMessage) {
                                 const opacityElements = lastAiMessage.querySelectorAll('*[style="opacity: 1;"]');
-                                if (opacityElements.length <=1) {
+                                if (opacityElements.length <= 1) {
                                     clearInterval(intervalId);
                                     resolve(true);
                                     return;
@@ -123,7 +122,7 @@ class CopilotProvider extends BaseAIProvider {
                         clearInterval(intervalId);
                         resolve(false);
                     }
-                }, 1000); // Polling interval remains 1 second
+                }, 1000); 
             }, 2000); // 2-second initial delay
         });
     }
