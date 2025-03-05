@@ -16,6 +16,9 @@ class FileActionUI {
             "rename": `<svg width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M16.4 4.4l2.2 2.2c1 1 1 2.6 0 3.6L8.2 20.6 2 23l2.4-6.2L14.8 6.4c1-1 2.6-1 3.6 0z"/>
             </svg>`,
+            "share": `<svg width="24" height="24" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+            </svg>`,
             "download": `<svg width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M12 16l-4-4h2.5V6h3v6H16l-4 4zm-8 2h16v2H4v-2z"/>
             </svg>`,
@@ -50,6 +53,38 @@ class FileActionUI {
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }, 100);
+    }
+    
+    // Handle file sharing
+    handleShare(fileName) {
+        const content = this.fileManager.fileActions.files.get(fileName);
+        
+        if (navigator.share) {
+            // Use Web Share API with text content only
+            navigator.share({
+                title: fileName,
+                text: content
+            }).catch(err => {
+           
+            });
+        } else {
+            // Fallback for browsers that don't support Web Share API
+            try {
+                // Create a temporary textarea to copy content to clipboard
+                const textarea = document.createElement('textarea');
+                textarea.value = content;
+                textarea.style.position = 'fixed';
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('File content copied to clipboard!');
+            } catch (error) {
+                console.error('Error copying to clipboard:', error);
+                alert('Unable to copy file content to clipboard.');
+            }
+        }
     }
 
     // Handle file deletion
@@ -128,6 +163,14 @@ class FileActionUI {
                     const content = this.fileManager.fileActions.files.get(fileName);
                     const promptPlayer = new PromptPlayer();
                     promptPlayer.createDialog(fileName, content);
+                }
+            },
+            {
+                action: 'share',
+                title: 'Share',
+                handler: (e) => {
+                    if (isFileItem) e.stopPropagation();
+                    this.handleShare(fileName);
                 }
             },
             {
