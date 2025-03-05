@@ -26,23 +26,20 @@ class BatchChoice {
         }
     }
 
-    loadPreferences() {
+    async loadPreferences() {
         const storageMethod = this.type === 'runner' ? StorageManager.getpromptPlayerPrefs : StorageManager.getChatTranscriberPrefs;
-        return new Promise(async resolve => {
-            const prefs = await storageMethod.call(StorageManager);
-            if (prefs) {
-                this.options.selectAllByDefault = prefs.selectAll !== undefined ? prefs.selectAll : this.options.selectAllByDefault;
-                if (prefs.selectedMode && this.options.showModeSelector) {
-                    this.options.modes.forEach(mode => {
-                        mode.default = (mode.value === prefs.selectedMode);
-                    });
-                }
-                this.useNewItem = prefs.useNewItem !== undefined ? prefs.useNewItem : this.useNewItem;
+        const prefs = await storageMethod.call(StorageManager);
+        if (prefs) {
+            this.options.selectAllByDefault = prefs.selectAll !== undefined ? prefs.selectAll : this.options.selectAllByDefault;
+            if (prefs.selectedMode && this.options.showModeSelector) {
+                this.options.modes.forEach(mode => {
+                    mode.default = (mode.value === prefs.selectedMode);
+                });
             }
-            resolve();
-        });
+            this.useNewItem = prefs.useNewItem !== undefined ? prefs.useNewItem : this.useNewItem;
+        }
     }
-    
+
     savePreferences(selectAll, selectedMode, useNewItem) {
         if (this.type !== 'runner' && this.type !== 'importer') return;
         
@@ -57,7 +54,7 @@ class BatchChoice {
         const storageMethod = this.type === 'runner' ? StorageManager.setpromptPlayerPrefs : StorageManager.setChatTranscriberPrefs;
         storageMethod(prefs);
     }
-    
+
     async createDialog() {
         await this.prefsLoaded;
         
@@ -237,6 +234,7 @@ class BatchChoice {
         `).join('');
     
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
+        selectAllCheckbox.checked = this.options.selectAllByDefault; // Ensure checkbox reflects the loaded preference
         if (this.options.selectAllByDefault) {
             selectAllCheckbox.checked = true;
             items.forEach((_, index) => this.selectedItems.add(index));
