@@ -1,7 +1,7 @@
 :root {
     color-scheme: light dark;
-    --primary-color: #0066cc;
-    --primary-color-dark: #0055aa;
+    --primary-color: #4299e1;
+    --primary-color-dark: #3182ce;
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
@@ -215,18 +215,18 @@ body {
 
 @media (prefers-color-scheme: dark) {
     .setting-description {
-        color: #aaa;
+        color: #cbd5e0;
     }
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --primary-color: #3a8ee6;
-        --primary-color-dark: #2d7dd2;
+        --primary-color: #4299e1;
+        --primary-color-dark: #3182ce;
     }
     
     body {
-        background-color: #1c1c1e;
+        background-color: #1a1a1a;
     }
     
     .setting-item label {
@@ -243,7 +243,7 @@ body {
 .workspace-selector {
     flex: 1;
     padding: 10px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid #4a5568;
     border-radius: var(--border-radius);
     font-size: 16px;
     background-color: white;
@@ -254,7 +254,7 @@ body {
 
 .secondary-button {
     padding: 10px 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #4a5568;
     border-radius: var(--border-radius);
     background-color: white;
     color: #333;
@@ -271,25 +271,25 @@ body {
 
 @media (prefers-color-scheme: dark) {
     .workspace-selector {
-        background: #2c2c2e;
-        border-color: #3a3a3c;
-        color: #fff;
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
     }
 
     .secondary-button {
-        background: #2c2c2e;
-        border-color: #3a3a3c;
-        color: #fff;
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
     }
 
     .secondary-button:hover {
-        background: #3a3a3c;
+        background: #3a4a61;
     }
 }
 
 .setting-item input {
-        background: #2c2c2e;
-        border-color: #3a3a3c;
-        color: #fff;
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
     }
 }

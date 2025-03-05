@@ -38,7 +38,11 @@ class BaseAIProvider {
         
         const paragraphs = content.split('\n');
         paragraphs.forEach(paragraph => {
-            const formattedParagraph = `<p>${paragraph}</p>`;
+            // Modified to handle empty lines with <br/> and wrap non-empty lines in <p>
+            const formattedParagraph = paragraph.trim() === '' ? 
+                '<p><br/></p>' : 
+                `<p>${paragraph}</p>`;
+
             if (currentPart.length + formattedParagraph.length <= maxChars) {
                 currentPart += formattedParagraph;
             } else {

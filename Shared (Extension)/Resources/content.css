@@ -5,9 +5,9 @@
     right: 0;
     width: 50%;
     height: calc(100vh - 64px) !important;
-    background: #2e2e2e;
-    border-left: 1px solid #444;
-    box-shadow: -2px 0 8px rgba(0,0,0,0.5);
+    background: #1a1a1a;
+    border-left: 1px solid #3d4852;
+    box-shadow: -2px 0 12px rgba(0,0,0,0.6);
     z-index: 10000;
     display: flex;
     flex-direction: column;
@@ -48,7 +48,7 @@
     font-size: 12px;
     border-radius: 4px;
     white-space: nowrap;
-    z-index: 100000;
+    z-index: 10100;
     pointer-events: none;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
@@ -105,6 +105,8 @@
 #ai-chat-flow-editor.minimized .file-list-container {
     display:none;
     overflow-y: scroll !important;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -117,7 +119,7 @@
 .editor-header {
     display: flex;
     flex-direction: column;
-    background: #3a3a3a;
+    background: #2d3748;
     position: relative;
 }
 
@@ -125,8 +127,8 @@
     display: flex;
     align-items: center;
     padding: 0 4px;
-    border-bottom: 1px solid #555;
-    background: #3a3a3a;
+    border-bottom: 1px solid #4a5568;
+    background: #2d3748;
 }
 
 /* Common button styles */
@@ -137,7 +139,7 @@
 .ai-chat-flow-minimize-btn {
     background: transparent;
     border: none;
-    color: #ccc;
+    color: #e2e8f0;
     padding: 4px;
     border-radius: 6px;
     cursor: pointer;
@@ -154,7 +156,7 @@
 .copy-btn:hover,
 .toggle-files-btn:hover,
 .ai-chat-flow-minimize-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     color: #fff;
 }
 
@@ -172,15 +174,15 @@
     align-items: center;
     padding: 0 4px;
     justify-content: space-between;
-    border-bottom: 1px solid #444;
-    background: #3a3a3a;
+    border-bottom: 1px solid #4a5568;
+    background: #2d3748;
 }
 
 .file-count-toggle {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #aaa;
+    color: #cbd5e0;
     font-size: 14px;
     margin-right: auto;
 }
@@ -188,27 +190,27 @@
 .text-stats {
     display: flex;
     gap: 8px;
-    color: #aaa;
+    color: #cbd5e0;
     font-size: 14px;
 }
 
 .text-stats span {
     padding: 2px 6px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 4px;
 }
 
 /* File list styles */
 .file-list-container {
     scrollbar-width: auto;
-    scrollbar-color: #666 #2e2e2e;
+    scrollbar-color: #718096 #1a1a1a;
     min-height: 15vh;
     max-height: 15vh;
     transition: all 0.3s ease;
     position: relative;
     overflow-y: scroll !important;
     padding-bottom: 5px;
-    background: #1e1e1e;
+    background: #1a1a1a;
     display: none;
 }
 
@@ -325,7 +327,7 @@
     background: #5a5a5a;
     color: #fff;
     border-bottom-color: #5a5a5a;
-    z-index: 1;
+    z-index: 2;
 }
 
 .tab:hover:not(.active) {
