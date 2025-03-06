@@ -29,6 +29,7 @@ class BatchChoice {
     async loadPreferences() {
         const storageMethod = this.type === 'runner' ? StorageManager.getpromptPlayerPrefs : StorageManager.getChatTranscriberPrefs;
         const prefs = await storageMethod.call(StorageManager);
+            this.useNewItem = prefs.useNewItem ?? false;
         if (prefs) {
             this.options.selectAllByDefault = prefs.selectAll !== undefined ? prefs.selectAll : this.options.selectAllByDefault;
             if (prefs.selectedMode && this.options.showModeSelector) {
@@ -162,14 +163,14 @@ class BatchChoice {
         } else if ((this.useNewItem || !this.options.hasCurrent) && newNameInput && this.options.requireNewName) {
             const name = newNameInput.value.trim();
             if (!name) {
-                statusText = 'Please enter a non-empty file name'; // Special text for empty file name
+                statusText = 'Please enter a valid file name'; // Special text for empty file name
                 isValid = false;
             } else {
                 const isNameValid = await this.options.validateNewName(name);
                 isValid = isNameValid;
     
                 if (!isNameValid) {
-                    statusText = 'This file name is not available';
+                    statusText = 'Please enter a valid name - this name is not available';
                 }
             }
         }
@@ -186,7 +187,17 @@ class BatchChoice {
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
         closeBtn.addEventListener('click', () => this.closeDialog());
         importBtn.addEventListener('click', () => this.handleSelection());
-        selectAllCheckbox.addEventListener('change', (e) => this.toggleSelectAll(e.target.checked));
+        selectAllCheckbox.addEventListener('change', (e) => {
+    this.toggleSelectAll(e.target.checked);
+    this.savePreferences(e.target.checked, modeSelector?.value, this.useNewItem);
+});
+
+const modeSelector = this.dialogContainer.querySelector('.import-mode-select');
+if (modeSelector) {
+    modeSelector.addEventListener('change', (e) => {
+        this.savePreferences(selectAllCheckbox.checked, e.target.value, this.useNewItem);
+    });
+}
         this.dialogContainer.addEventListener('click', (e) => {
             if (e.target === this.dialogContainer) {
                 this.closeDialog();
@@ -199,6 +210,7 @@ class BatchChoice {
     
         radioButtons.forEach(radio => {
             radio.addEventListener('change', async (e) => {
+    this.savePreferences(selectAllCheckbox.checked, modeSelector?.value, e.target.value === 'new');
                 this.useNewItem = e.target.value === 'new';
                 if (this.useNewItem) {
                     newNameContainer.classList.add('visible');
@@ -239,7 +251,10 @@ class BatchChoice {
         `).join('');
     
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
-        selectAllCheckbox.checked = this.options.selectAllByDefault; // Ensure checkbox reflects the loaded preference
+        selectAllCheckbox.checked = this.options.selectAllByDefault;
+        if (modeSelector && prefs?.selectedMode) {
+            modeSelector.value = prefs.selectedMode;
+        }
         if (this.options.selectAllByDefault) {
             items.forEach((_, index) => this.selectedItems.add(index));
         }
@@ -301,19 +316,18 @@ class BatchChoice {
 
     toggleSelectAll(checked) {
         const checkboxes = this.dialogContainer.querySelectorAll('.item-checkbox');
-        const importBtn = this.dialogContainer.querySelector('.import-btn');
-        const statusMessage = this.dialogContainer.querySelector('.status-message');
-        const newNameInput = this.dialogContainer.querySelector('.new-name-input');
-
+        
+        // Clear the selectedItems set to avoid hidden selections
+        this.selectedItems.clear();
+    
         checkboxes.forEach((checkbox, index) => {
             checkbox.checked = checked;
             if (checked) {
-                this.selectedItems.add(index);
-            } else {
-                this.selectedItems.delete(index);
+                this.selectedItems.add(index); // Add visible items to the selection
             }
         });
-
+    
+        // Trigger the validator to update the dialog state
         this.validateDialogState();
     }
 
