@@ -191,9 +191,10 @@ async function createEditorUI() {
         }
     });
 
-    const downloadBtn = document.getElementById('download-all-btn');
-    if (downloadBtn) {
-        downloadBtn.parentNode.insertBefore(toggleFilesBtn, downloadBtn.nextSibling);
+    // Insert the toggle button before the minimize button
+    const minimizeButton = editorContainer.querySelector('.ai-chat-flow-minimize-btn');
+    if (minimizeButton) {
+        minimizeButton.parentNode.insertBefore(toggleFilesBtn, minimizeButton);
     }
 
     await Promise.all([
