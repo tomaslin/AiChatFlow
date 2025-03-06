@@ -91,7 +91,7 @@ class BatchChoice {
 
         const newNameInput = this.options.requireNewName ? `
             <div class="new-name-container ${this.useNewItem ? 'visible' : ''}">
-                <input type="text" class="new-name-input" placeholder="Enter name...">
+                <input type="text" class="new-name-input" placeholder="Enter name..." id="new-name-input">
             </div>
         ` : '';
 
@@ -107,7 +107,7 @@ class BatchChoice {
             </label>` : `
             <div class="new-name-container visible">
                 <label class="input-label">In a new ${this.options.descriptor}</label>
-                ${this.options.requireNewName ? `<input type="text" class="new-name-input" placeholder="Enter name...">` : ''}
+                ${this.options.requireNewName ? `<input type="text" class="new-name-input" placeholder="Enter name..." id="new-name-input">` : ''}
             </div>`;
 
         return `
@@ -159,13 +159,18 @@ class BatchChoice {
     
         if (!hasSelectedItems) {
             statusText = 'No items selected';
-        } else if (this.useNewItem && newNameInput) {
+        } else if ((this.useNewItem || !this.options.hasCurrent) && newNameInput && this.options.requireNewName) {
             const name = newNameInput.value.trim();
-            const isNameValid = await this.options.validateNewName(name);
-            isValid = isNameValid;
-            
-            if (!isNameValid) {
-                statusText = 'Please enter a valid name - this name is not available';
+            if (!name) {
+                statusText = 'Please enter a non-empty file name'; // Special text for empty file name
+                isValid = false;
+            } else {
+                const isNameValid = await this.options.validateNewName(name);
+                isValid = isNameValid;
+    
+                if (!isNameValid) {
+                    statusText = 'This file name is not available';
+                }
             }
         }
     
@@ -236,7 +241,6 @@ class BatchChoice {
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
         selectAllCheckbox.checked = this.options.selectAllByDefault; // Ensure checkbox reflects the loaded preference
         if (this.options.selectAllByDefault) {
-            selectAllCheckbox.checked = true;
             items.forEach((_, index) => this.selectedItems.add(index));
         }
     
@@ -310,19 +314,7 @@ class BatchChoice {
             }
         });
 
-        if (this.selectedItems.size === 0) {
-            statusMessage.textContent = 'No items selected';
-            importBtn.disabled = true;
-        } else if (this.useNewItem && newNameInput) {
-            const name = newNameInput.value.trim();
-            this.options.validateNewName(name).then(isValid => {
-                importBtn.disabled = !isValid;
-                statusMessage.textContent = !isValid ? 'Please enter a non-empty file name or one not in use' : '';
-            });
-        } else {
-            statusMessage.textContent = '';
-            importBtn.disabled = false;
-        }
+        this.validateDialogState();
     }
 
     truncateText(text, maxLength) {
