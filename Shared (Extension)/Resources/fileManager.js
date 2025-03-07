@@ -2,6 +2,7 @@ class FileManager {
     constructor() {
         this.fileActions = new FileActions();
         this.fileActionUI = new FileActionUI(this);
+        this.currentWorkspace = null;
         
         document.addEventListener('aichatflow:createtab', (event) => {
             if (event.detail && event.detail.fileName) {
@@ -19,15 +20,107 @@ class FileManager {
             }
         });
         
+        this.initializeWorkspaceUI();
         this.loadFromStorage();
+    }
+
+    async initializeWorkspaceUI() {
+        const fileListContainer = document.querySelector('.file-list-container');
+        if (!fileListContainer) return;
+
+        const workspaceSelector = document.createElement('div');
+        workspaceSelector.className = 'workspace-selector';
+        workspaceSelector.innerHTML = `
+            <select class="workspace-select"></select>
+            <button class="create-workspace-btn" title="Create new workspace">+</button>
+            <button class="delete-workspace-btn" title="Delete current workspace" style="display: none;">×</button>
+        `;
+
+        fileListContainer.insertBefore(workspaceSelector, fileListContainer.firstChild);
+
+        const select = workspaceSelector.querySelector('.workspace-select');
+        const createBtn = workspaceSelector.querySelector('.create-workspace-btn');
+        const deleteBtn = workspaceSelector.querySelector('.delete-workspace-btn');
+
+        select.addEventListener('change', async () => {
+            await this.switchWorkspace(select.value);
+            deleteBtn.style.display = select.value === StorageManager.DEFAULT_WORKSPACE ? 'none' : 'inline-block';
+        });
+
+        createBtn.addEventListener('click', async () => {
+            new SimpleChoice({
+                title: 'Create New Workspace',
+                buttonText: 'Create',
+                placeholder: 'Enter workspace name',
+                validator: (name) => {
+                    if (!name.trim()) return 'Workspace name cannot be empty.';
+                    return true;
+                },
+                onConfirm: async (name) => {
+                    try {
+                        await StorageManager.createWorkspace(name);
+                        await this.updateWorkspaceList();
+                        await this.switchWorkspace(name);
+                    } catch (error) {
+                        alert(error.message);
+                    }
+                }
+            }).createDialog();
+        });
+
+        deleteBtn.addEventListener('click', async () => {
+            const currentWorkspace = select.value;
+            if (currentWorkspace === StorageManager.DEFAULT_WORKSPACE) return;
+            
+            if (confirm(`Are you sure you want to delete workspace '${currentWorkspace}'?`)) {
+                try {
+                    await StorageManager.deleteWorkspace(currentWorkspace);
+                    await this.updateWorkspaceList();
+                } catch (error) {
+                    alert(error.message);
+                }
+            }
+        });
+
+        await this.updateWorkspaceList();
+    }
+
+    async updateWorkspaceList() {
+        const select = document.querySelector('.workspace-select');
+        if (!select) return;
+
+        const workspaces = await StorageManager.getWorkspaces();
+        const activeWorkspace = await StorageManager.getActiveWorkspace();
+
+        select.innerHTML = workspaces.map(workspace => 
+            `<option value="${workspace}" ${workspace === activeWorkspace ? 'selected' : ''}>
+                ${workspace}
+            </option>`
+        ).join('');
+
+        this.currentWorkspace = activeWorkspace;
+        
+        // Show/hide delete button based on active workspace
+        const deleteBtn = document.querySelector('.delete-workspace-btn');
+        if (deleteBtn) {
+            deleteBtn.style.display = activeWorkspace === StorageManager.DEFAULT_WORKSPACE ? 'none' : 'inline-block';
+        }
+    }
+
+    async switchWorkspace(workspace) {
+        if (workspace === this.currentWorkspace) return;
+
+        await StorageManager.setActiveWorkspace(workspace);
+        this.currentWorkspace = workspace;
+        await this.refreshFromStorage(workspace);
     }
 
     async loadFromStorage() {
         await this.refreshFromStorage();
     }
 
-    async refreshFromStorage() {
-        await this.fileActions.loadFromStorage();
+    async refreshFromStorage(workspace = null) {
+        await this.fileActions.loadFromStorage(workspace);
         this.updateFileList();
         
         if (this.fileActions.activeFile) {

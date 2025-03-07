@@ -2,6 +2,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     const batchSeparatorInput = document.getElementById('batch-separator');
     const saveButton = document.getElementById('save-settings');
     
+    // Add download all workspaces button
+    const settingsContainer = document.querySelector('.settings-container') || document.body;
+    const downloadSection = document.createElement('div');
+    downloadSection.className = 'download-section';
+    downloadSection.innerHTML = `
+        <h3>Download Options</h3>
+        <button id="download-all-workspaces" class="download-btn">Download All Workspaces</button>
+    `;
+    settingsContainer.appendChild(downloadSection);
+    
+    // Set up download button event listener
+    const downloadAllBtn = document.getElementById('download-all-workspaces');
+    downloadAllBtn.addEventListener('click', async () => {
+        // Send message to content script to download all workspaces
+        browser.tabs.query({active: true, currentWindow: true}).then((tabs) => {
+            browser.tabs.sendMessage(tabs[0].id, {
+                action: 'downloadAllWorkspaces'
+            });
+        });
+    });
+    
     let originalBatchSeparator = '';
     
     try {

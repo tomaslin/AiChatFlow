@@ -214,6 +214,60 @@
     display: none;
 }
 
+/* Workspace selector styles */
+.workspace-selector {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    margin: 8px 10px 4px 10px;
+    background: #2d3748;
+    border-radius: 6px;
+}
+
+.workspace-selector::before {
+    content: 'Workspace:';
+    color: #cbd5e0;
+    font-size: 14px;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.workspace-select {
+    flex: 1;
+    padding: 4px 8px;
+    border: 1px solid #4a5568;
+    border-radius: 4px;
+    background-color: #1e1e1e;
+    color: #e2e8f0;
+    font-size: 14px;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+}
+
+.create-workspace-btn,
+.delete-workspace-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #4a5568;
+    border-radius: 4px;
+    background-color: #2d3748;
+    color: #e2e8f0;
+    font-size: 16px;
+    margin-left: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.create-workspace-btn:hover,
+.delete-workspace-btn:hover {
+    background-color: #3a4a61;
+    color: #fff;
+}
+
 .file-list-container::-webkit-scrollbar {
     width: 12px;
     background-color: #2e2e2e;

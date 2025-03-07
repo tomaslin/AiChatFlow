@@ -62,5 +62,18 @@ function initializeEditor() {
     }
 }
 
+// Listen for messages from the popup
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === 'toggleEditor') {
+        toggleEditor();
+    } else if (message.action === 'toggleFiles') {
+        toggleFiles();
+    } else if (message.action === 'downloadAllWorkspaces') {
+        if (window.fileManager && window.fileManager.fileActions) {
+            window.fileManager.fileActions.downloadAllFiles(true);
+        }
+    }
+});
+
 // Initialize the editor when the page loads
 initializeEditor();

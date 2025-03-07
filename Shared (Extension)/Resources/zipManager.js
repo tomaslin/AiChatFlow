@@ -118,4 +118,32 @@ class ZipManager {
             URL.revokeObjectURL(url);
         }, 100);
     }
+    
+    static downloadAllWorkspaceFiles(workspaceFiles) {
+        if (!workspaceFiles || Object.keys(workspaceFiles).length === 0) return;
+        
+        const zip = new JSZip();
+        
+        for (const [workspace, files] of Object.entries(workspaceFiles)) {
+            const folder = zip.folder(workspace);
+            for (const [name, content] of Object.entries(files)) {
+                folder.file(name, content);
+            }
+        }
+        
+        zip.generateAsync({ type: 'blob' })
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'ai-chat-flow-all-workspaces.zip';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            });
+    }
 }

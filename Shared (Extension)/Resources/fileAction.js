@@ -4,11 +4,19 @@ class FileActions {
         this.activeFile = null;
     }
 
-    async loadFromStorage() {
+    async loadFromStorage(workspace = null) {
         try {
-            const fileNames = await StorageManager.loadFileIndex();
-            const savedTabs = await StorageManager.loadTabs();
-            const savedActiveFile = await StorageManager.loadActiveFile();
+            // If no workspace is specified, use the active workspace
+            if (!workspace) {
+                workspace = await StorageManager.getActiveWorkspace();
+            }
+            
+            // Clear existing files
+            this.files.clear();
+            
+            const fileNames = await StorageManager.loadFileIndex(workspace);
+            const savedTabs = await StorageManager.loadTabs(workspace);
+            const savedActiveFile = await StorageManager.loadActiveFile(workspace);
             
             if (fileNames && fileNames.length > 0) {
                 for (const name of fileNames) {
@@ -44,26 +52,31 @@ class FileActions {
         }
     }
 
-    async saveToStorage() {
+    async saveToStorage(workspace = null) {
         try {
+            // If no workspace is specified, use the active workspace
+            if (!workspace) {
+                workspace = await StorageManager.getActiveWorkspace();
+            }
+            
             const openTabs = Array.from(document.querySelectorAll('.tab')).map(tab => ({
                 name: tab.querySelector('.tab-name').textContent,
                 active: tab.querySelector('.tab-name').textContent === this.activeFile
             }));
             
-            await StorageManager.saveTabs(openTabs);
-            await StorageManager.saveActiveFile(this.activeFile);
+            await StorageManager.saveTabs(openTabs, workspace);
+            await StorageManager.saveActiveFile(this.activeFile, workspace);
             
-            await StorageManager.clearAllFiles();
+            await StorageManager.clearAllFiles(workspace);
             
             const fileIndex = Array.from(this.files.keys());
-            await StorageManager.saveFileIndex(fileIndex);
+            await StorageManager.saveFileIndex(fileIndex, workspace);
             
             for (const [name, content] of this.files.entries()) {
                 await StorageManager.saveFile(name, content);
             }
             const files = Object.fromEntries(this.files);
-            browser.runtime.sendMessage({ type: 'filesUpdated', files });
+            browser.runtime.sendMessage({ type: 'filesUpdated', files, workspace });
         } catch (error) {
             console.error('Error saving data:', error);
             alert('Error saving data: ' + error.message);
@@ -177,10 +190,22 @@ class FileActions {
         return true;
     }
 
-    downloadAllFiles() {
-        if (this.files.size === 0) return false;
-        ZipManager.downloadAllFiles(this.files);
-        return true;
+    async downloadAllFiles(fromAllWorkspaces = false) {
+        if (fromAllWorkspaces) {
+            try {
+                const allFiles = await StorageManager.getAllWorkspaceFiles();
+                if (Object.keys(allFiles).length === 0) return false;
+                ZipManager.downloadAllWorkspaceFiles(allFiles);
+                return true;
+            } catch (error) {
+                console.error('Error downloading all workspace files:', error);
+                return false;
+            }
+        } else {
+            if (this.files.size === 0) return false;
+            ZipManager.downloadAllFiles(this.files);
+            return true;
+        }
     }
 
     getFileContent(name) {

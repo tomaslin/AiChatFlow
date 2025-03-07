@@ -1,7 +1,10 @@
 class StorageManager {
     static MAX_TOTAL_SIZE = 10485760;
+    static DEFAULT_WORKSPACE = 'Default';
     
     static KEYS = {
+        WORKSPACES: 'ai-chat-flow-workspaces',
+        ACTIVE_WORKSPACE: 'ai-chat-flow-active-workspace',
         FILE_INDEX: 'ai-chat-flow-file-index',
         TABS: 'ai-chat-flow-tabs',
         ACTIVE_FILE: 'ai-chat-flow-active-file',
@@ -12,7 +15,10 @@ class StorageManager {
         CHAT_TRANSCRIBER_PREFS: 'chatTranscriberPrefs',
         CHAT_BATCH: 'chatBatch',
         getMetaKey: (name) => `ai-chat-flow-meta-${name}`,
-        getChunkKey: (name, index) => `ai-chat-flow-chunk-${name}-${index}`
+        getChunkKey: (name, index) => `ai-chat-flow-chunk-${name}-${index}`,
+        getWorkspaceFileIndexKey: (workspace) => `ai-chat-flow-file-index-${workspace}`,
+        getWorkspaceTabsKey: (workspace) => `ai-chat-flow-tabs-${workspace}`,
+        getWorkspaceActiveFileKey: (workspace) => `ai-chat-flow-active-file-${workspace}`
     };
 
     // Send a message to the background script to perform a storage operation
@@ -117,31 +123,134 @@ class StorageManager {
         await this.sendStorageMessage('delete', storeName, key);
     }
 
-    static async loadFileIndex() {
-        const result = await this.getFromStore('metadata', this.KEYS.FILE_INDEX);
+    static async getWorkspaces() {
+        const result = await this.getFromStore('metadata', this.KEYS.WORKSPACES);
+        const workspaces = result ? JSON.parse(result) : [];
+        
+        // Ensure Default workspace always exists
+        if (!workspaces.includes(this.DEFAULT_WORKSPACE)) {
+            workspaces.push(this.DEFAULT_WORKSPACE);
+            await this.saveWorkspaces(workspaces);
+        }
+        
+        return workspaces;
+    }
+    
+    static async saveWorkspaces(workspaces) {
+        await this.setInStore('metadata', this.KEYS.WORKSPACES, JSON.stringify(workspaces));
+    }
+    
+    static async getActiveWorkspace() {
+        const result = await this.getFromStore('preferences', this.KEYS.ACTIVE_WORKSPACE);
+        if (!result) {
+            // If no active workspace is set, use the default
+            await this.setActiveWorkspace(this.DEFAULT_WORKSPACE);
+            return this.DEFAULT_WORKSPACE;
+        }
+        return result;
+    }
+    
+    static async setActiveWorkspace(workspace) {
+        await this.setInStore('preferences', this.KEYS.ACTIVE_WORKSPACE, workspace);
+    }
+    
+    static async createWorkspace(name) {
+        if (!name || name.trim() === '') {
+            throw new Error('Workspace name cannot be empty');
+        }
+        
+        const workspaces = await this.getWorkspaces();
+        if (workspaces.includes(name)) {
+            throw new Error(`Workspace '${name}' already exists`);
+        }
+        
+        workspaces.push(name);
+        await this.saveWorkspaces(workspaces);
+        
+        // Automatically set the newly created workspace as active
+        await this.setActiveWorkspace(name);
+        
+        return true;
+    }
+    
+    static async deleteWorkspace(name) {
+        if (name === this.DEFAULT_WORKSPACE) {
+            throw new Error('Cannot delete the default workspace');
+        }
+        
+        const workspaces = await this.getWorkspaces();
+        const index = workspaces.indexOf(name);
+        if (index === -1) {
+            throw new Error(`Workspace '${name}' does not exist`);
+        }
+        
+        workspaces.splice(index, 1);
+        await this.saveWorkspaces(workspaces);
+        
+        // If the active workspace is being deleted, switch to default
+        const activeWorkspace = await this.getActiveWorkspace();
+        if (activeWorkspace === name) {
+            await this.setActiveWorkspace(this.DEFAULT_WORKSPACE);
+        }
+        
+        return true;
+    }
+
+    static async loadFileIndex(workspace = null) {
+        if (!workspace) {
+            workspace = await this.getActiveWorkspace();
+        }
+        
+        const key = this.KEYS.getWorkspaceFileIndexKey(workspace);
+        const result = await this.getFromStore('metadata', key);
         return result ? JSON.parse(result) : [];
     }
 
-    static async loadTabs() {
-        const result = await this.getFromStore('preferences', this.KEYS.TABS);
+    static async loadTabs(workspace = null) {
+        if (!workspace) {
+            workspace = await this.getActiveWorkspace();
+        }
+        
+        const key = this.KEYS.getWorkspaceTabsKey(workspace);
+        const result = await this.getFromStore('preferences', key);
         return result ? JSON.parse(result) : [];
     }
 
-    static async loadActiveFile() {
-        const result = await this.getFromStore('preferences', this.KEYS.ACTIVE_FILE);
+    static async loadActiveFile(workspace = null) {
+        if (!workspace) {
+            workspace = await this.getActiveWorkspace();
+        }
+        
+        const key = this.KEYS.getWorkspaceActiveFileKey(workspace);
+        const result = await this.getFromStore('preferences', key);
         return result || null;
     }
 
-    static async saveTabs(tabs) {
-        await this.setInStore('preferences', this.KEYS.TABS, JSON.stringify(tabs));
+    static async saveTabs(tabs, workspace = null) {
+        if (!workspace) {
+            workspace = await this.getActiveWorkspace();
+        }
+        
+        const key = this.KEYS.getWorkspaceTabsKey(workspace);
+        await this.setInStore('preferences', key, JSON.stringify(tabs));
     }
 
-    static async saveActiveFile(fileName) {
-        await this.setInStore('preferences', this.KEYS.ACTIVE_FILE, fileName);
+    static async saveActiveFile(fileName, workspace = null) {
+        if (!workspace) {
+            workspace = await this.getActiveWorkspace();
+        }
+        
+        const key = this.KEYS.getWorkspaceActiveFileKey(workspace);
+        await this.setInStore('preferences', key, fileName);
     }
 
-    static async saveFileIndex(fileNames) {
-        await this.setInStore('metadata', this.KEYS.FILE_INDEX, JSON.stringify(fileNames));
+    static async saveFileIndex(fileNames, workspace = null) {
+        if (!workspace) {
+            workspace = await this.getActiveWorkspace();
+        }
+        
+        const key = this.KEYS.getWorkspaceFileIndexKey(workspace);
+        await this.setInStore('metadata', key, JSON.stringify(fileNames));
     }
 
     static async loadFile(name) {
@@ -190,10 +299,10 @@ class StorageManager {
         }
     }
 
-    static async clearAllFiles() {
+    static async clearAllFiles(workspace = null) {
         try {
-            // Get file index
-            const fileIndex = await this.loadFileIndex();
+            // Get file index for the specified workspace
+            const fileIndex = await this.loadFileIndex(workspace);
             
             // Delete all files and their metadata
             for (const fileName of fileIndex) {
@@ -202,11 +311,35 @@ class StorageManager {
                 await this.deleteFromStore('metadata', metaKey);
             }
             
-            // Clear file index
-            await this.saveFileIndex([]);
+            // Clear file index for the specified workspace
+            await this.saveFileIndex([], workspace);
         } catch (error) {
             console.error('Error clearing files:', error);
             throw new Error(`Failed to clear files: ${error.message}`);
+        }
+    }
+    
+    static async getAllWorkspaceFiles() {
+        try {
+            const workspaces = await this.getWorkspaces();
+            const allFiles = {};
+            
+            for (const workspace of workspaces) {
+                const fileIndex = await this.loadFileIndex(workspace);
+                allFiles[workspace] = {};
+                
+                for (const fileName of fileIndex) {
+                    const content = await this.loadFile(fileName);
+                    if (content !== null) {
+                        allFiles[workspace][fileName] = content;
+                    }
+                }
+            }
+            
+            return allFiles;
+        } catch (error) {
+            console.error('Error getting all workspace files:', error);
+            throw new Error(`Failed to get all workspace files: ${error.message}`);
         }
     }
 
