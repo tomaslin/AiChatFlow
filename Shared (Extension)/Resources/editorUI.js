@@ -271,12 +271,18 @@ document.addEventListener('aichatflow:workspacechanged', () => {
             });
         });
 
-        downloadAllBtn.addEventListener('click', () => {
-            if (fileManager.fileActions.files.size === 0) {
-                alert('No files to download.');
-                return;
+        downloadAllBtn.addEventListener('click', async () => {
+            try {
+                const allFiles = await StorageManager.getAllWorkspaceFiles();
+                if (Object.keys(allFiles).length === 0) {
+                    alert('No files to download across all workspaces.');
+                    return;
+                }
+                fileManager.downloadAllFiles();
+            } catch (error) {
+                console.error('Error checking for files:', error);
+                alert('Error checking for files: ' + error.message);
             }
-            fileManager.downloadAllFiles();
         });
     };
     

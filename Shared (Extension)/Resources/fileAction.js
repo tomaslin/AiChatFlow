@@ -191,10 +191,16 @@ class FileActions {
     }
 
     async downloadAllFiles() {
-        if (this.files.size === 0) return false;
-        const workspace = await StorageManager.getActiveWorkspace();
-        ZipManager.downloadAllFiles(this.files, workspace);
-        return true;
+        try {
+            const allFiles = await StorageManager.getAllWorkspaceFiles();
+            if (Object.keys(allFiles).length === 0) return false;
+            ZipManager.downloadAllWorkspaceFiles(allFiles);
+            return true;
+        } catch (error) {
+            console.error('Error downloading all workspace files:', error);
+            alert('Error downloading files: ' + error.message);
+            return false;
+        }
     }
 
     getFileContent(name) {

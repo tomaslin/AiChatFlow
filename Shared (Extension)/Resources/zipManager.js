@@ -9,6 +9,16 @@ for (let i = 0; i < 256; i++) {
 }
 
 class ZipManager {
+    // Helper function to check if a filename has an extension
+    static hasFileExtension(filename) {
+        return /\.[^/\\.]+$/.test(filename);
+    }
+    
+    // Helper function to add .txt extension if needed
+    static ensureTxtExtension(filename) {
+        return ZipManager.hasFileExtension(filename) ? filename : `${filename}.txt`;
+    }
+    
     static downloadAllFiles(files, workspace = StorageManager.DEFAULT_WORKSPACE) {
         if (files.size === 0) return;
     
@@ -20,7 +30,10 @@ class ZipManager {
         Array.from(files.entries()).forEach(([name, content]) => {
             const encoder = new TextEncoder();
             const data = encoder.encode(content);
-            const nameBytes = encoder.encode(name);
+            
+            // Add .txt extension to files without an extension
+            const zipFileName = ZipManager.ensureTxtExtension(name);
+            const nameBytes = encoder.encode(zipFileName);
     
             // Calculate CRC32
             let crc = 0xFFFFFFFF;
@@ -134,7 +147,9 @@ class ZipManager {
                 const data = encoder.encode(content);
                 
                 // Create path with workspace prefix
-                const filePath = `${workspace}/${name}`;
+                // Add .txt extension to files without an extension
+                const zipFileName = ZipManager.ensureTxtExtension(name);
+                const filePath = `${workspace}/${zipFileName}`;
                 const nameBytes = encoder.encode(filePath);
                 
                 // Calculate CRC32
