@@ -3,6 +3,7 @@ class BatchChoice {
         this.dialogContainer = null;
         this.selectedItems = new Set();
         this.type = options.type || 'default';
+        this.useNewItem = options.hasCurrent ? false : true; // Initialize useNewItem property
         this.options = {
             title: options.title || 'Select Items',
             buttonLabel: options.buttonLabel || 'Import Selected',
@@ -29,7 +30,6 @@ class BatchChoice {
     async loadPreferences() {
         const storageMethod = this.type === 'runner' ? StorageManager.getpromptPlayerPrefs : StorageManager.getChatTranscriberPrefs;
         const prefs = await storageMethod.call(StorageManager);
-            this.useNewItem = prefs.useNewItem ?? false;
         if (prefs) {
             this.options.selectAllByDefault = prefs.selectAll !== undefined ? prefs.selectAll : this.options.selectAllByDefault;
             if (prefs.selectedMode && this.options.showModeSelector) {
@@ -53,7 +53,7 @@ class BatchChoice {
         }
         
         const storageMethod = this.type === 'runner' ? StorageManager.setpromptPlayerPrefs : StorageManager.setChatTranscriberPrefs;
-        storageMethod(prefs);
+        storageMethod.call(StorageManager, prefs);
     }
 
     async createDialog() {
@@ -73,6 +73,11 @@ class BatchChoice {
         document.body.appendChild(this.dialogContainer);
         this.setupEventListeners();
         this.loadItems();
+        
+        // Apply the current preference state to the UI
+        if (this.options.hasCurrent) {
+            this.toggleNewNameInput();
+        }
     }
 
     getDialogHTML() {
@@ -185,50 +190,35 @@ class BatchChoice {
         const closeBtn = this.dialogContainer.querySelector('.modal-close-btn');
         const importBtn = this.dialogContainer.querySelector('.import-btn');
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
+        const modeSelector = this.dialogContainer.querySelector('.import-mode-select');
+        const radioGroup = this.dialogContainer.querySelector('.radio-group');
+
         closeBtn.addEventListener('click', () => this.closeDialog());
         importBtn.addEventListener('click', () => this.handleSelection());
-        selectAllCheckbox.addEventListener('change', (e) => {
-    this.toggleSelectAll(e.target.checked);
-    this.savePreferences(e.target.checked, modeSelector?.value, this.useNewItem);
-});
 
-const modeSelector = this.dialogContainer.querySelector('.import-mode-select');
-if (modeSelector) {
-    modeSelector.addEventListener('change', (e) => {
-        this.savePreferences(selectAllCheckbox.checked, e.target.value, this.useNewItem);
-    });
-}
-        this.dialogContainer.addEventListener('click', (e) => {
-            if (e.target === this.dialogContainer) {
-                this.closeDialog();
-            }
-        });
-    
-        const radioButtons = this.dialogContainer.querySelectorAll('input[name="target-type"]');
-        const newNameContainer = this.dialogContainer.querySelector('.new-name-container');
-        const newNameInput = this.dialogContainer.querySelector('.new-name-input');
-    
-        radioButtons.forEach(radio => {
-            radio.addEventListener('change', async (e) => {
-    this.savePreferences(selectAllCheckbox.checked, modeSelector?.value, e.target.value === 'new');
-                this.useNewItem = e.target.value === 'new';
-                if (this.useNewItem) {
-                    newNameContainer.classList.add('visible');
-                    setTimeout(() => newNameInput.focus(), 50);
-                } else {
-                    newNameContainer.classList.remove('visible');
-                    newNameInput.value = '';
-                }
-                await this.validateDialogState();
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = this.options.selectAllByDefault;
+            selectAllCheckbox.addEventListener('change', (e) => {
+                this.toggleSelectAll(e.target.checked);
+                this.savePreferences(e.target.checked, modeSelector?.value, this.useNewItem);
             });
-        });
-    
-        if (newNameInput) {
-            newNameInput.addEventListener('touchstart', (e) => {
-                e.stopPropagation();
+        }
+
+        if (modeSelector) {
+            modeSelector.addEventListener('change', (e) => {
+                this.savePreferences(selectAllCheckbox?.checked, e.target.value, this.useNewItem);
             });
-    
-            newNameInput.addEventListener('input', () => this.validateDialogState());
+        }
+
+        if (radioGroup) {
+            const radioButtons = radioGroup.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    this.useNewItem = e.target.value === 'new';
+                    this.savePreferences(selectAllCheckbox?.checked, modeSelector?.value, this.useNewItem);
+                    this.toggleNewNameInput();
+                });
+            });
         }
     }
 
@@ -329,6 +319,30 @@ if (modeSelector) {
     
         // Trigger the validator to update the dialog state
         this.validateDialogState();
+    }
+
+    toggleNewNameInput() {
+        if (!this.dialogContainer) return;
+        
+        const newNameContainer = this.dialogContainer.querySelector('.new-name-container');
+        if (newNameContainer) {
+            if (this.useNewItem) {
+                newNameContainer.classList.add('visible');
+            } else {
+                newNameContainer.classList.remove('visible');
+            }
+            
+            // Also update the radio buttons to match the useNewItem state
+            const radioButtons = this.dialogContainer.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => {
+                if ((radio.value === 'new' && this.useNewItem) || 
+                    (radio.value === 'current' && !this.useNewItem)) {
+                    radio.checked = true;
+                }
+            });
+            
+            this.validateDialogState();
+        }
     }
 
     truncateText(text, maxLength) {
