@@ -8,12 +8,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Set up download button event listener
     const downloadAllBtn = document.getElementById('download-all-workspaces');
     downloadAllBtn.addEventListener('click', async () => {
-        // Send message to content script to download all workspaces
-        browser.tabs.query({active: true, currentWindow: true}).then((tabs) => {
-            browser.tabs.sendMessage(tabs[0].id, {
-                action: 'downloadAllWorkspaces'
-            });
-        });
+        try {
+            const allFiles = await StorageManager.getAllWorkspaceFiles();
+            if (Object.keys(allFiles).length > 0) {
+                ZipManager.downloadAllWorkspaceFiles(allFiles);
+            } else {
+                alert('No files found in any workspace.');
+            }
+        } catch (error) {
+            console.error('Error downloading all workspace files:', error);
+            alert('Error downloading files: ' + error.message);
+        }
     });
     
     // Set up reset database button event listener

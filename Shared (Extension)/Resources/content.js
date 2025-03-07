@@ -68,10 +68,6 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
         toggleEditor();
     } else if (message.action === 'toggleFiles') {
         toggleFiles();
-    } else if (message.action === 'downloadAllWorkspaces') {
-        if (window.fileManager && window.fileManager.fileActions) {
-            window.fileManager.fileActions.downloadAllFiles(true);
-        }
     }
 });
 

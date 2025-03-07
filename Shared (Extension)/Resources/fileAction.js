@@ -190,23 +190,11 @@ class FileActions {
         return true;
     }
 
-    async downloadAllFiles(fromAllWorkspaces = false) {
-        if (fromAllWorkspaces) {
-            try {
-                const allFiles = await StorageManager.getAllWorkspaceFiles();
-                if (Object.keys(allFiles).length === 0) return false;
-                ZipManager.downloadAllWorkspaceFiles(allFiles);
-                return true;
-            } catch (error) {
-                console.error('Error downloading all workspace files:', error);
-                return false;
-            }
-        } else {
-            if (this.files.size === 0) return false;
-            const workspace = await StorageManager.getActiveWorkspace();
-            ZipManager.downloadAllFiles(this.files, workspace);
-            return true;
-        }
+    async downloadAllFiles() {
+        if (this.files.size === 0) return false;
+        const workspace = await StorageManager.getActiveWorkspace();
+        ZipManager.downloadAllFiles(this.files, workspace);
+        return true;
     }
 
     getFileContent(name) {
