@@ -182,6 +182,10 @@ async function createEditorUI() {
     
     const fileManager = new FileManager();
 
+document.addEventListener('aichatflow:workspacechanged', () => {
+    this.updateWorkspaceDisplay();
+});
+
     const toggleFilesBtn = createButton({
         className: 'toolbar-btn toggle-files-btn',
         title: 'Show list of files',

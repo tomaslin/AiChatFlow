@@ -203,7 +203,8 @@ class FileActions {
             }
         } else {
             if (this.files.size === 0) return false;
-            ZipManager.downloadAllFiles(this.files);
+            const workspace = await StorageManager.getActiveWorkspace();
+            ZipManager.downloadAllFiles(this.files, workspace);
             return true;
         }
     }

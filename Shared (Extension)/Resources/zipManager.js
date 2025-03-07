@@ -9,7 +9,7 @@ for (let i = 0; i < 256; i++) {
 }
 
 class ZipManager {
-    static downloadAllFiles(files) {
+    static downloadAllFiles(files, workspace = StorageManager.DEFAULT_WORKSPACE) {
         if (files.size === 0) return;
     
         const zipData = [];
@@ -109,7 +109,7 @@ class ZipManager {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'files.zip';
+        a.download = `ai-chat-flow-${workspace}.zip`;
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();

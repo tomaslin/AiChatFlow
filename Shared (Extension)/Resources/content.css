@@ -465,3 +465,34 @@
     color: #aaa;
     font-size: 16px;
 }
+
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: #2d3748;
+    border-top: 1px solid #4a5568;
+}
+
+.status-group {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.workspace-info {
+    color: #a0aec0;
+    font-size: 0.9em;
+    font-style: italic;
+    margin: 0;
+    border-left: 1px solid #4a5568;
+    padding-left: 1rem;
+}
+
+.status-item {
+    font-size: 0.9em;
+    color: #cbd5e0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

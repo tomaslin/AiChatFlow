@@ -167,6 +167,9 @@ class StorageManager {
         workspaces.push(name);
         await this.saveWorkspaces(workspaces);
         
+        // Initialize the file index for the new workspace
+        await this.saveFileIndex([], name);
+        
         // Automatically set the newly created workspace as active
         await this.setActiveWorkspace(name);
         

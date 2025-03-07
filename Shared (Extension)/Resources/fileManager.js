@@ -61,6 +61,7 @@ class FileManager {
                         await StorageManager.createWorkspace(name);
                         await this.updateWorkspaceList();
                         await this.switchWorkspace(name);
+                        this.updateFileList();
                     } catch (error) {
                         alert(error.message);
                     }
@@ -113,6 +114,7 @@ class FileManager {
         await StorageManager.setActiveWorkspace(workspace);
         this.currentWorkspace = workspace;
         await this.refreshFromStorage(workspace);
+    document.dispatchEvent(new CustomEvent('aichatflow:workspacechanged', { detail: { workspace } }));
     }
 
     async loadFromStorage() {
@@ -266,7 +268,7 @@ class FileManager {
         const editorContent = document.querySelector('.editor-content');
         const tabList = document.querySelector('.tab-list');
         const hasOpenTabs = tabList && tabList.children.length > 0;
-
+    
         if (!hasOpenTabs || !name) {
             editorContent.innerHTML = `
                 <div class="welcome-message">
@@ -310,21 +312,26 @@ class FileManager {
                     tab.classList.toggle('active', tabName === name);
                 });
             }
-
+    
             const textarea = document.createElement('textarea');
             textarea.value = content || '';
-
+    
             editorContent.innerHTML = '';
             
             const toolbar = document.createElement('div');
             toolbar.className = 'toolbar';
             
             const fileActions = this.fileActionUI.createEditorToolbarActions(name);
-
+    
             const textStats = document.createElement('div');
             textStats.className = 'text-stats';
+    
+            // Retrieve the current workspace
+            const currentWorkspace = this.currentWorkspace || 'Unknown Workspace';
+    
             textStats.innerHTML = `
                 <span class="word-count">Words: 0</span>
+                <span class="workspace-name">Workspace: ${currentWorkspace}</span>
             `;
             
             toolbar.appendChild(fileActions);
@@ -335,7 +342,7 @@ class FileManager {
             const updateTextStats = () => {
                 const text = textarea.value;
                 const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-                textStats.querySelector('span').textContent = `Words: ${words}`;
+                textStats.querySelector('.word-count').textContent = `Words: ${words}`;
             };
             
             textarea.addEventListener('input', () => {
