@@ -33,7 +33,7 @@ class FileManager {
         workspaceSelector.innerHTML = `
             <select class="workspace-select"></select>
             <button class="create-workspace-btn" title="Create new workspace">+</button>
-            <button class="delete-workspace-btn" title="Delete current workspace" style="display: none;">×</button>
+            <button class="delete-workspace-btn hidden-element" title="Delete current workspace">×</button>
         `;
 
         fileListContainer.insertBefore(workspaceSelector, fileListContainer.firstChild);

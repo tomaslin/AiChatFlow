@@ -98,6 +98,20 @@
     height: 100% !important;
 }
 
+.error-message {
+    color: #ff6b6b;
+    margin-top: 8px;
+    display: none;
+}
+
+.hidden-element {
+    display: none;
+}
+
+.flex-spacer {
+    flex: 1;
+}
+
 #ai-chat-flow-editor.minimized .file-button {
     display:none;
 }

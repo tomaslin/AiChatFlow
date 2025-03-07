@@ -142,14 +142,14 @@ async function createEditorUI() {
                 <div class="editor-header">
                     <div class="editor-top-bar">
                         ${this.toolbar}
-                        <div style="flex: 1"></div>
+                        <div class="flex-spacer"></div>
                         ${createButton({
                             className: 'ai-chat-flow-minimize-btn',
                             title: 'Minimize',
                             icon: 'chat'
                         }).outerHTML}
                     </div>
-                    <input type="file" id="file-input" multiple accept=".txt,.md,.json,.js,.html,.css" style="display: none">
+                    <input type="file" id="file-input" multiple accept=".txt,.md,.json,.js,.html,.css" class="hidden-element">
                     <div class="file-list-container">
                         <div class="file-list"></div>
                     </div>

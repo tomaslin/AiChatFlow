@@ -164,7 +164,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 });
 
-resetDB();
+// resetDB();
 
 // Initialize database when background script loads
 initDB().catch(error => console.error('Failed to initialize database:', error));

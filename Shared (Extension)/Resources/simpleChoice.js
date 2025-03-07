@@ -24,7 +24,7 @@ class SimpleChoice {
                 </div>
                 <div class="modal-content">
                     <input type="text" class="simple-input" placeholder="${this.options.placeholder}" value="${this.options.initialValue}">
-                    <div class="error-message" style="color: #ff6b6b; margin-top: 8px; display: none;"></div>
+                    <div class="error-message"></div>
                 </div>
                 <div class="modal-footer">
                     <button class="import-btn">${this.options.buttonText}</button>
