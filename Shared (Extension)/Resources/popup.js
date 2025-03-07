@@ -1,16 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const batchSeparatorInput = document.getElementById('batch-separator');
     const saveButton = document.getElementById('save-settings');
+    const resetDbButton = document.getElementById('reset-db');
     
-    // Add download all workspaces button
-    const settingsContainer = document.querySelector('.settings-container') || document.body;
-    const downloadSection = document.createElement('div');
-    downloadSection.className = 'download-section';
-    downloadSection.innerHTML = `
-        <h3>Download Options</h3>
-        <button id="download-all-workspaces" class="download-btn">Download All Workspaces</button>
-    `;
-    settingsContainer.appendChild(downloadSection);
+    // Download button is now in static HTML
     
     // Set up download button event listener
     const downloadAllBtn = document.getElementById('download-all-workspaces');
@@ -21,6 +14,28 @@ document.addEventListener('DOMContentLoaded', async () => {
                 action: 'downloadAllWorkspaces'
             });
         });
+    });
+    
+    // Set up reset database button event listener
+    resetDbButton.addEventListener('click', async () => {
+        if (confirm('Are you sure you want to reset the database? This will delete all stored data and cannot be undone.')) {
+            try {
+                // Send message to background script to reset the database
+                const response = await browser.runtime.sendMessage({
+                    type: 'resetDB'
+                });
+                
+                if (response && response.success) {
+                    alert('Database reset successfully. The extension will now reload.');
+                    window.close(); // Close the popup
+                } else {
+                    alert('Failed to reset database. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error resetting database:', error);
+                alert('An error occurred while resetting the database: ' + error.message);
+            }
+        }
     });
     
     let originalBatchSeparator = '';

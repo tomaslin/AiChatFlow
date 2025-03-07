@@ -162,6 +162,17 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         handleStorageOperation().then(sendResponse);
         return true; // Will respond asynchronously
     }
+    
+    // Handle database reset request
+    if (request.type === 'resetDB') {
+        resetDB().then(() => {
+            sendResponse({ success: true });
+        }).catch(error => {
+            console.error('Error resetting database:', error);
+            sendResponse({ success: false, error: error.message });
+        });
+        return true; // Will respond asynchronously
+    }
 });
 
 // resetDB();

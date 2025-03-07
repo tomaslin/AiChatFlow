@@ -213,6 +213,52 @@ body {
     line-height: 1.4;
 }
 
+.danger-button {
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 8px 12px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 38px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.danger-button:hover {
+    background-color: #c53030;
+}
+
+.download-section {
+    margin-top: var(--spacing-md);
+}
+
+.download-btn {
+    background-color: #38a169;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 8px 12px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 38px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.download-btn:hover {
+    background-color: #2f855a;
+}
+
 @media (prefers-color-scheme: dark) {
     .setting-description {
         color: #cbd5e0;
