@@ -125,6 +125,9 @@ class FileManager {
         await this.fileActions.loadFromStorage(workspace);
         this.updateFileList();
         
+        // Update the workspace UI to reflect any changes
+        await this.updateWorkspaceList();
+        
         if (this.fileActions.activeFile) {
             this.setActiveFile(this.fileActions.activeFile);
         }
