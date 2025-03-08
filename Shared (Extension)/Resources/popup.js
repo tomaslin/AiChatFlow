@@ -1,47 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const batchSeparatorInput = document.getElementById('batch-separator');
     const saveButton = document.getElementById('save-settings');
-    const resetDbButton = document.getElementById('reset-db');
-    
-    // Download button is now in static HTML
-    
-    // Set up download button event listener
-    const downloadAllBtn = document.getElementById('download-all-workspaces');
-    downloadAllBtn.addEventListener('click', async () => {
-        try {
-            const allFiles = await StorageManager.getAllWorkspaceFiles();
-            if (Object.keys(allFiles).length > 0) {
-                ZipManager.downloadAllWorkspaceFiles(allFiles);
-            } else {
-                alert('No files found in any workspace.');
-            }
-        } catch (error) {
-            console.error('Error downloading all workspace files:', error);
-            alert('Error downloading files: ' + error.message);
-        }
-    });
-    
-    // Set up reset database button event listener
-    resetDbButton.addEventListener('click', async () => {
-        if (confirm('Are you sure you want to reset the database? This will delete all stored data and cannot be undone.')) {
-            try {
-                // Send message to background script to reset the database
-                const response = await browser.runtime.sendMessage({
-                    type: 'resetDB'
-                });
-                
-                if (response && response.success) {
-                    alert('Database reset successfully. The extension will now reload.');
-                    window.close(); // Close the popup
-                } else {
-                    alert('Failed to reset database. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error resetting database:', error);
-                alert('An error occurred while resetting the database: ' + error.message);
-            }
-        }
-    });
     
     let originalBatchSeparator = '';
     
