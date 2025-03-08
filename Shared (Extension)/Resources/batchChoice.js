@@ -72,12 +72,15 @@ class BatchChoice {
         this.dialogContainer.innerHTML = this.getDialogHTML();
         document.body.appendChild(this.dialogContainer);
         this.setupEventListeners();
-        this.loadItems();
+        await this.loadItems();
         
         // Apply the current preference state to the UI
         if (this.options.hasCurrent) {
             this.toggleNewNameInput();
         }
+        
+        // Ensure dialog validation state is correct on initial open
+        await this.validateDialogState();
     }
 
     getDialogHTML() {
@@ -231,6 +234,9 @@ class BatchChoice {
             return;
         }
     
+        // Clear the selectedItems set before populating it
+        this.selectedItems.clear();
+        
         itemsList.innerHTML = items.map((item, index) => `
             <div class="batch-item">
                 <label class="item-checkbox-container">
@@ -242,14 +248,24 @@ class BatchChoice {
     
         const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
         selectAllCheckbox.checked = this.options.selectAllByDefault;
-        if (modeSelector && prefs?.selectedMode) {
-            modeSelector.value = prefs.selectedMode;
-        }
+        
+        // Get the mode selector if it exists
+        const modeSelector = this.dialogContainer.querySelector('.import-mode-select');
+        
+        // If selectAllByDefault is true, add all items to the selectedItems set
         if (this.options.selectAllByDefault) {
             items.forEach((_, index) => this.selectedItems.add(index));
         }
     
+        // Add event listeners to all checkboxes
         itemsList.querySelectorAll('.item-checkbox').forEach(checkbox => {
+            const index = parseInt(checkbox.dataset.index);
+            
+            // Initialize the selectedItems set based on the initial checkbox state
+            if (checkbox.checked) {
+                this.selectedItems.add(index);
+            }
+            
             checkbox.addEventListener('change', (e) => {
                 const index = parseInt(e.target.dataset.index);
                 if (e.target.checked) {
@@ -257,10 +273,20 @@ class BatchChoice {
                 } else {
                     this.selectedItems.delete(index);
                 }
+                
+                // Update the select all checkbox state based on individual checkboxes
+                this.updateSelectAllCheckboxState();
                 this.validateDialogState();
             });
         });
+        
+        // Set up validation for the new name input if it exists
+        const newNameInput = this.dialogContainer.querySelector('.new-name-input');
+        if (newNameInput && (this.useNewItem || !this.options.hasCurrent) && this.options.requireNewName) {
+            newNameInput.addEventListener('input', () => this.validateDialogState());
+        }
     
+        // Validate the dialog state immediately after loading items
         await this.validateDialogState();
     }
 
@@ -310,11 +336,13 @@ class BatchChoice {
         // Clear the selectedItems set to avoid hidden selections
         this.selectedItems.clear();
     
-        checkboxes.forEach((checkbox, index) => {
+        checkboxes.forEach((checkbox) => {
             checkbox.checked = checked;
+            const index = parseInt(checkbox.dataset.index);
             if (checked) {
-                this.selectedItems.add(index); // Add visible items to the selection
+                this.selectedItems.add(index); // Add to selection if checked
             }
+            // No need for an else clause as we cleared the set above
         });
     
         // Trigger the validator to update the dialog state
@@ -343,6 +371,24 @@ class BatchChoice {
             
             this.validateDialogState();
         }
+    }
+
+    updateSelectAllCheckboxState() {
+        const checkboxes = this.dialogContainer.querySelectorAll('.item-checkbox');
+        const selectAllCheckbox = this.dialogContainer.querySelector('.select-all-checkbox');
+        
+        if (!selectAllCheckbox) return;
+        
+        // Check if all checkboxes are checked
+        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+        
+        // Update the select all checkbox state without triggering the change event
+        selectAllCheckbox.checked = allChecked;
+        selectAllCheckbox.indeterminate = anyChecked && !allChecked;
+        
+        // Update the import button state
+        this.validateDialogState();
     }
 
     truncateText(text, maxLength) {
