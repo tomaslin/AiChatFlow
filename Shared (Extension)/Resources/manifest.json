@@ -24,6 +24,8 @@
             "baseProvider.js",
             "grok.js",
             "gemini.js",
+            "claude.js",
+            "poe.js",
             "storageManager.js",
             "fileAction.js",
             "fileActionUI.js",
@@ -42,7 +44,9 @@
         "matches": [
             "*://*.gemini.google.com/*",
             "*://*.grok.com/*",
-            "*://copilot.microsoft.com/*"
+            "*://copilot.microsoft.com/*",
+            "*://claude.ai/*",
+            "*://*.poe.com/*"
         ]
     }],
 

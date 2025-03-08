@@ -18,6 +18,15 @@ function initializeProvider() {
     if (window.location.hostname === 'copilot.microsoft.com' && !aiProvider) {
         aiProvider = new CopilotProvider();
     }
+
+    if (window.location.hostname === 'claude.ai' && !aiProvider) {
+        aiProvider = new ClaudeProvider();
+    }
+
+    if (window.location.hostname === 'poe.com' && !aiProvider) {
+        aiProvider = new PoeProvider();
+    }
+    
     
     if(isIPhone){
         styleSheet.textContent += `
