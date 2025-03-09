@@ -47,16 +47,16 @@ aiChatFlow adds a panel to supported AI chat websites that allows you to:
 ## Screenshots
 
 ### Transcribe From Chat
-![Transcribe From Chat](/Users/tomaslin/dev/aiChatFlow/images/Transcribe%20From%20Chat.png)
+![Transcribe From Chat](images/Transcribe%20From%20Chat.png)
 
 ### Editor View
-![Editor View](/Users/tomaslin/dev/aiChatFlow/images/Editor%20view.png)
+![Editor View](images/Editor%20view.png)
 
 ### Run Prompts
-![Run Prompts](/Users/tomaslin/dev/aiChatFlow/images/Run%20Prompts.png)
+![Run Prompts](images/Run%20Prompts.png)
 
 ### Minimized View
-![Minimized View](/Users/tomaslin/dev/aiChatFlow/images/Minimized%20view%20to%20replay%20prompts.png)
+![Minimized View](images/Minimized%20view%20to%20replay%20prompts.png)
 
 ## Installation
 
