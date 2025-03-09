@@ -1,18 +1,17 @@
 # aiChatFlow
 
-aiChatFlow is a browser extension that makes AI chat transcripts more re-usable by allowing you to transcribe, save, edit, and replay your conversations with various AI chat providers.
+aiChatFlow is a browser extension that makes AI chat transcripts more re-usable by allowing you to transcribe, save, edit, and replay your conversations with various AI chat providers. You can export the prompts from one provider and run them in another one. 
 
 ## Overview
 
 aiChatFlow enhances your AI chat experience by providing tools to:
 
-- Transcribe and save your chat conversations
-- Organize chats into workspaces
-- Edit and modify saved conversations
-- Replay conversations with AI providers
 - Import and export prompts, responses, or both selectively
+- Organize prompt chains, outputs into files and workspaces.
+- Edit and modify saved conversations
+- Replay conversations with AI providers in batch
 
-This extension helps you get more value from your AI interactions by making them persistent, editable, and replayable across different sessions.
+This extension helps you get more value from your AI interactions by making them persistent, editable, and replayable across different sessions, models, and providers.
 
 ## Supported AI Providers
 
@@ -38,10 +37,10 @@ aiChatFlow works with the following AI chat platforms:
 
 aiChatFlow adds a panel to supported AI chat websites that allows you to:
 
-1. Capture and save chat transcripts
+1. Capture and save complete chat transcripts
 2. Create and manage files in your workspace
 3. Edit saved conversations
-4. Replay prompts to the AI
+4. Replay prompts from one provider in another provider
 5. Download your data for backup or sharing
 
 ## Screenshots
