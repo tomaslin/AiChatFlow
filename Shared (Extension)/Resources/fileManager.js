@@ -77,6 +77,7 @@ class FileManager {
                 try {
                     await StorageManager.deleteWorkspace(currentWorkspace);
                     await this.updateWorkspaceList();
+                    await this.refreshFromStorage();
                 } catch (error) {
                     alert(error.message);
                 }
