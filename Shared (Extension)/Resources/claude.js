@@ -37,7 +37,9 @@ class ClaudeProvider extends BaseAIProvider {
         if (!container) return null;
 
         const questionEl = container.querySelector(this.userMessageSelector);
-        const answerEl = container.querySelector(`${this.messageContainerSelector} > div > div > div > div`);
+        // Update the selector to correctly target Claude's response content
+        // The content is within the font-claude-message div, inside a grid-cols-1 grid
+        const answerEl = container.querySelector('.font-claude-message .grid-cols-1.grid');
 
         if (questionEl && answerEl) {
             try {

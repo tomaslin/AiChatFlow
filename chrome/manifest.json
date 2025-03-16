@@ -1,0 +1,76 @@
+{
+    "manifest_version": 3,
+    "name": "AI Chat Flow",
+    "description": "Easily transcribe and replay your AI Chats",
+    "version": "1.0",
+    "default_locale": "en",
+
+    "icons": {
+        "48": "images/icon-48.png",
+        "96": "images/icon-96.png",
+        "128": "images/icon-128.png",
+        "256": "images/icon-256.png",
+        "512": "images/icon-512.png"
+    },
+
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+
+    "content_scripts": [{
+        "js": [
+            "browser-polyfill.js",
+            "baseProvider.js",
+            "grok.js",
+            "gemini.js",
+            "claude.js",
+            "poe.js",
+            "storageManager.js",
+            "fileAction.js",
+            "fileActionUI.js",
+            "fileManager.js",
+            "chatTranscriber.js",
+            "editorUI.js",
+            "batchChoice.js",
+            "promptPlayer.js",
+            "markDownConverter.js",
+            "zipManager.js",
+            "simpleChoice.js",
+            "copilot.js",
+            "content.js"
+        ],
+        "css": [ "content.css", "dialogs.css"],
+        "matches": [
+            "*://*.gemini.google.com/*",
+            "*://*.grok.com/*",
+            "*://copilot.microsoft.com/*",
+            "*://claude.ai/*",
+            "*://*.poe.com/*"
+        ]
+    }],
+
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "48": "images/icon-48.png",
+            "128": "images/icon-128.png"
+        }
+    },
+
+    "permissions": [
+        "activeTab",
+        "storage",
+        "scripting"
+    ],
+
+    "commands": {
+        "_execute_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+A",
+                "mac": "Command+Shift+A"
+            },
+            "description": "Open AI Chat Flow"
+        }
+    }
+}
