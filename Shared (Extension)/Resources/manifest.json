@@ -38,6 +38,7 @@
             "zipManager.js",
             "simpleChoice.js",
             "copilot.js",
+            "aistudio.js",
             "content.js"
         ],
         "css": [ "content.css", "dialogs.css"],

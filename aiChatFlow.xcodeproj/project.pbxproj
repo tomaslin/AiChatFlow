@@ -110,6 +110,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Resources/_locales,
+				Resources/aistudio.js,
 				Resources/background.js,
 				Resources/baseProvider.js,
 				Resources/batchChoice.js,
@@ -144,6 +145,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Resources/_locales,
+				Resources/aistudio.js,
 				Resources/background.js,
 				Resources/baseProvider.js,
 				Resources/batchChoice.js,

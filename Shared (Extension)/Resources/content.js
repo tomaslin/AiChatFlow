@@ -7,9 +7,12 @@ const isIPhone = /iPhone/i.test(navigator.userAgent);
 function initializeProvider() {
     const styleSheet = document.createElement('style');
 
-    if ((window.location.hostname === 'gemini.google.com' ||
-        window.location.hostname === 'aistudio.google.com' ) && !aiProvider) {
+    if (window.location.hostname === 'gemini.google.com' && !aiProvider) {
         aiProvider = new GeminiProvider();
+    }
+    
+    if (window.location.hostname === 'aistudio.google.com' && !aiProvider) {
+        aiProvider = new AiStudioProvider();
     }
 
     if (window.location.hostname === 'grok.com' && !aiProvider) {
