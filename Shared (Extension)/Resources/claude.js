@@ -4,8 +4,9 @@ class ClaudeProvider extends BaseAIProvider {
         this.mainContentSelector = '[data-testid="menu-sidebar"]';
         this.markDownConverter = new MarkDownConverter();
         this.maxWaitTime = 120000;
-        this.messageContainerSelector = '[data-is-streaming="false"]';
+        this.messageContainerSelector = '[data-testid="user-message"]';
         this.userMessageSelector = '[data-testid="user-message"]';
+        this.responseSelector = '.font-claude-message';
         this.assistantMessageSelector = this.messageContainerSelector; // Use the same selector for assistant messages
         this.textboxSelector = '.ProseMirror[contenteditable="true"]';
         this.sendButtonSelector = '[aria-label="Send Message"]';
@@ -32,15 +33,25 @@ class ClaudeProvider extends BaseAIProvider {
             mainContent.style.marginRight = minimized ? '' : '52%';
         }, 500);
     }
-
+    
     async getPromptAndResponse(container) {
         if (!container) return null;
-
+    
         const questionEl = container.querySelector(this.userMessageSelector);
-        // Update the selector to correctly target Claude's response content
-        // The content is within the font-claude-message div, inside a grid-cols-1 grid
-        const answerEl = container.querySelector('.font-claude-message .grid-cols-1.grid');
-
+        let answerEl = null;
+        let sibling = questionEl ? questionEl.nextElementSibling : null;
+    
+        while (sibling) {
+            if (sibling.matches(this.userMessageSelector)) {
+                break; // Stop if we reach the next user message
+            }
+            if (sibling.matches(this.responseSelector)) {
+                answerEl = sibling;
+                break; // Stop once we find the response element
+            }
+            sibling = sibling.nextElementSibling;
+        }
+    
         if (questionEl && answerEl) {
             try {
                 const cleanedHtml = this.markDownConverter.remove(

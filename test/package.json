@@ -1,0 +1,12 @@
+{
+    "name": "aiChatFlowTest",
+    "version": "1.0.0",
+    "description": "A project for testing AI chat flow parsing.",
+    "main": "index.js",
+    "scripts": {
+      "test": "node testPromptParsing.js"
+    },
+    "dependencies": {
+      "jsdom": "^21.1.0"
+    }
+  }
