@@ -19,7 +19,24 @@ class ClaudeProvider extends BaseAIProvider {
     }
 
     getMessageContainers() {
-        return document.querySelectorAll(this.messageContainerSelector);
+        // Find all elements with data-test-render-count attribute that contain user messages
+        // This ensures we only get containers that have actual user messages
+        const containers = [];
+        const allContainers = document.querySelectorAll('[data-test-render-count]');
+        
+        for (const container of allContainers) {
+            // Only include containers that have a user message
+            const userMessage = container.querySelector(this.userMessageSelector);
+            if (userMessage) {
+                // Check if this container has a next sibling that might contain a response
+                const nextContainer = container.nextElementSibling;
+                if (nextContainer && nextContainer.querySelector(this.responseSelector)) {
+                    containers.push(container);
+                }
+            }
+        }
+        
+        return containers;
     }
 
     getMaxPartSize() {
@@ -37,40 +54,55 @@ class ClaudeProvider extends BaseAIProvider {
     async getPromptAndResponse(container) {
         if (!container) return null;
     
+        // Get the user message element
         const questionEl = container.querySelector(this.userMessageSelector);
-        let answerEl = null;
-        let sibling = questionEl ? questionEl.nextElementSibling : null;
-    
-        while (sibling) {
-            if (sibling.matches(this.userMessageSelector)) {
-                break; // Stop if we reach the next user message
-            }
-            if (sibling.matches(this.responseSelector)) {
-                answerEl = sibling;
-                break; // Stop once we find the response element
-            }
-            sibling = sibling.nextElementSibling;
-        }
-    
-        if (questionEl && answerEl) {
-            try {
+        if (!questionEl) return null;
+        
+        // We already verified in getMessageContainers that this container has a user message
+        // and the next container has a response, so we can proceed with confidence
+        
+        // Get the next container which should have the Claude response
+        const nextMessageGroup = container.nextElementSibling;
+        if (!nextMessageGroup) return null;
+        
+        // Find the Claude response element within the next message group
+        const answerEl = nextMessageGroup.querySelector(this.responseSelector);
+        if (!answerEl) return null;
+        
+        try {
+            // Extract the content from the Claude response
+            // Look for the actual content within the font-claude-message container
+            const contentContainer = answerEl.querySelector('.grid-cols-1.grid');
+            if (!contentContainer) {
+                // Try an alternative approach if the grid-cols-1.grid is not found
+                // Just use the answerEl content directly
                 const cleanedHtml = this.markDownConverter.remove(
                     answerEl.innerHTML.trim(),
                     ['model-thoughts', '.experimental-mode-disclaimer-container', '.stopped-draft-message']
                 );
+                
                 return {
                     question: questionEl.textContent.trim(),
                     answer: this.markDownConverter.convert(cleanedHtml)
                 };
-            } catch (error) {
-                console.error('Error processing prompt and response:', error);
-                return {
-                    question: questionEl.textContent.trim(),
-                    answer: 'Error processing response'
-                };
             }
+            
+            const cleanedHtml = this.markDownConverter.remove(
+                contentContainer.innerHTML.trim(),
+                ['model-thoughts', '.experimental-mode-disclaimer-container', '.stopped-draft-message']
+            );
+            
+            return {
+                question: questionEl.textContent.trim(),
+                answer: this.markDownConverter.convert(cleanedHtml)
+            };
+        } catch (error) {
+            console.error('Error processing prompt and response:', error);
+            return {
+                question: questionEl.textContent.trim(),
+                answer: 'Error processing response'
+            };
         }
-        return null;
     }
 
     async detectStopped() {

@@ -103,6 +103,6 @@ async function testProvider(providerPath, htmlFilePath) {
 }
 
 // Example usage: Supply the provider path and path to your HTML file
-const providerPath = path.join(__dirname, '../Shared (Extension)/Resources/gemini.js');
+const providerPath = path.join(__dirname, '../Shared (Extension)/Resources/claude.js');
 const htmlFilePath = path.join(__dirname, 'example.html');
 testProvider(providerPath, htmlFilePath);

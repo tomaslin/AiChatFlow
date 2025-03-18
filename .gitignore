@@ -35,3 +35,7 @@ DerivedData/
 *.xcuserstate
 *.xcscmblueprint
 *.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+test/node_modules/*
+test/example.html
+test/package-lock.json
