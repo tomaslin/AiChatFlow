@@ -43,6 +43,7 @@
         "css": [ "content.css", "dialogs.css"],
         "matches": [
             "*://*.gemini.google.com/*",
+            "*://aistudio.google.com/*",
             "*://*.grok.com/*",
             "*://copilot.microsoft.com/*",
             "*://claude.ai/*",
