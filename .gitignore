@@ -35,16 +35,3 @@ DerivedData/
 *.xcuserstate
 *.xcscmblueprint
 *.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
-
-
-# Test directory
-test/*.html
-test/examples/
-test/fixtures/
-test/*.log
-test/coverage/
-test/reports/
-test/temp/
-test/*.tmp
-test/node_modules/*
-test/example.html
