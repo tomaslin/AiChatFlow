@@ -19,7 +19,7 @@ class BaseAIProvider {
 
     async sendMessage(message, retrieveResponse = false) {
         const initialContainerCount = this.getMessageContainers().length;
-        await this.fillTextbox(message);
+        await this.submitPrompt(message);
         await this.waitForCompletion(initialContainerCount);
         
         if (retrieveResponse) {
@@ -138,7 +138,7 @@ class BaseAIProvider {
         throw new Error('Method not implemented');
     }
     
-    async fillTextbox(message) {
+    async submitPrompt(message) {
         throw new Error('Method not implemented');
     }
 

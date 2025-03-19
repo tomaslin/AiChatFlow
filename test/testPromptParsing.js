@@ -53,7 +53,7 @@ function getProviderClass(providerPath, document) {
     return context.global.ProviderClass;
 }
 
-async function testProvider(providerPath, htmlFilePath) {
+async function testParsing(providerPath, htmlFilePath) {
     // Read the HTML file
     const htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
     
@@ -102,7 +102,61 @@ async function testProvider(providerPath, htmlFilePath) {
     }
 }
 
+// Function to test waitForCompletion method
+async function testWaitForCompletion(providerPath, executingHtmlPath, finishedHtmlPath) {
+    console.log('\nTesting waitForCompletion method...');
+    
+    // Test with executing HTML
+    console.log('Testing with executing state...');
+    const executingHtmlContent = fs.readFileSync(executingHtmlPath, 'utf-8');
+    const executingDom = new JSDOM(executingHtmlContent);
+    const executingDocument = executingDom.window.document;
+    
+    const ExecutingProviderClass = getProviderClass(providerPath, executingDocument);
+    const executingProvider = new ExecutingProviderClass();
+    
+    if (typeof executingProvider.waitForCompletion !== 'function') {
+        console.error('waitForCompletion is not a function on the provider instance');
+        return;
+    }
+    
+    const executingContainers = executingProvider.getMessageContainers();
+    const initialExecutingCount = executingContainers.length;
+    
+    // Test with finished HTML
+    console.log('Testing with finished state...');
+    const finishedHtmlContent = fs.readFileSync(finishedHtmlPath, 'utf-8');
+    const finishedDom = new JSDOM(finishedHtmlContent);
+    const finishedDocument = finishedDom.window.document;
+    
+    const FinishedProviderClass = getProviderClass(providerPath, finishedDocument);
+    const finishedProvider = new FinishedProviderClass();
+    
+    const finishedContainers = finishedProvider.getMessageContainers();
+    const initialFinishedCount = finishedContainers.length;
+    
+    // Since we can't actually wait for completion in a test environment,
+    // we'll just check if the method exists and can be called
+    try {
+        // We expect this to resolve quickly in test environment
+        const executingResult = await executingProvider.waitForCompletion(initialExecutingCount - 1);
+        console.log('Executing state result:', executingResult);
+        
+        const finishedResult = await finishedProvider.waitForCompletion(initialFinishedCount - 1);
+        console.log('Finished state result:', finishedResult);
+        
+        console.log('waitForCompletion test completed');
+    } catch (error) {
+        console.error('Error testing waitForCompletion:', error);
+    }
+}
+
 // Example usage: Supply the provider path and path to your HTML file
 const providerPath = path.join(__dirname, '../Shared (Extension)/Resources/claude.js');
-const htmlFilePath = path.join(__dirname, 'example.html');
-testProvider(providerPath, htmlFilePath);
+const htmlFilePath = path.join(__dirname, 'parsing.html');
+const executingHtmlPath = path.join(__dirname, 'executing.html');
+const finishedHtmlPath = path.join(__dirname, 'finished.html');
+
+// Run the tests
+testParsing(providerPath, htmlFilePath);
+testWaitForCompletion(providerPath, executingHtmlPath, finishedHtmlPath);

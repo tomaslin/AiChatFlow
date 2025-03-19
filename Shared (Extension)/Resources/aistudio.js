@@ -1,4 +1,4 @@
-class AiStudioProvider extends BaseAIProvider {
+class AistudioProvider extends BaseAIProvider {
     constructor() {
         super();
         this.mainContentSelector = 'bard-sidenav-content';
@@ -77,7 +77,7 @@ class AiStudioProvider extends BaseAIProvider {
         }
     }
 
-    async fillTextbox(message) {
+    async submitPrompt(message) {
         try {
             const textbox = await this.waitForElement(this.textboxSelector);
             if (!textbox) {

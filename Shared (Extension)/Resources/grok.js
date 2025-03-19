@@ -62,7 +62,7 @@ class GrokProvider extends BaseAIProvider {
         }
     }
 
-    async fillTextbox(message) {
+    async submitPrompt(message) {
         try {
             const textarea = await this.waitForElement(this.textboxSelector);
             if (!textarea) {

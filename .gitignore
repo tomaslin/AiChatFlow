@@ -37,5 +37,5 @@ DerivedData/
 *.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
 
 test/node_modules/*
-test/example.html
+test/*.html
 test/package-lock.json

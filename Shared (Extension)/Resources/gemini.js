@@ -77,7 +77,7 @@ class GeminiProvider extends BaseAIProvider {
         }
     }
 
-    async fillTextbox(message) {
+    async submitPrompt(message) {
         try {
             const textbox = await this.waitForElement(this.textboxSelector);
             if (!textbox) {
