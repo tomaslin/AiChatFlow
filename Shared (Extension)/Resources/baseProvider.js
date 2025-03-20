@@ -174,6 +174,6 @@ class BaseAIProvider {
     }
     
     async detectStopped() {
-        throw new Error('Method not implemented');
+        return false;
     }
 }

@@ -39,12 +39,7 @@ class ClaudeProvider extends BaseAIProvider {
     }
 
     slideContent(minimized) {
-        setTimeout(() => {
-            const mainContent = document.querySelector(this.mainContentSelector);
-            if (mainContent) {
-                mainContent.style.marginRight = minimized ? '' : '52%';
-            }
-        }, 500);
+        // Implementation needed
     }
     
     async getPromptAndResponse(container) {
@@ -93,7 +88,6 @@ class ClaudeProvider extends BaseAIProvider {
                 cancelable: true
             }));
 
-
             const sendButton = await this.waitForElement(this.sendButtonSelector);
             if (!sendButton) {
                 throw new Error('Could not find send button');
@@ -111,14 +105,8 @@ class ClaudeProvider extends BaseAIProvider {
     }
 
     async waitForCompletion(initialContainerCount) {
-        const expectedCount = this.countCompletedRequests() + 1;
-        await this.waitForRequestCompletion(expectedCount, initialContainerCount);
-    }
-
-    async waitForRequestCompletion(expectedCount, initialContainerCount) {
         return new Promise((resolve) => {
             const startTime = Date.now();
-            const maxWaitTime = 120000;
             
             const checkCompletion = () => {
                 try {
@@ -135,7 +123,7 @@ class ClaudeProvider extends BaseAIProvider {
                         return;
                     }
                     
-                    if (Date.now() - startTime > maxWaitTime) {
+                    if (Date.now() - startTime > this.maxWaitTime) {
                         console.warn('Timed out waiting for Claude response');
                         resolve(false);
                         return;
