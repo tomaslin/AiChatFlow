@@ -76,11 +76,34 @@ class BaseAIProvider {
     }
 
     async sendBatch(messages) {
-        for (const message of messages) {
-            await this.sendMessage(message);
-            if (await this.detectStopped()) {
-                break;
+        // Create and show the batch progress dialog
+        const batchProgressDialog = new BatchProgressDialog();
+        batchProgressDialog.createDialog(messages.length);
+        
+        // Set up the stop callback
+        let stopRequested = false;
+        batchProgressDialog.setOnStopCallback(() => {
+            stopRequested = true;
+        });
+        
+        try {
+            for (let i = 0; i < messages.length; i++) {
+                const message = messages[i];
+                
+                // Update the dialog with current progress
+                batchProgressDialog.updateProgress(message, i + 1);
+                
+                // Send the message
+                await this.sendMessage(message);
+                
+                // Check if we should stop (either from dialog or provider)
+                if (stopRequested || await this.detectStopped()) {
+                    break;
+                }
             }
+        } finally {
+            // Close the dialog when done
+            batchProgressDialog.closeDialog();
         }
     }
 

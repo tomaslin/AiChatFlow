@@ -21,35 +21,39 @@
 
     "content_scripts": [{
         "js": [
+            "storageManager.js",
+            "markDownConverter.js",
             "baseProvider.js",
-            "grok.js",
-            "gemini.js",
+            "batchProgressDialog.js",
             "claude.js",
             "poe.js",
-            "storageManager.js",
-            "fileAction.js",
-            "fileActionUI.js",
+            "copilot.js",
+            "gemini.js",
+            "grok.js",
+            "aistudio.js",
+            "simpleChoice.js",
+            "batchChoice.js",
             "fileManager.js",
+            "fileActionUI.js",
+            "fileAction.js",
+            "promptPlayer.js",
             "chatTranscriber.js",
             "editorUI.js",
-            "batchChoice.js",
-            "promptPlayer.js",
-            "markDownConverter.js",
-            "zipManager.js",
-            "simpleChoice.js",
-            "copilot.js",
-            "aistudio.js",
-            "content.js"
+            "content.js",
+            "zipManager.js"
         ],
-        "css": [ "content.css", "dialogs.css"],
+        "css": [ "content.css", "dialogs.css", "batchProgressDialog.css"],
         "matches": [
+            "*://*.anthropic.com/*",
+            "*://*.claude.ai/*",
+            "*://*.poe.com/*",
+            "*://*.bing.com/*",
+            "*://*.copilot.microsoft.com/*",
             "*://*.gemini.google.com/*",
-            "*://aistudio.google.com/*",
-            "*://*.grok.com/*",
-            "*://copilot.microsoft.com/*",
-            "*://claude.ai/*",
-            "*://*.poe.com/*"
-        ]
+            "*://*.ai.google.dev/*",
+            "*://*.grok.x.ai/*"
+        ],
+        "run_at": "document_end"
     }],
 
     "action": {
