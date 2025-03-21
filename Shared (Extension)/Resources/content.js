@@ -12,7 +12,7 @@ function initializeProvider() {
     }
     
     if (window.location.hostname === 'aistudio.google.com' && !aiProvider) {
-        aiProvider = new AiStudioProvider();
+        aiProvider = new AistudioProvider();
     }
 
     if (window.location.hostname === 'grok.com' && !aiProvider) {
