@@ -44,13 +44,11 @@
         ],
         "css": [ "content.css", "dialogs.css", "batchProgressDialog.css"],
         "matches": [
-            "*://*.anthropic.com/*",
             "*://*.claude.ai/*",
             "*://*.poe.com/*",
-            "*://*.bing.com/*",
             "*://*.copilot.microsoft.com/*",
             "*://*.gemini.google.com/*",
-            "*://*.ai.google.dev/*",
+            "*://aistudio.google.com/*",
             "*://*.grok.x.ai/*"
         ],
         "run_at": "document_end"
