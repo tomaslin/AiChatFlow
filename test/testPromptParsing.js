@@ -89,12 +89,20 @@ async function testParsing(providerPath, htmlFilePath) {
     
     // Test parsing for each container
     for (const container of containers) {
-        if (typeof provider.getPromptAndResponse !== 'function') {
-            console.error('getPromptAndResponse is not a function on the provider instance');
+        // Check if getChatMessages exists on provider or fall back to base implementation
+        const getChatMessagesMethod = typeof provider.getChatMessages === 'function' 
+            ? provider.getChatMessages.bind(provider)
+            : (typeof BaseAIProvider.prototype.getChatMessages === 'function' 
+                ? BaseAIProvider.prototype.getChatMessages.bind(provider) 
+                : null);
+        
+        if (!getChatMessagesMethod) {
+            console.error('getChatMessages is not available on the provider or BaseAIProvider');
             return;
         }
+        
         try {
-            const result = await provider.getPromptAndResponse(container);
+            const result = await getChatMessagesMethod(container);
             console.log('Parsed Result:', result);
         } catch (error) {
             console.error('Error parsing container:', error);
@@ -152,7 +160,7 @@ async function testWaitForCompletion(providerPath, executingHtmlPath, finishedHt
 }
 
 // Example usage: Supply the provider path and path to your HTML file
-const providerPath = path.join(__dirname, '../Shared (Extension)/Resources/claude.js');
+const providerPath = path.join(__dirname, '../Shared (Extension)/Resources/aistudio.js');
 const htmlFilePath = path.join(__dirname, 'parsing.html');
 const executingHtmlPath = path.join(__dirname, 'executing.html');
 const finishedHtmlPath = path.join(__dirname, 'finished.html');
