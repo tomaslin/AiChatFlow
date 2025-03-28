@@ -4,14 +4,16 @@ class AistudioProvider extends BaseAIProvider {
         this.mainContentSelector = '.main-content';
         this.markDownConverter = new MarkDownConverter();
         this.maxWaitTime = 120000;
-        
-        // User message selectors - updated to better target the nested span structure
+
         this.userMessageSelector = '.chat-turn-container.user';
         this.aiMessageSelector = '.chat-turn-container.model';
-        
-        // Other UI selectors
+
         this.textboxSelector = 'ms-autosize-textarea textarea';
-        this.sendButtonSelector = 'button[aria-label="Run"]:not([disabled])';
+
+        this.runButtonWrapperSelector = 'run-button';
+        this.sendButtonReadySelector = 'run-button button[aria-label="Run"]:not([disabled]):not(.stoppable)';
+        this.runningButtonSelector = 'run-button button[aria-label="Run"].stoppable svg.stoppable-spinner';
+
         this.completionSelector = '.response-complete-indicator';
     }
 
@@ -38,8 +40,9 @@ class AistudioProvider extends BaseAIProvider {
     async getChatMessages() {
         const messages = [];
         const questionEls = document.querySelectorAll(this.userMessageSelector);
-        const answerEls = document.querySelectorAll(this.aiMessageSelector);    
+        const answerEls = document.querySelectorAll(this.aiMessageSelector);
         const count = Math.min(questionEls.length, answerEls.length);
+
         for (let i = 0; i < count; i++) {
             const message = await this.parsePromptAndResponse(questionEls[i], answerEls[i]);
             if (message) {
@@ -64,10 +67,9 @@ class AistudioProvider extends BaseAIProvider {
                     ))
                 };
             } catch (error) {
-                console.error('Error processing prompt and response:', error);
                 return {
-                    question: questionEl.textContent.trim(),
-                    answer: 'Error processing response'
+                    question: questionEl.textContent?.trim() ?? '',
+                    answer: 'Error processing response: ' + (answerEl.textContent?.trim() ?? '')
                 };
             }
         }
@@ -76,72 +78,78 @@ class AistudioProvider extends BaseAIProvider {
 
     async submitPrompt(message) {
         try {
-            const textbox = await this.waitForElement(this.textboxSelector);
+            const textbox = await this.waitForElement(this.textboxSelector, 5000);
             if (!textbox) {
                 throw new Error('Could not find textbox element');
             }
-            
-            // Set content and dispatch input event
-            textbox.value = message;
-            textbox.dispatchEvent(new InputEvent('input', {
-                bubbles: true,
-                cancelable: true
-            }));
 
-            const sendButton = await this.waitForElement(this.sendButtonSelector);
-            
+            textbox.value = message;
+            textbox.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+            textbox.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const sendButton = await this.waitForElement(this.sendButtonReadySelector, 5000);
+
             if (!sendButton) {
-                throw new Error('Could not find send button');
+                const disabledButton = document.querySelector(`${this.runButtonWrapperSelector} button[aria-label="Run"]`);
+                if (disabledButton?.disabled) {
+                     throw new Error(`Send button found but is disabled. Textbox content: "${textbox.value.substring(0, 50)}..."`);
+                } else if (document.querySelector(this.runningButtonSelector)){
+                     throw new Error('Send button seems to be already running (Stop state).');
+                } else {
+                     throw new Error(`Could not find send button using selector: ${this.sendButtonReadySelector}. Check UI structure.`);
+                }
             }
-            
+
             sendButton.click();
+
         } catch (error) {
-            console.error('Error filling textbox:', error);
             throw error;
         }
     }
 
-    countCompletedRequests() {
-        return document.querySelectorAll(this.completionSelector).length;
-    }
-
     async waitForCompletion(initialContainerCount) {
-        const expectedCount = this.countCompletedRequests() + 1;        
-        await this.waitForRequestCompletion(expectedCount, initialContainerCount);
+        await this.waitForRequestCompletion(initialContainerCount);
+        await new Promise(resolve => setTimeout(resolve, 250));
     }
 
-    async waitForRequestCompletion(expectedCount, initialContainerCount) {
-        return new Promise((resolve) => {
+    async waitForRequestCompletion(initialContainerCount) {
+        return new Promise((resolve, reject) => {
             const startTime = Date.now();
-            
+            const checkInterval = 500;
+
             const checkCompletion = () => {
                 try {
-                    const currentCount = this.countCompletedRequests();
-                    const containers = this.getMessageContainers();
-                    
-                    if (currentCount >= expectedCount && containers.length > initialContainerCount) {
-                        resolve(true);
-                        return;
+                    const isRunning = document.querySelector(this.runningButtonSelector);
+                    const currentContainers = this.getMessageContainers();
+
+                    if (!isRunning) {
+                        if (currentContainers.length > initialContainerCount) {
+                            resolve(true);
+                            return;
+                        }
                     }
-                    
+
                     if (Date.now() - startTime > this.maxWaitTime) {
-                        console.warn('Timed out waiting for request completion');
-                        resolve(false);
+                        const stillRunning = document.querySelector(this.runningButtonSelector);
+                        reject(new Error(`Timeout: Request did not complete. Button running state: ${!!stillRunning}. Container count: ${currentContainers.length}.`));
                         return;
                     }
 
-                    setTimeout(checkCompletion, 1000);
+                    setTimeout(checkCompletion, checkInterval);
+
                 } catch (error) {
-                    console.error('Error in waitForRequestCompletion:', error);
-                    resolve(false);
+                    reject(error);
                 }
             };
 
-            checkCompletion();
+            setTimeout(checkCompletion, checkInterval);
         });
     }
 
     async newChat() {
-        document.location = 'https://aistudio.google.com/prompts/new_chat';
+        document.location.href = 'https://aistudio.google.com/prompts/new_chat';
     }
+
 }
+
