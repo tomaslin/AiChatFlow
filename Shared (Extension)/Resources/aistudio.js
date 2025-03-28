@@ -10,8 +10,8 @@ class AistudioProvider extends BaseAIProvider {
         this.aiMessageSelector = '.chat-turn-container.model';
         
         // Other UI selectors
-        this.textboxSelector = '.prompt-textarea, textarea[class*="w-full"]';
-        this.sendButtonSelector = 'button[aria-label="Send message"], button[type="submit"]';
+        this.textboxSelector = 'ms-autosize-textarea textarea';
+        this.sendButtonSelector = 'button[aria-label="Run"]:not([disabled])';
         this.completionSelector = '.response-complete-indicator';
     }
 
@@ -82,7 +82,7 @@ class AistudioProvider extends BaseAIProvider {
             }
             
             // Set content and dispatch input event
-            textbox.innerHTML = message;
+            textbox.value = message;
             textbox.dispatchEvent(new InputEvent('input', {
                 bubbles: true,
                 cancelable: true
