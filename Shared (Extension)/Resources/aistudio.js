@@ -63,7 +63,7 @@ class AistudioProvider extends BaseAIProvider {
                     )),
                     answer: this.markDownConverter.convert(this.markDownConverter.remove(
                         answerEl.innerHTML.trim(),
-                        ['mat-icon']
+                        ['mat-icon', '.thought-container']
                     ))
                 };
             } catch (error) {
